@@ -27,9 +27,8 @@ Photography and Social Media: Guests are encouraged to capture the magical momen
 
 A Firemonsters Wine Party combines the sophistication of wine tasting with the thrill of fire entertainment, making it a one-of-a-kind experience that will be remembered long after the last glass of wine is emptied. It's an evening of elegance, excitement, and unforgettable moments that will leave your guests talking about it for years to come.
 """,
-    "imageUrl": [
-      "https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&w=600"
-    ],
+    "imageUrl":
+        "https://images.pexels.com/photos/3171837/pexels-photo-3171837.jpeg?auto=compress&cs=tinysrgb&w=600",
     "date": "24th October, 2023",
     "time": "6:00 pm - 12:00 am",
     "venue": "Civic Center",
@@ -79,9 +78,8 @@ Photography and Social Media: Guests are encouraged to capture the magical momen
 
 A Firemonsters Wine Party combines the sophistication of wine tasting with the thrill of fire entertainment, making it a one-of-a-kind experience that will be remembered long after the last glass of wine is emptied. It's an evening of elegance, excitement, and unforgettable moments that will leave your guests talking about it for years to come.
 """,
-    "imageUrl": [
-      "https://images.pexels.com/photos/17286889/pexels-photo-17286889/free-photo-of-people-at-a-music-concert.jpeg?auto=compress&cs=tinysrgb&w=600"
-    ],
+    "imageUrl":
+        "https://images.pexels.com/photos/17286889/pexels-photo-17286889/free-photo-of-people-at-a-music-concert.jpeg?auto=compress&cs=tinysrgb&w=600",
     "date": "24th October, 2023",
     "time": "6:00 pm - 12:00 am",
     "location":

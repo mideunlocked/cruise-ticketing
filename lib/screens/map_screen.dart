@@ -1,16 +1,15 @@
-import 'package:cruise/data.dart';
-import 'package:cruise/helpers/directions_repo.dart';
-import 'package:cruise/helpers/location_helper.dart';
-import 'package:cruise/helpers/map_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sizer/sizer.dart';
 
+import '../data.dart';
+import '../helpers/directions_repo.dart';
+import '../helpers/location_helper.dart';
+import '../helpers/map_helper.dart';
 import '../models/directions.dart';
 import '../widgets/map/center_focus_widget.dart';
 import '../widgets/map/locator_event_detail.dart';
-import '../widgets/map/search_location.dart';
 import '../widgets/map/text_bar.dart';
 
 class MapScreen extends StatefulWidget {
@@ -27,8 +26,6 @@ class _MapPageState extends State<MapScreen> {
   Directions? info; // get directions, distance and durations
 
   String? mapStyle; // custome map style for google maps
-
-  TextEditingController? searchController; // search event text controller
 
   bool cameraIsMoving = false; // check if google map camera is moving
 
@@ -62,18 +59,19 @@ class _MapPageState extends State<MapScreen> {
 
     // dispose controllers
     googleMapController?.dispose();
-    searchController?.dispose();
   }
 
   // event detail sheet height
   double sheetPosition = 0;
 
+  //event details data
+  Map<String, dynamic> eventDetail = {};
+  String infoDuration = "";
+
   @override
   Widget build(BuildContext context) {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
-
-    Map<String, dynamic> eventDetail = {};
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -102,6 +100,7 @@ class _MapPageState extends State<MapScreen> {
             setState(() {
               info = null;
               sheetPosition = 0;
+              eventDetail = {};
             });
           },
           onCameraIdle: () {
@@ -121,21 +120,25 @@ class _MapPageState extends State<MapScreen> {
         // text app bar
         const TextBar(),
 
-        // search even container
-        SearchLocation(
-          controller: searchController ?? TextEditingController(),
-          cameraIsMoving: cameraIsMoving,
-        ),
+        // event detail dialog
+        eventDetail.isEmpty // check if event detail is empty
+            ? const SizedBox()
+            : LocatorEventDetail(
+                sheetPosition: sheetPosition,
+                data: eventDetail,
+                duration: infoDuration,
+                getDirection: () {
+                  double lat = eventDetail["lat"] ?? 0.0;
+                  double lng = eventDetail["lng"] ?? 0.0;
 
-        LocatorEventDetail(
-          sheetPosition: sheetPosition,
-          getDirection: () => getDirections(
-            const LatLng(
-              6.425933503271069,
-              3.4244839013258326,
-            ),
-          ),
-        ),
+                  getDirections(
+                    LatLng(
+                      lat,
+                      lng,
+                    ),
+                  );
+                },
+              ),
 
         // icon button to center the map to a given location from the map controller
         CenterFocusWidget(
@@ -172,12 +175,28 @@ class _MapPageState extends State<MapScreen> {
       position: pos,
       markerId: MarkerId(id),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-      onTap: () {
+      onTap: () async {
+        setState(() {
+          eventDetail = {};
+          info = null;
+          infoDuration = "";
+        });
+        getDirectionDuration(pos);
         _toggleSheet(event);
       },
     );
 
     return marker;
+  }
+
+  // get duration from origin to destination
+  Future<void> getDirectionDuration(LatLng destinationPos) async {
+    final duration = await DirectionsRepo().getDuration(
+      origin: origin!.position,
+      destination: destinationPos,
+    );
+
+    setState(() => infoDuration = duration!);
   }
 
   // get direction and animate camera to bounds
@@ -193,11 +212,9 @@ class _MapPageState extends State<MapScreen> {
   // Function to toggle the sheet's position
   void _toggleSheet(Map<String, dynamic> event) {
     setState(() {
-      if (sheetPosition != 0) {
-      } else {
-        sheetPosition =
-            sheetPosition == 0 ? 32.h : 0; // Adjust the height as needed
-      }
+      sheetPosition =
+          sheetPosition == 0 ? 32.h : 0; // Adjust the height as needed
+      eventDetail = event;
     });
   }
 }

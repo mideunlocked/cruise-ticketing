@@ -28,4 +28,29 @@ class DirectionsRepo {
     }
     return null;
   }
+
+  Future<String?> getDuration({
+    required LatLng origin,
+    required LatLng destination,
+  }) async {
+    final response = await _dio?.get(googleBaseUrl, queryParameters: {
+      'origin': "${origin.latitude},${origin.longitude}",
+      'destination': '${destination.latitude},${destination.longitude}',
+      'key': googleAPIKey,
+    });
+
+    // check is response is successful
+    if (response?.statusCode == 200) {
+      String duration = "";
+      var data = response?.data;
+      var routes = data["routes"][0];
+      if ((routes['legs'] as List).isNotEmpty) {
+        final leg = routes["legs"][0] ?? [];
+        duration = leg["duration"]["text"] ?? "";
+        print("Duration is $duration");
+        return duration;
+      }
+    }
+    return null;
+  }
 }

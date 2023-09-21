@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import 'screens/event_screen.dart';
 import 'screens/home.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class MainApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           Home.routeName: (context) => const Home(),
+          EventScreen.routeName: (context) => const EventScreen(),
         },
       ),
     );
