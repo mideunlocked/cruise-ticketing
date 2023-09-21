@@ -17,14 +17,13 @@ class CenterFocusWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         bottom: 87.h,
-        left: 90.w,
+        left: 88.w,
       ),
       child: SizedBox(
-        height: 10.h,
-        width: 10.w,
-        child: FloatingActionButton(
-          backgroundColor: Colors.transparent,
-          onPressed: () => googleMapController?.animateCamera(
+        height: 8.h,
+        width: 8.w,
+        child: InkWell(
+          onTap: () => googleMapController?.animateCamera(
             CameraUpdate.newCameraPosition(
                 GoogleMapHelper.getInitialCameraLocation()),
           ),
@@ -32,7 +31,9 @@ class CenterFocusWidget extends StatelessWidget {
             "assets/icons/focus.png",
             height: 8.h,
             width: 8.w,
-            color: Colors.white,
+            color: MediaQuery.platformBrightnessOf(context) == Brightness.light
+                ? Colors.black
+                : Colors.white,
           ),
         ),
       ),

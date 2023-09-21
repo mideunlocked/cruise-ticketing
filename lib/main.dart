@@ -16,13 +16,22 @@ class MainApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
+        darkTheme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 0, 1, 34),
           primaryColor: const Color.fromARGB(255, 0, 255, 170),
           textTheme: const TextTheme(
             bodyMedium: TextStyle(
               fontFamily: "Poppins",
               color: Colors.white,
+            ),
+          ),
+        ),
+        theme: ThemeData(
+          primaryColor: const Color.fromARGB(255, 0, 3, 97),
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.black,
             ),
           ),
         ),

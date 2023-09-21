@@ -57,7 +57,9 @@ class _LocatorEventDetailState extends State<LocatorEventDetail> {
         child: Container(
           height: 32.h,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 0, 1, 36),
+            color: MediaQuery.platformBrightnessOf(context) == Brightness.light
+                ? Colors.grey[300]
+                : const Color.fromARGB(255, 0, 1, 36),
             borderRadius: BorderRadius.circular(30),
           ),
           padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),

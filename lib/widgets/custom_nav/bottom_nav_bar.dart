@@ -28,8 +28,10 @@ class BottomNavBar extends StatelessWidget {
       child: Container(
         height: 9.h,
         width: 100.w,
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 0, 1, 29),
+        decoration: BoxDecoration(
+          color: MediaQuery.platformBrightnessOf(context) == Brightness.light
+              ? Colors.grey[200]
+              : const Color.fromARGB(255, 0, 1, 29),
           borderRadius: borderRadius,
         ),
         child: CustomBottomNav(
