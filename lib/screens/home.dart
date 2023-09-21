@@ -1,7 +1,7 @@
 import 'package:cruise/screens/map_screen.dart';
-import 'package:cruise/widgets/custom_nav/custom_nav.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+
+import '../widgets/custom_nav/bottom_nav_bar.dart';
 
 class Home extends StatefulWidget {
   static const routeName = "/";
@@ -13,8 +13,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // the current index of the pagecontroller
+  int currentIndex = 2;
+
   // pageview controller for handling bottom nav bar
-  PageController pageController = PageController();
+  final pageController = PageController(
+    initialPage: 2,
+  );
+
+  final pages = const [
+    Center(
+      child: Text("Home screen"),
+    ),
+    Center(
+      child: Text("Search screen"),
+    ),
+    MapScreen(),
+    Center(
+      child: Text("Add screen"),
+    ),
+    Center(
+      child: Text("Profile screen"),
+    ),
+  ];
 
   @override
   void dispose() {
@@ -26,38 +47,25 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
-    // var withOpacity = scaffoldBackgroundColor.withOpacity(0.7);
-    const radius = Radius.circular(40);
-    const borderRadius = BorderRadius.only(
-      topLeft: radius,
-      topRight: radius,
-    );
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          const MapScreen(),
-          Material(
-            elevation: 30.0,
-            borderRadius: borderRadius,
-            color: Colors.transparent,
-            shadowColor: Colors.white,
-            child: Container(
-              height: 9.h,
-              width: 100.w,
-              decoration: BoxDecoration(
-                color: scaffoldBackgroundColor,
-                borderRadius: borderRadius,
-              ),
-              child: CustomBottomNav(
-                pageController: pageController,
-                currentIndex: 2,
-              ),
-            ),
+          // bottom nav screens with page view
+          PageView(
+            controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (index) => setState(() {
+              currentIndex = index;
+            }),
+            children: pages,
+          ),
+
+          // custom bottom nav bar
+          BottomNavBar(
+            pageController: pageController,
+            currentIndex: currentIndex,
           ),
         ],
       ),
