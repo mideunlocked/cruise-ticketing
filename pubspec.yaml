@@ -18,6 +18,7 @@ dependencies:
   dio: ^5.3.2
   flutter_polyline_points: ^2.0.0
   geolocator: ^10.0.1
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -32,8 +33,11 @@ flutter_launcher_icons:
   remove_alpha_ios: true
 
 flutter_native_splash:
-  color: "#000142"
-  image: assets/icons/tickets_white.png
+  color: "#ffffff"
+  image: assets/icons/tickets.png
+
+  color_dark: "#000142"
+  background_image_dark: assets/icons/tickets_white.png
 
   android_12:
     image: assets/icons/tickets_white.png
