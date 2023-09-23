@@ -1,3 +1,4 @@
+import 'package:cruise/screens/see_all_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -44,21 +45,21 @@ class HomeScreen extends StatelessWidget {
                   // reommeded category
                   const HomeScreenHeader(
                     title: "RECOMMENDED",
-                    screen: SizedBox(),
+                    screen: SeeAllScreen(title: "RECOMMENDED"),
                   ),
                   sizedBox2,
                   const RecomndedWidget(),
                   sizedBox4,
                   const HomeScreenHeader(
                     title: "NEARBY",
-                    screen: SizedBox(),
+                    screen: SeeAllScreen(title: "NEARBY"),
                   ),
                   sizedBox2,
                   const NearByWidget(),
                   sizedBox4,
                   const HomeScreenHeader(
                     title: "TODAY",
-                    screen: SizedBox(),
+                    screen: SeeAllScreen(title: "TODAY"),
                   ),
                   sizedBox2,
                   const EventTodayWidget(),

@@ -7,15 +7,15 @@ import '../../helpers/location_helper.dart';
 import '../../screens/event_screen.dart';
 import '../general_widgets/profile_image.dart';
 
-class EventTodayTile extends StatefulWidget {
-  const EventTodayTile({super.key, required this.data});
+class EventListTile extends StatefulWidget {
+  const EventListTile({super.key, required this.data});
 
   final dynamic data; // get event data
   @override
-  State<EventTodayTile> createState() => _EventTodayTileState();
+  State<EventListTile> createState() => _EventTodayTileState();
 }
 
-class _EventTodayTileState extends State<EventTodayTile> {
+class _EventTodayTileState extends State<EventListTile> {
   Map<String, dynamic>? durationData; // should hold duration data
 
   @override

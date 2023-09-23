@@ -15,7 +15,7 @@ class EventTodayWidget extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         children: event // list of events
             .map(
-              (e) => EventTodayTile(data: e), // event today tile
+              (e) => EventListTile(data: e), // event today tile
             )
             .toList(),
       ),

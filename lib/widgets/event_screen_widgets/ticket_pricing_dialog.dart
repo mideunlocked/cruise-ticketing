@@ -87,8 +87,7 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
           CustomButton(
             title: "Purchase",
             function: () {
-              var price = selectedPrice.split(" ");
-              print(price[1]);
+              // var price = selectedPrice.split(" ");
             },
           ),
         ],

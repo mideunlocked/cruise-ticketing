@@ -18,19 +18,31 @@ class MainApp extends StatelessWidget {
         darkTheme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 0, 1, 34),
           primaryColor: const Color(0xFF26DBB5),
-          textTheme: const TextTheme(
-            bodyMedium: TextStyle(
+          textTheme: TextTheme(
+            bodyMedium: const TextStyle(
               fontFamily: "Poppins",
+              color: Colors.white,
+            ),
+            titleMedium: TextStyle(
+              letterSpacing: 10.0,
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w500,
               color: Colors.white,
             ),
           ),
         ),
         theme: ThemeData(
           primaryColor: Colors.black,
-          textTheme: const TextTheme(
+          textTheme: TextTheme(
+            // ignore: prefer_const_constructors
             bodyMedium: TextStyle(
               fontFamily: "Poppins",
               color: Colors.black,
+            ),
+            titleMedium: TextStyle(
+              letterSpacing: 10.0,
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

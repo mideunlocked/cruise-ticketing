@@ -34,9 +34,12 @@ class HomeScreenHeader extends StatelessWidget {
 
           // see all text button
           TextButton(
-            onPressed: () {
-              screen;
-            },
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => screen,
+              ),
+            ),
             child: Text(
               "See All",
               style: of.textTheme.bodyMedium?.copyWith(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import 'home_screen_padding.dart';
 
@@ -12,6 +11,8 @@ class HomeScreenAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
+    var textTheme = of.textTheme;
+    var titleLarge = textTheme.titleMedium;
 
     // checks if device is in light mode or dark mode
     bool checkDeviceMode =
@@ -24,11 +25,7 @@ class HomeScreenAppBar extends StatelessWidget {
           // App name CRUISE
           Text(
             "Cruise",
-            style: TextStyle(
-              letterSpacing: 10.0,
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w500,
-            ),
+            style: titleLarge,
           ),
 
           // some space
