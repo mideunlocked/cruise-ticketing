@@ -15,18 +15,28 @@ class EventDurationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var of = Theme.of(context);
+
+    var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
     return FloatingActionButton.extended(
       heroTag: duration,
       onPressed: null,
       backgroundColor: color,
       label: Row(
         children: [
+          // custom icon which is passed from the parent widget
           icon,
+
+          // some space
           SizedBox(
             width: 2.w,
           ),
+
+          // check if duration text is empty
           duration.isEmpty
-              ? SizedBox(
+              ?
+              // circular progress indicator is shown
+              SizedBox(
                   height: 8.sp,
                   width: 8.sp,
                   child: const CircularProgressIndicator(
@@ -34,10 +44,12 @@ class EventDurationWidget extends StatelessWidget {
                     strokeWidth: 1,
                   ),
                 )
-              : Text(
+              :
+              // else duration is not empty and the text is displayed
+              Text(
                   duration,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: scaffoldBackgroundColor,
                   ),
                 ),
         ],
