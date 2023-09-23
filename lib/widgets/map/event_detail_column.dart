@@ -42,7 +42,15 @@ class EventDetailColumn extends StatelessWidget {
         hSizedBox1,
 
         // event venue text
-        Text(widget.data["venue"] ?? ""),
+        SizedBox(
+          width: 55.w,
+          child: Text(
+            widget.data["venue"] ?? "",
+            maxLines: 2,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
 
         // some spacing
         hSizedBox1,

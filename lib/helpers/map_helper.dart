@@ -7,7 +7,7 @@ class GoogleMapHelper {
         6.508699130785411,
         3.3217148957424243,
       ),
-      zoom: 11.5,
+      zoom: 14,
     );
 
     return initialCameraPosition;

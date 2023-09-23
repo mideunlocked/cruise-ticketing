@@ -1,7 +1,8 @@
-import 'package:cruise/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_nav/bottom_nav_bar.dart';
+import 'bottom_nav/home_screen.dart';
+import 'bottom_nav/map_screen.dart';
 
 class Home extends StatefulWidget {
   static const routeName = "/";
@@ -22,9 +23,7 @@ class _HomeState extends State<Home> {
   );
 
   final pages = const [
-    Center(
-      child: Text("Home screen"),
-    ),
+    HomeScreen(),
     Center(
       child: Text("Search screen"),
     ),

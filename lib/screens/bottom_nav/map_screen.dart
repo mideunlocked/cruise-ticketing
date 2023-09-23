@@ -3,14 +3,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sizer/sizer.dart';
 
-import '../data.dart';
-import '../helpers/directions_repo.dart';
-import '../helpers/location_helper.dart';
-import '../helpers/map_helper.dart';
-import '../models/directions.dart';
-import '../widgets/map/center_focus_widget.dart';
-import '../widgets/map/locator_event_detail.dart';
-import '../widgets/map/text_bar.dart';
+import '../../data.dart';
+import '../../helpers/directions_repo.dart';
+import '../../helpers/location_helper.dart';
+import '../../helpers/map_helper.dart';
+import '../../models/directions.dart';
+import '../../widgets/map/center_focus_widget.dart';
+import '../../widgets/map/locator_event_detail.dart';
+import '../../widgets/map/text_bar.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

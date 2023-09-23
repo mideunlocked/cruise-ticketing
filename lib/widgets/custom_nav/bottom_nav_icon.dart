@@ -18,15 +18,18 @@ class BottomNavIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var primaryColor2 = Theme.of(context).primaryColor;
+    bool checkMode =
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+
     return GestureDetector(
       onTap: () => changePage(index, context),
       child: Image.asset(
         iconUrl,
         color: currentIndex == index
-            ? MediaQuery.platformBrightnessOf(context) == Brightness.light
+            ? checkMode
                 ? primaryColor2
-                : const Color.fromARGB(255, 4, 255, 138)
-            : MediaQuery.platformBrightnessOf(context) == Brightness.light
+                : primaryColor2
+            : checkMode
                 ? Colors.grey
                 : Colors.white,
         height: 5.h,
