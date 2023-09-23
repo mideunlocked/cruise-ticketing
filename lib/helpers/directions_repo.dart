@@ -29,7 +29,7 @@ class DirectionsRepo {
     return null;
   }
 
-  Future<String?> getDuration({
+  Future<Map<String, dynamic>?> getDuration({
     required LatLng origin,
     required LatLng destination,
   }) async {
@@ -42,13 +42,18 @@ class DirectionsRepo {
     // check is response is successful
     if (response?.statusCode == 200) {
       String duration = "";
+      String distance = "";
       var data = response?.data;
-      var routes = data["routes"][0];
+      Map<String, dynamic> routes = data["routes"][0];
       if ((routes['legs'] as List).isNotEmpty) {
         final leg = routes["legs"][0] ?? [];
         duration = leg["duration"]["text"] ?? "";
-        print("Duration is $duration");
-        return duration;
+        distance = leg["distance"]["text"] ?? "";
+
+        return {
+          "duration": duration,
+          "distance": distance,
+        };
       }
     }
     return null;

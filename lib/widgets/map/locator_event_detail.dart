@@ -18,7 +18,7 @@ class LocatorEventDetail extends StatefulWidget {
   });
 
   double sheetPosition;
-  final String duration;
+  final Map<String, dynamic> duration;
   final Function getDirection;
   final Map<String, dynamic> data;
 
@@ -29,6 +29,9 @@ class LocatorEventDetail extends StatefulWidget {
 class _LocatorEventDetailState extends State<LocatorEventDetail> {
   @override
   Widget build(BuildContext context) {
+    var of = Theme.of(context);
+    var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
+
     return AnimatedContainer(
       // animated controller for mimicking bottom sheet
       duration: const Duration(milliseconds: 200),
@@ -106,7 +109,12 @@ class _LocatorEventDetailState extends State<LocatorEventDetail> {
 
                       // event estimated duration from origin to destination
                       EventDurationWidget(
-                        duration: widget.duration,
+                        duration: widget.duration["duration"] ?? "",
+                        icon: Icon(
+                          Icons.directions_walk_rounded,
+                          color: scaffoldBackgroundColor,
+                        ),
+                        color: Colors.grey,
                       ),
 
                       // go to even screen button

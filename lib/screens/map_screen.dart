@@ -72,7 +72,7 @@ class _MapPageState extends State<MapScreen> {
 
   //event details data
   Map<String, dynamic> eventDetail = {};
-  String infoDuration = "";
+  Map<String, dynamic> infoDuration = {};
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +198,7 @@ class _MapPageState extends State<MapScreen> {
         setState(() {
           eventDetail = {};
           info = null;
-          infoDuration = "";
+          infoDuration = {};
         });
         getDirectionDuration(pos);
         _toggleSheet(event);
@@ -215,7 +215,7 @@ class _MapPageState extends State<MapScreen> {
       destination: destinationPos,
     );
 
-    setState(() => infoDuration = duration!);
+    setState(() => infoDuration = duration ?? {});
   }
 
   // get direction and animate camera to bounds

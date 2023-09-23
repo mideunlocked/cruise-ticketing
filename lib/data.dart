@@ -32,7 +32,7 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
     "date": "24th October, 2023",
     "time": "6:00 pm - 12:00 am",
     "venue": "Civic Center",
-    "location": "CCHF+JGM, Victoria Island 106104, Lagos",
+    "address": "CCHF+JGM, Victoria Island 106104, Lagos",
     "rules": """
 - 18+
 - Responsible drinking
@@ -47,7 +47,13 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
       "Parking",
       "Live DJ",
       "Rave",
-      "Photography",
+      "Photograph",
+    ],
+    "pricing": [
+      {"category": "Regular", "price": "NGN 10000"},
+      {"category": "VIP", "price": "NGN 25000"},
+      {"category": "VVIP", "price": "NGN 50000"},
+      {"category": "Table for 10", "price": "NGN 200000"},
     ],
   },
   {
@@ -82,7 +88,7 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
         "https://images.pexels.com/photos/17286889/pexels-photo-17286889/free-photo-of-people-at-a-music-concert.jpeg?auto=compress&cs=tinysrgb&w=600",
     "date": "24th October, 2023",
     "time": "6:00 pm - 12:00 am",
-    "location":
+    "address":
         "Plot 1415 Adetokunbo Ademola Street, Victoria Island 106104, Lagos",
     "venue": "Eko Hotel & Suits",
     "rules": """
@@ -99,7 +105,14 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
       "Parking",
       "Live DJ",
       "Rave",
-      "Photography",
+      "Photograph",
+    ],
+    "pricing": [
+      {"category": "Regular", "price": "NGN 10000"},
+      {"category": "Bronze", "price": "NGN 15000"},
+      {"category": "Silver", "price": "NGN 25000"},
+      {"category": "Gold", "price": "NGN 50000"},
+      {"category": "Platinum", "price": "NGN 100000"},
     ],
   },
 ];

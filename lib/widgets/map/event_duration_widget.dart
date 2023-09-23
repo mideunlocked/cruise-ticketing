@@ -5,24 +5,25 @@ class EventDurationWidget extends StatelessWidget {
   const EventDurationWidget({
     super.key,
     required this.duration,
+    required this.icon,
+    this.color = Colors.black54,
   });
 
   final String duration;
+  final Widget icon;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
-
     return FloatingActionButton.extended(
-      heroTag: "2",
+      heroTag: duration,
       onPressed: null,
-      backgroundColor: Colors.grey,
+      backgroundColor: color,
       label: Row(
         children: [
-          Icon(
-            Icons.directions_walk_rounded,
-            color: scaffoldBackgroundColor,
+          icon,
+          SizedBox(
+            width: 2.w,
           ),
           duration.isEmpty
               ? SizedBox(
@@ -35,8 +36,8 @@ class EventDurationWidget extends StatelessWidget {
                 )
               : Text(
                   duration,
-                  style: TextStyle(
-                    color: scaffoldBackgroundColor,
+                  style: const TextStyle(
+                    color: Colors.black,
                   ),
                 ),
         ],

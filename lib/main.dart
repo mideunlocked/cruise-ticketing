@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'screens/event_screen.dart';
 import 'screens/home.dart';
 
 void main() {
@@ -18,7 +17,7 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         darkTheme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(255, 0, 1, 34),
-          primaryColor: const Color.fromARGB(255, 0, 255, 170),
+          primaryColor: const Color(0xFF26DBB5),
           textTheme: const TextTheme(
             bodyMedium: TextStyle(
               fontFamily: "Poppins",
@@ -27,7 +26,7 @@ class MainApp extends StatelessWidget {
           ),
         ),
         theme: ThemeData(
-          primaryColor: const Color.fromARGB(255, 0, 3, 97),
+          primaryColor: Colors.black,
           textTheme: const TextTheme(
             bodyMedium: TextStyle(
               fontFamily: "Poppins",
@@ -38,7 +37,6 @@ class MainApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           Home.routeName: (context) => const Home(),
-          EventScreen.routeName: (context) => const EventScreen(),
         },
       ),
     );
