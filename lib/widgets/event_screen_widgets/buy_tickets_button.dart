@@ -6,14 +6,16 @@ import 'ticket_pricing_dialog.dart';
 class BuyTicketButton extends StatelessWidget {
   const BuyTicketButton({
     super.key,
-    required this.pricing,
+    required this.data,
   });
 
-  final List<dynamic> pricing;
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
     var primaryColor = Theme.of(context).primaryColor;
+
+    var pricing = data["pricing"];
 
     return Container(
       decoration: BoxDecoration(
@@ -47,7 +49,7 @@ class BuyTicketButton extends StatelessWidget {
         backgroundColor: Colors.transparent,
         builder: (ctx) {
           return TicketPricingDialog(
-            pricing: pricing,
+            data: data,
           );
         });
   }

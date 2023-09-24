@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../data.dart';
 import '../widgets/home_screen_widgets/event_today_tile.dart';
-import '../widgets/see_all_app_bar.dart';
+import '../widgets/general_widgets/custom_app_bar.dart';
 
 class SeeAllScreen extends StatelessWidget {
   const SeeAllScreen({super.key, required this.title});
@@ -15,7 +15,7 @@ class SeeAllScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w),
+          padding: EdgeInsets.symmetric(horizontal: 4.5.w),
           child: Column(
             children: [
               // some spacing
@@ -24,7 +24,9 @@ class SeeAllScreen extends StatelessWidget {
               ),
 
               // custom app bar
-              SeeAllAppBar(title: title),
+              CustomAppBar(
+                title: title,
+              ),
 
               // list of events to see
               Expanded(

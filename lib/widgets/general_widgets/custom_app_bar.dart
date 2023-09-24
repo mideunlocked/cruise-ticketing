@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'general_widgets/custom_back_button.dart';
+import 'custom_back_button.dart';
 
-class SeeAllAppBar extends StatelessWidget {
-  const SeeAllAppBar({
+class CustomAppBar extends StatelessWidget {
+  const CustomAppBar({
     super.key,
     required this.title,
   });

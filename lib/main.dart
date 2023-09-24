@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'screens/home.dart';
+import 'screens/ticket_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,7 +25,7 @@ class MainApp extends StatelessWidget {
               color: Colors.white,
             ),
             titleMedium: TextStyle(
-              letterSpacing: 10.0,
+              letterSpacing: 8.0,
               fontSize: 13.sp,
               fontWeight: FontWeight.w500,
               color: Colors.white,
@@ -40,7 +41,7 @@ class MainApp extends StatelessWidget {
               color: Colors.black,
             ),
             titleMedium: TextStyle(
-              letterSpacing: 10.0,
+              letterSpacing: 8.0,
               fontSize: 13.sp,
               fontWeight: FontWeight.w500,
             ),
@@ -49,6 +50,7 @@ class MainApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           Home.routeName: (context) => const Home(),
+          TicketScreen.routeName: (context) => const TicketScreen(),
         },
       ),
     );

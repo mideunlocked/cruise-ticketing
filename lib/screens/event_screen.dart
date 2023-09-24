@@ -125,7 +125,7 @@ class _EventScreenState extends State<EventScreen> {
       // buy ticket floating action button which also
       //intiates the pricing and category bottom sheet
       floatingActionButton: BuyTicketButton(
-        pricing: widget.eventData["pricing"] ?? "",
+        data: widget.eventData,
       ),
     );
   }

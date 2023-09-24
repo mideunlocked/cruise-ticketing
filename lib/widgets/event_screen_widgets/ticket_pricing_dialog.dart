@@ -7,10 +7,10 @@ import 'pricing_widget.dart';
 class TicketPricingDialog extends StatefulWidget {
   const TicketPricingDialog({
     super.key,
-    required this.pricing,
+    required this.data,
   });
 
-  final List<dynamic> pricing;
+  final Map<String, dynamic> data;
 
   @override
   State<TicketPricingDialog> createState() => _TicketPricingDialogState();
@@ -28,6 +28,8 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
     var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
+
+    var pricing = widget.data["pricing"];
 
     return Container(
       height: double.infinity,
@@ -62,20 +64,20 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
           // list of prices and categories
           Expanded(
             child: ListView.builder(
-              itemCount: widget.pricing.length,
+              itemCount: pricing.length,
               physics: const BouncingScrollPhysics(),
               itemBuilder: (ctx, index) => InkWell(
                 onTap: () {
                   setState(() {
                     selectedIndex = index; // pass currently selected index
-                    selectedPrice = widget.pricing[index]
+                    selectedPrice = pricing[index]
                         ["price"]; // pass currently selected price
                   });
                 },
 
                 // category and price widget
                 child: PricingWidget(
-                  e: widget.pricing[index],
+                  e: pricing[index] ?? {},
                   selectedIndex: selectedIndex,
                   index: index,
                 ),
@@ -87,7 +89,11 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
           CustomButton(
             title: "Purchase",
             function: () {
-              // var price = selectedPrice.split(" ");
+              Navigator.pushNamed(
+                context,
+                "/TicketScreen",
+                arguments: widget.data,
+              );
             },
           ),
         ],
