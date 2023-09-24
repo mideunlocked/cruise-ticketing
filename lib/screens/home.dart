@@ -1,3 +1,4 @@
+import 'package:cruise/screens/bottom_nav/search_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_nav/bottom_nav_bar.dart';
@@ -24,9 +25,7 @@ class _HomeState extends State<Home> {
 
   final pages = const [
     HomeScreen(),
-    Center(
-      child: Text("Search screen"),
-    ),
+    SearchScreen(),
     MapScreen(),
     Center(
       child: Text("Add screen"),
