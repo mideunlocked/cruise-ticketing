@@ -62,7 +62,8 @@ class _ListEventState extends State<CreateEventScreen> {
     rulesNode.dispose();
   }
 
-  final _formKey = GlobalKey<FormState>();
+  final _step4FormKey = GlobalKey<FormState>();
+  final _step1FormKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -125,6 +126,7 @@ class _ListEventState extends State<CreateEventScreen> {
                           nameNode: nameNode,
                           descriptionNode: descriptionNode,
                           currentStep: currentStep,
+                          formKey: _step1FormKey,
                         ),
                       ),
 
@@ -154,7 +156,7 @@ class _ListEventState extends State<CreateEventScreen> {
                         isActive: currentStep >= 3,
                         content: Step4(
                           // pricings: pricing,
-                          formKey: _formKey,
+                          formKey: _step4FormKey,
                           getFunction: getPricings,
                         ),
                       ),
@@ -204,16 +206,20 @@ class _ListEventState extends State<CreateEventScreen> {
 
                               // check is function is called from first step
                               if (currentStep == 0) {
-                                // check if any text editing controller is empty
-                                if (nameController.text.isEmpty ||
-                                    descriptionController.text.isEmpty) {
-                                  // shpw snack bar if any is empty
-                                  showSnackBar(scaffoldKey: _scaffoldKey);
-                                } else {
-                                  // else proceed the stepper
-                                  proceed();
+                                // validate ticket pricing text form fields
+                                final isValid =
+                                    _step1FormKey.currentState?.validate();
+
+                                // check if the validation was not successful
+                                if (isValid == false) {
+                                  // throw errors
+                                  return;
                                 }
+                                // else is successful so proceed else {
+                                // else proceed the stepper
+                                proceed();
                               }
+
                               // check is function is called from second step
                               else if (currentStep == 1) {
                                 // check if a image file as been passed
@@ -256,7 +262,7 @@ class _ListEventState extends State<CreateEventScreen> {
                               else if (currentStep == 3) {
                                 // validate ticket pricing text form fields
                                 final isValid =
-                                    _formKey.currentState?.validate();
+                                    _step4FormKey.currentState?.validate();
 
                                 // check if the validation was not successful
                                 if (isValid == false) {

@@ -13,10 +13,12 @@ class Step1 extends StatefulWidget {
     required this.descriptionNode,
     required this.nameNode,
     required this.currentStep,
+    required this.formKey,
   });
 
   final TextEditingController nameController;
   final TextEditingController descriptionController;
+  final GlobalKey<FormState> formKey;
   final FocusNode descriptionNode;
   final FocusNode nameNode;
   final int currentStep;
@@ -28,29 +30,32 @@ class Step1 extends StatefulWidget {
 class _Step1State extends State<Step1> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const EventScreenTitleWidget(title: "Basic Info"),
-        SizedBox(
-          height: 5.h,
-        ),
-        CustomAddEventTextField(
-          controller: widget.nameController,
-          node: widget.nameNode,
-          title: "TITLE",
-          hint: "Enter event title",
-          maxLenght: 25,
-        ),
-        CustomAddEventTextField(
-          controller: widget.descriptionController,
-          node: widget.descriptionNode,
-          title: "DESCRIPTION",
-          hint: "Enter event description",
-          maxLines: 10,
-        ),
-        const SelectGenerWidget(),
-      ],
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const EventScreenTitleWidget(title: "Basic Info"),
+          SizedBox(
+            height: 5.h,
+          ),
+          CustomAddEventTextField(
+            controller: widget.nameController,
+            node: widget.nameNode,
+            title: "TITLE",
+            hint: "Enter event title",
+            maxLenght: 25,
+          ),
+          CustomAddEventTextField(
+            controller: widget.descriptionController,
+            node: widget.descriptionNode,
+            title: "DESCRIPTION",
+            hint: "Enter event description",
+            maxLines: 10,
+          ),
+          const SelectGenerWidget(),
+        ],
+      ),
     );
   }
 }
