@@ -88,6 +88,10 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // check and changes UI dynamicaaly according to device theme mode
+    bool checkMode =
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 2.w),
       margin: EdgeInsets.symmetric(horizontal: 4.w),
@@ -112,18 +116,18 @@ class SearchWidget extends StatelessWidget {
           hintText: "Search",
           hintStyle: bodyMedium?.copyWith(
             fontSize: 10.sp,
-            color: Colors.white24,
+            color: checkMode ? Colors.black26 : Colors.white24,
           ),
-          prefixIcon: Row(
+          prefixIcon: const Row(
             children: [
-              TextFieldIcon(node: node, iconUrl: "assets/icons/search.png"),
+              TextFieldIcon(iconUrl: "assets/icons/search.png"),
             ],
           ),
           suffixIcon: InkWell(
             onTap: () {
               controller.clear();
             },
-            child: TextFieldIcon(node: node, iconUrl: "assets/icons/close.png"),
+            child: const TextFieldIcon(iconUrl: "assets/icons/close.png"),
           ),
           prefixIconConstraints: BoxConstraints(
             maxHeight: 5.h,
@@ -142,20 +146,20 @@ class SearchWidget extends StatelessWidget {
 class TextFieldIcon extends StatelessWidget {
   const TextFieldIcon({
     super.key,
-    required this.node,
     required this.iconUrl,
   });
 
-  final FocusNode node;
   final String iconUrl;
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      iconUrl,
-      height: 5.h,
-      width: 5.w,
-      color: node.hasFocus ? Colors.white30 : Colors.white,
-    );
+    // check and changes UI dynamicaaly according to device theme mode
+    bool checkMode =
+        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+
+    return Image.asset(iconUrl,
+        height: 5.h,
+        width: 5.w,
+        color: checkMode ? Colors.black38 : Colors.white30);
   }
 }

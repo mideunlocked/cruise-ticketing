@@ -7,9 +7,11 @@ class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
     required this.title,
+    required this.bottomPadding,
   });
 
   final String title;
+  final double bottomPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -18,26 +20,25 @@ class CustomAppBar extends StatelessWidget {
     var titleLarge = textTheme.titleMedium;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 4.h),
+      padding: EdgeInsets.only(bottom: bottomPadding),
       child: Stack(
+        alignment: Alignment.center,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(vertical: 1.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: const Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // app bar title
-                Text(
-                  title,
-                  style: titleLarge,
-                ),
+                // custom back button
+                CustomBackButton(),
               ],
             ),
           ),
-
-          // custom back button
-          const CustomBackButton(),
+// app bar title
+          Text(
+            title,
+            style: titleLarge,
+          ),
         ],
       ),
     );

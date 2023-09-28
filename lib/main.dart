@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'screens/home.dart';
+import 'screens/list_event.dart';
 import 'screens/ticket_screen.dart';
 
 void main() {
@@ -13,6 +14,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    );
+
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -25,10 +31,24 @@ class MainApp extends StatelessWidget {
               color: Colors.white,
             ),
             titleMedium: TextStyle(
+              fontFamily: "Poppins",
               letterSpacing: 8.0,
               fontSize: 13.sp,
               fontWeight: FontWeight.w500,
               color: Colors.white,
+            ),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: const Color(0xFF26DBB5).withOpacity(0.1),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: outlineInputBorder,
+            hintStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.white54,
+              fontSize: 8.sp,
+              letterSpacing: 0,
             ),
           ),
         ),
@@ -41,16 +61,31 @@ class MainApp extends StatelessWidget {
               color: Colors.black,
             ),
             titleMedium: TextStyle(
+              fontFamily: "Poppins",
               letterSpacing: 8.0,
               fontSize: 13.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: Colors.black.withOpacity(0.1),
+            border: outlineInputBorder,
+            enabledBorder: outlineInputBorder,
+            focusedBorder: outlineInputBorder,
+            hintStyle: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.black26,
+              fontSize: 8.sp,
+              letterSpacing: 0,
+            ),
+          ),
         ),
-        initialRoute: "/",
+        initialRoute: "/ListEventScreen",
         routes: {
           Home.routeName: (context) => const Home(),
           TicketScreen.routeName: (context) => const TicketScreen(),
+          ListEventScreen.routeName: (context) => const ListEventScreen(),
         },
       ),
     );

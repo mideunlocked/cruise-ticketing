@@ -27,9 +27,9 @@ class _HomeState extends State<Home> {
     HomeScreen(),
     SearchScreen(),
     MapScreen(),
-    Center(
-      child: Text("Add screen"),
-    ),
+    // Center(
+    //   child: Text("Add screen"),
+    // ),
     Center(
       child: Text("Profile screen"),
     ),

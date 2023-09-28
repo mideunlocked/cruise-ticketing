@@ -33,9 +33,10 @@ class TicketScreen extends StatelessWidget {
             ),
 
             // custom app bar
-            const TicketWidgetPadding(
+            TicketWidgetPadding(
               child: CustomAppBar(
                 title: "My Ticket",
+                bottomPadding: 4.h,
               ),
             ),
 

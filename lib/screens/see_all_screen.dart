@@ -26,6 +26,7 @@ class SeeAllScreen extends StatelessWidget {
               // custom app bar
               CustomAppBar(
                 title: title,
+                bottomPadding: 4.h,
               ),
 
               // list of events to see
