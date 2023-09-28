@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import 'screens/home.dart';
-import 'screens/list_event.dart';
+import 'screens/create-event-screen/create_event.dart';
 import 'screens/ticket_screen.dart';
 
 void main() {
@@ -81,11 +81,11 @@ class MainApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: "/ListEventScreen",
+        initialRoute: "/CreateEventScreen",
         routes: {
           Home.routeName: (context) => const Home(),
           TicketScreen.routeName: (context) => const TicketScreen(),
-          ListEventScreen.routeName: (context) => const ListEventScreen(),
+          CreateEventScreen.routeName: (context) => const CreateEventScreen(),
         },
       ),
     );
