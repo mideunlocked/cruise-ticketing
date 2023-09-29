@@ -18,9 +18,7 @@ class DescriptionTextWidget extends StatelessWidget {
       fontSize: 10.sp,
       fontWeight: FontWeight.bold,
       // changes UI acccording to device theme mode
-      color: MediaQuery.platformBrightnessOf(context) == Brightness.light
-          ? Colors.green
-          : const Color.fromARGB(255, 0, 255, 170).withOpacity(0.7),
+      color: Colors.green,
     );
 
     return PaddedWidgetEventScreen(

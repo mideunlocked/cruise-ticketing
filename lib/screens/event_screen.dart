@@ -30,21 +30,6 @@ class _EventScreenState extends State<EventScreen> {
   // holds detail is selected
   bool isDetails = false;
 
-  // function to toggle the custom tab bar
-  void toggleTab() {
-    setState(() {
-      isAbout == true
-          ? {
-              isAbout = false,
-              isDetails = true,
-            }
-          : {
-              isDetails = false,
-              isAbout = true,
-            };
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var sizedBox = SizedBox(height: 3.h);
@@ -128,5 +113,20 @@ class _EventScreenState extends State<EventScreen> {
         data: widget.eventData,
       ),
     );
+  }
+
+  // function to toggle the custom tab bar
+  void toggleTab() {
+    setState(() {
+      isAbout == true
+          ? {
+              isAbout = false,
+              isDetails = true,
+            }
+          : {
+              isDetails = false,
+              isAbout = true,
+            };
+    });
   }
 }

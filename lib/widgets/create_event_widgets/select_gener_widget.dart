@@ -22,8 +22,8 @@ class _SelectGenerWidgetState extends State<SelectGenerWidget> {
     var textTheme = of.textTheme;
     var bodyMedium = textTheme.bodyMedium;
 
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class _SelectGenerWidgetState extends State<SelectGenerWidget> {
             hint: Text(
               "Choose the Gener of Event",
               style: bodyMedium?.copyWith(
-                color: checkMode ? Colors.black26 : Colors.white54,
+                color: Colors.black26,
               ),
             ),
             style: bodyMedium,

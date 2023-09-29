@@ -42,6 +42,7 @@ class _Step5State extends State<Step5> {
                 });
                 widget.getFunction(isPublic);
               },
+              activeColor: Colors.black,
               inactiveTrackColor: Colors.grey,
             ),
           ],

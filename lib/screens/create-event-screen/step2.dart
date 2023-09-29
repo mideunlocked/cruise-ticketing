@@ -20,17 +20,17 @@ class Step2 extends StatefulWidget {
 }
 
 class _Step2State extends State<Step2> {
-  File eventImage = File("");
+  File? eventImage;
 
   @override
   Widget build(BuildContext context) {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
 
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
-    Color color = checkMode ? Colors.black26 : Colors.white54;
+    Color color = Colors.black26;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,16 +39,19 @@ class _Step2State extends State<Step2> {
           height: 5.h,
         ),
         const TextFieldTitle(title: "Image/Banner"),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.file(
-            eventImage,
-            height: 50.h,
-            width: 100.w,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => const SizedBox(),
-          ),
-        ),
+        eventImage != null && File(eventImage!.path).existsSync()
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  eventImage ?? File(""),
+                  height: 50.h,
+                  width: 100.w,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const SizedBox(),
+                ),
+              )
+            : const SizedBox(),
         SizedBox(
           height: 2.h,
         ),
@@ -98,8 +101,8 @@ class _Step2State extends State<Step2> {
 
     setState(() {
       eventImage = File(pickedImage.path);
-      widget.getFunction(eventImage);
+      widget.getFunction(eventImage!);
     });
-    print(eventImage.path);
+    print(eventImage?.path);
   }
 }

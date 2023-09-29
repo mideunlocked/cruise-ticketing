@@ -75,8 +75,13 @@ class _ListEventState extends State<CreateEventScreen> {
     var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
 
     // checks if device is light mode or dark mode
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
+
+    var outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    );
 
     return ScaffoldMessenger(
       key: _scaffoldKey,
@@ -103,15 +108,26 @@ class _ListEventState extends State<CreateEventScreen> {
                     primaryColor: primaryColor,
                     canvasColor: scaffoldBackgroundColor,
                     textTheme: of.textTheme.copyWith(
-                      titleMedium: TextStyle(
-                        color: checkMode ? Colors.black : Colors.white,
+                      titleMedium: const TextStyle(
+                        color: Colors.black,
                       ),
                     ),
                     colorScheme: ColorScheme.light(
                       primary: primaryColor,
-                      onSurface: checkMode ? Colors.black12 : Colors.white10,
+                      onSurface: Colors.black12,
                     ),
-                    inputDecorationTheme: of.inputDecorationTheme,
+                    inputDecorationTheme: InputDecorationTheme(
+                      filled: true,
+                      fillColor: Colors.black12,
+                      border: outlineInputBorder,
+                      enabledBorder: outlineInputBorder,
+                      focusedBorder: outlineInputBorder,
+                      hintStyle: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 8.sp,
+                        letterSpacing: 0,
+                      ),
+                    ),
                   ),
                   child: Stepper(
                     currentStep: currentStep,

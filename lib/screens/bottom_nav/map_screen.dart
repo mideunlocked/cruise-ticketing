@@ -25,7 +25,7 @@ class _MapPageState extends State<MapScreen> {
   Marker? origin; // this indicates the origin of the route
   Directions? info; // get directions, distance and durations
 
-  String? darkMapStyle; // custome map style for google maps
+  // String? darkMapStyle; // custome map style for google maps
   String? lightMapStyle; // custome map style for google maps
 
   bool cameraIsMoving = false; // check if google map camera is moving
@@ -48,10 +48,10 @@ class _MapPageState extends State<MapScreen> {
       );
     }).toList();
 
-    // convert dark_map_style file to string
-    rootBundle.loadString('assets/map/map_style.txt').then((string) {
-      darkMapStyle = string;
-    });
+    // // convert dark_map_style file to string
+    // rootBundle.loadString('assets/map/map_style.txt').then((string) {
+    //   darkMapStyle = string;
+    // });
 
     // convert light_map_style file to string
     rootBundle.loadString('assets/map/light_map_style.txt').then((string) {
@@ -88,10 +88,7 @@ class _MapPageState extends State<MapScreen> {
           initialCameraPosition: GoogleMapHelper.getInitialCameraLocation(),
           onMapCreated: (controller) {
             googleMapController = controller;
-            googleMapController?.setMapStyle(
-                MediaQuery.platformBrightnessOf(context) == Brightness.light
-                    ? lightMapStyle
-                    : darkMapStyle);
+            googleMapController?.setMapStyle(lightMapStyle);
           },
           markers: Set<Marker>.of(markers),
           polylines: {
@@ -114,9 +111,7 @@ class _MapPageState extends State<MapScreen> {
           },
           onCameraIdle: () {
             googleMapController?.setMapStyle(
-              MediaQuery.platformBrightnessOf(context) == Brightness.light
-                  ? lightMapStyle
-                  : darkMapStyle,
+              lightMapStyle,
             );
             setState(() {
               cameraIsMoving = false;
@@ -125,9 +120,7 @@ class _MapPageState extends State<MapScreen> {
           },
           onCameraMoveStarted: () {
             googleMapController?.setMapStyle(
-              MediaQuery.platformBrightnessOf(context) == Brightness.light
-                  ? lightMapStyle
-                  : darkMapStyle,
+              lightMapStyle,
             );
             setState(() {
               sheetPosition = 0;

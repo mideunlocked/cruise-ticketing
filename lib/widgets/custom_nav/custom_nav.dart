@@ -22,9 +22,7 @@ class CustomBottomNav extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
-        color: MediaQuery.platformBrightnessOf(context) == Brightness.light
-            ? Colors.grey[300]
-            : const Color.fromARGB(255, 7, 49, 73).withOpacity(0.8),
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -48,16 +46,10 @@ class CustomBottomNav extends StatelessWidget {
             index: 2,
             currentIndex: currentIndex,
           ),
-          // BottomNavIcon(
-          //   iconUrl: "assets/icons/plus.png",
-          //   pageController: pageController,
-          //   index: 3,
-          //   currentIndex: currentIndex,
-          // ),
           BottomNavIcon(
             iconUrl: "assets/icons/user.png",
             pageController: pageController,
-            index: 4,
+            index: 3,
             currentIndex: currentIndex,
           ),
         ],

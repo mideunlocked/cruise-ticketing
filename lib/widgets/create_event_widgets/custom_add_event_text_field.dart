@@ -29,8 +29,8 @@ class CustomAddEventTextField extends StatelessWidget {
     var primaryColor = of.primaryColor;
 
     // checks if device is light mode or dark mode
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return Padding(
       padding: EdgeInsets.only(bottom: 4.h),
@@ -56,12 +56,9 @@ class CustomAddEventTextField extends StatelessWidget {
                     : Text(
                         "$currentLength/$maxLength",
                         style: bodyMedium?.copyWith(
-                            fontSize: 8.sp,
-                            color: isFocused
-                                ? null
-                                : checkMode
-                                    ? Colors.black54
-                                    : Colors.white54),
+                          fontSize: 8.sp,
+                          color: isFocused ? null : Colors.black54,
+                        ),
                       ),
             decoration: InputDecoration(
               hintText: hint,

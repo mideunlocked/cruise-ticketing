@@ -13,9 +13,7 @@ class TextBar extends StatelessWidget {
       child: Text(
         "Locator",
         style: TextStyle(
-          color: MediaQuery.platformBrightnessOf(context) == Brightness.light
-              ? Colors.black54
-              : Colors.white70,
+          color: Colors.black54,
           fontSize: 16.sp,
           fontWeight: FontWeight.bold,
           letterSpacing: 4.0,

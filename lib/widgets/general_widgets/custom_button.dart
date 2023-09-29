@@ -16,8 +16,8 @@ class CustomButton extends StatelessWidget {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
 
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return InkWell(
       onTap: () => function(), // button custom function
@@ -34,11 +34,10 @@ class CustomButton extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           title, // button title
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: checkMode
-                ? Colors.white
-                : null, // checks if device is in dark or light mode and changes ui dynamically
+            color: Colors
+                .white, // checks if device is in dark or light mode and changes ui dynamically
           ),
         ),
       ),

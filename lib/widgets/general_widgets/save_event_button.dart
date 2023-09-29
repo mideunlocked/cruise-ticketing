@@ -8,11 +8,11 @@ class SaveEventButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var primaryColor = of.primaryColor;
+    // var of = Theme.of(context);
+    // var primaryColor = of.primaryColor;
 
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return Positioned(
       left: 70.w,
@@ -31,9 +31,9 @@ class SaveEventButton extends StatelessWidget {
             ),
           ),
           alignment: Alignment.center,
-          child: Icon(
+          child: const Icon(
             Icons.favorite_outline_rounded,
-            color: checkMode ? Colors.white : primaryColor,
+            color: Colors.white,
           ),
         ),
       ),

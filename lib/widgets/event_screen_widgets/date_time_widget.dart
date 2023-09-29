@@ -22,10 +22,10 @@ class DateTimeWidget extends StatelessWidget {
     ];
 
     // calendar widget dark color
-    var darkGradient = [
-      Colors.white38,
-      Colors.white12,
-    ];
+    // var darkGradient = [
+    //   Colors.white38,
+    //   Colors.white12,
+    // ];
 
     return PaddedWidgetEventScreen(
       child: Row(
@@ -36,10 +36,8 @@ class DateTimeWidget extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                colors: MediaQuery.platformBrightnessOf(context) ==
-                        Brightness.light
-                    ? lightGradient
-                    : darkGradient, // changes UI acccording to device theme mode
+                colors:
+                    lightGradient, // changes UI acccording to device theme mode
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),

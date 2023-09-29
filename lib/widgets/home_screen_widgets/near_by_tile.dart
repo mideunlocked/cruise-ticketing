@@ -35,12 +35,12 @@ class _NearByTileState extends State<NearByTile> {
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var primaryColor = of.primaryColor;
+    // var of = Theme.of(context);
+    // var primaryColor = of.primaryColor;
 
     // check if device is dark mode or light mode
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return Stack(
       alignment: Alignment.bottomLeft,
@@ -61,8 +61,7 @@ class _NearByTileState extends State<NearByTile> {
               left: 4.w,
             ),
             decoration: BoxDecoration(
-              color:
-                  checkMode ? Colors.grey[300] : primaryColor.withOpacity(0.2),
+              color: Colors.grey[300],
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -103,7 +102,7 @@ class _NearByTileState extends State<NearByTile> {
                         widget.data["venue"] ?? "",
                         style: TextStyle(
                           fontSize: 8.sp,
-                          color: checkMode ? Colors.black : Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -120,9 +119,9 @@ class _NearByTileState extends State<NearByTile> {
           child: Row(
             children: [
               // walk icon
-              Icon(
+              const Icon(
                 Icons.directions_walk_rounded,
-                color: checkMode ? Colors.black : Colors.white60,
+                color: Colors.black,
               ),
 
               // some space
@@ -150,7 +149,7 @@ class _NearByTileState extends State<NearByTile> {
                     durationData?["duration"] ?? "",
                 style: TextStyle(
                   fontSize: 8.sp,
-                  color: checkMode ? Colors.black : Colors.white60,
+                  color: Colors.black,
                 ),
               ),
             ],

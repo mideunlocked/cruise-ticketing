@@ -31,9 +31,7 @@ class CenterFocusWidget extends StatelessWidget {
             "assets/icons/focus.png",
             height: 8.h,
             width: 8.w,
-            color: MediaQuery.platformBrightnessOf(context) == Brightness.light
-                ? Colors.black
-                : Colors.white,
+            color: Colors.black,
           ),
         ),
       ),

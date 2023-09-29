@@ -1,3 +1,4 @@
+import 'package:cruise/screens/bottom_nav/profile_screen.dart';
 import 'package:cruise/screens/bottom_nav/search_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -27,12 +28,7 @@ class _HomeState extends State<Home> {
     HomeScreen(),
     SearchScreen(),
     MapScreen(),
-    // Center(
-    //   child: Text("Add screen"),
-    // ),
-    Center(
-      child: Text("Profile screen"),
-    ),
+    ProfileScreen(),
   ];
 
   @override

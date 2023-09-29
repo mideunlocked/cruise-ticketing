@@ -23,10 +23,10 @@ class LocationVenueWidget extends StatelessWidget {
       Colors.black87.withOpacity(0.8),
       Colors.black12,
     ];
-    var darkGradient = [
-      Colors.white38,
-      Colors.white12,
-    ];
+    // var darkGradient = [
+    //   Colors.white38,
+    //   Colors.white12,
+    // ];
 
     return PaddedWidgetEventScreen(
       child: Stack(
@@ -39,10 +39,8 @@ class LocationVenueWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 4.w),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: MediaQuery.platformBrightnessOf(context) ==
-                        Brightness.light
-                    ? lightGradient
-                    : darkGradient, // changes UI acccording to device theme mode
+                colors:
+                    lightGradient, // changes UI acccording to device theme mode
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
@@ -56,10 +54,7 @@ class LocationVenueWidget extends StatelessWidget {
                   "assets/icons/placeholder.png",
                   height: 3.h,
                   width: 3.h,
-                  color: MediaQuery.platformBrightnessOf(context) ==
-                          Brightness.light
-                      ? Colors.white
-                      : primaryColor,
+                  color: Colors.white,
                 ),
 
                 // some space

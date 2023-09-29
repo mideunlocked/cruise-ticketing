@@ -21,10 +21,7 @@ class CustomTabBar extends StatelessWidget {
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: MediaQuery.platformBrightnessOf(context) == Brightness.light
-            ? Colors.grey[300]
-            : const Color.fromARGB(
-                255, 0, 2, 51), // changes UI acccording to device theme mode
+        color: Colors.grey[300], // changes UI acccording to device theme mode
       ),
       child: Row(
         // custome tab widgets

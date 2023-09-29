@@ -35,8 +35,8 @@ class _EventTodayTileState extends State<EventListTile> {
     var primaryColor = of.primaryColor;
 
     // check if device is in light mode or dark mode
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return InkWell(
       // move to event screen
@@ -51,7 +51,7 @@ class _EventTodayTileState extends State<EventListTile> {
         height: 15.h,
         width: 100.w,
         decoration: BoxDecoration(
-          color: checkMode ? Colors.grey[300] : primaryColor.withOpacity(0.2),
+          color: Colors.grey[300],
           borderRadius: BorderRadius.circular(10),
         ),
         margin: EdgeInsets.only(bottom: 2.h),
@@ -114,6 +114,10 @@ class _EventTodayTileState extends State<EventListTile> {
                           radius: 8.sp,
                         ),
 
+                        // some space
+                        SizedBox(
+                          width: 2.w,
+                        ),
                         // host full name
                         Text(
                           "John Doe",
@@ -127,7 +131,7 @@ class _EventTodayTileState extends State<EventListTile> {
                         Text(
                           "Today",
                           style: TextStyle(
-                            color: checkMode ? Colors.black54 : Colors.white60,
+                            color: Colors.black54,
                             fontSize: 6.sp,
                           ),
                         ),

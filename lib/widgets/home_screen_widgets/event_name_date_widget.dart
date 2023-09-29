@@ -22,8 +22,8 @@ class EventNameAndDateWidget extends StatelessWidget {
     var primaryColor = of.primaryColor;
 
     // check device is in dark mode or light mode
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     // gets time from the passed data and splits it so we can have the
     //start time and ending time in a list
@@ -35,11 +35,7 @@ class EventNameAndDateWidget extends StatelessWidget {
     // text span text style
     var dateTimeStyle = TextStyle(
       fontSize: largeText == true ? 8.sp : 7.sp,
-      color: largeText != true
-          ? checkMode
-              ? Colors.black
-              : Colors.white
-          : Colors.white,
+      color: largeText != true ? Colors.black : Colors.white,
       fontWeight: FontWeight.w500,
     );
 
@@ -73,11 +69,7 @@ class EventNameAndDateWidget extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: largeText == true ? 14.sp : 10.sp,
-              color: largeText == true
-                  ? checkMode
-                      ? Colors.white
-                      : Colors.white
-                  : primaryColor,
+              color: largeText == true ? Colors.white : primaryColor,
             ),
           ),
         ),
