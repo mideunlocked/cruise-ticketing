@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../general_widgets/custom_back_button.dart';
+import '../general_widgets/save_event_button.dart';
 
 class EventImageWidget extends StatelessWidget {
   const EventImageWidget({
     super.key,
     required this.imageUrl,
+    required this.isSaved,
   });
 
   final String imageUrl;
+  final bool isSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,12 @@ class EventImageWidget extends StatelessWidget {
             top: 5.h,
             left: 2.w,
             child: const CustomBackButton(),
+          ),
+
+          SaveEventButton(
+            isSaved: isSaved,
+            top: 5.h,
+            left: 85.w,
           ),
         ],
       ),

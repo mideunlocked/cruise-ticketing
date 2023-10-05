@@ -29,48 +29,59 @@ class TicketScreen extends StatelessWidget {
           children: [
             // some space
             SizedBox(
-              height: 2.h,
+              height: 1.h,
             ),
 
             // custom app bar
             TicketWidgetPadding(
+              horizontalPadding: 3.w,
               child: CustomAppBar(
                 title: "My Ticket",
-                bottomPadding: 4.h,
+                bottomPadding: 2.h,
               ),
             ),
 
             // ticket widget
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                TicketWidgetPadding(
-                  child: Container(
-                    height: 78.h,
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: primaryColor, width: 2.0),
-                      color: primaryColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
                       children: [
-                        // qr code widget box (qr code and instruction)
-                        const QrCodeWidget(),
+                        TicketWidgetPadding(
+                          horizontalPadding: 8.w,
+                          child: Container(
+                            height: 80.h,
+                            width: 100.w,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: primaryColor, width: 2.0),
+                              color: primaryColor.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // qr code widget box (qr code and instruction)
+                                const QrCodeWidget(),
 
-                        // ticket event details (name, date, time, venue, category, price)
-                        EventDetailBox(
-                          data: data,
+                                // ticket event details (name, date, time, venue, category, price)
+                                EventDetailBox(
+                                  data: data,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
+
+                        // ticket cut widget
+                        const TicketCutWidget(),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-
-                // ticket cut widget
-                const TicketCutWidget(),
-              ],
+              ),
             ),
           ],
         ),

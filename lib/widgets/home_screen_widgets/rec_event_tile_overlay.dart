@@ -21,7 +21,7 @@ class RecEventTileOverlay extends StatelessWidget {
       width: 100.w,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.transparent, Colors.white30],
+          colors: [Colors.transparent, Colors.black38],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

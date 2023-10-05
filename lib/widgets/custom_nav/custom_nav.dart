@@ -19,7 +19,7 @@ class CustomBottomNav extends StatelessWidget {
       height: 9.h,
       width: 100.w,
       margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+      padding: EdgeInsets.symmetric(horizontal: 2.w),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         color: Colors.grey[300],

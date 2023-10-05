@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../screens/event_screen.dart';
 import 'event_price_container.dart';
+import 'status_tile.dart';
 import 'ticket_detail_tile.dart';
 
 class EventDetailBox extends StatelessWidget {
@@ -14,6 +15,7 @@ class EventDetailBox extends StatelessWidget {
   Widget build(BuildContext context) {
     // edgeinstets for details tile
     var detailTileEdgeInsets = EdgeInsets.only(left: 6.w, right: 4.w);
+    var isValid = data["isValid"] == true;
 
     return SizedBox(
       height: 32.h,
@@ -73,6 +75,11 @@ class EventDetailBox extends StatelessWidget {
             edgeInsets: detailTileEdgeInsets,
             iconUrl: "placeholder",
             text: data["venue"] ?? "",
+          ),
+
+          StatusTile(
+            detailTileEdgeInsets: detailTileEdgeInsets,
+            isValid: isValid,
           ),
 
           // event price and category container

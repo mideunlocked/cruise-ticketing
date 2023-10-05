@@ -32,6 +32,7 @@ class BottomNavBar extends StatelessWidget {
           color: Colors.grey[200],
           borderRadius: borderRadius,
         ),
+        alignment: Alignment.centerLeft,
         child: CustomBottomNav(
           pageController: pageController,
           currentIndex: currentIndex,

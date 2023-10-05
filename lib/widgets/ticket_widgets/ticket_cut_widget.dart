@@ -21,10 +21,11 @@ class TicketCutWidget extends StatelessWidget {
           width: 58.w,
           height: 3.0,
           child: ListView.builder(
-            itemCount: 58.w ~/ 4.w,
+            itemCount: 58.w ~/ 5.w,
             scrollDirection: Axis.horizontal,
             itemBuilder: (ctx, index) => Container(
               width: 4.w,
+              height: 0.5.h,
               margin: EdgeInsets.symmetric(horizontal: 1.w),
               decoration: BoxDecoration(
                 color: primaryColor,
@@ -43,8 +44,8 @@ class TicketCutWidget extends StatelessWidget {
   // ticket cut container method
   Container cutContainer(ThemeData of) {
     return Container(
-      height: 15.h,
-      width: 20.w,
+      height: 12.h,
+      width: 18.w,
       decoration: BoxDecoration(
         color: of.scaffoldBackgroundColor,
         shape: BoxShape.circle,

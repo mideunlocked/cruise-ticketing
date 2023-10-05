@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
-import '../../helpers/location_helper.dart';
 import '../../screens/event_screen.dart';
 import '../general_widgets/profile_image.dart';
 
@@ -159,14 +159,15 @@ class _EventTodayTileState extends State<EventListTile> {
   //distance between current location and destination (event location)
   // collecting event LatLng
   Future<dynamic> getDistanceDuration(dynamic passedData) async {
+    LatLng? currentPosition;
     // request persmission if null and get user current location
-    final response = await LocationHelper.requestPermission();
+    await Geolocator.getCurrentPosition().then((value) {
+      double lat = value.latitude;
+      double lng = value.longitude;
+      LatLng valueLatLng = LatLng(lat, lng);
 
-    // pass current location as latitude and longitude
-    final currentPosition = LatLng(
-      response.latitude,
-      response.longitude,
-    );
+      currentPosition = valueLatLng;
+    });
 
     // retieving and passing event
     //Lat and Lng and decalring it to a variable destination
@@ -178,7 +179,8 @@ class _EventTodayTileState extends State<EventListTile> {
     // passed the current location coordinates and destiantion coordinates
     //to get the distance and duration of event from current location and then
     //passing it to duration data
-    durationData = await DirectionsRepo()
-        .getDuration(origin: currentPosition, destination: destination);
+    durationData = await DirectionsRepo().getDuration(
+        origin: currentPosition ?? const LatLng(0, 0),
+        destination: destination);
   }
 }

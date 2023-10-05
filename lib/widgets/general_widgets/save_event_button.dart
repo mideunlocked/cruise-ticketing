@@ -4,7 +4,14 @@ import 'package:sizer/sizer.dart';
 class SaveEventButton extends StatelessWidget {
   const SaveEventButton({
     super.key,
+    required this.isSaved,
+    required this.left,
+    required this.top,
   });
+
+  final bool isSaved;
+  final double left;
+  final double top;
 
   @override
   Widget build(BuildContext context) {
@@ -14,25 +21,27 @@ class SaveEventButton extends StatelessWidget {
     // bool checkMode =
     //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
+    var checkSave = isSaved == true;
+
     return Positioned(
-      left: 70.w,
-      top: 1.h,
+      left: left,
+      top: top,
       child: InkWell(
         onTap: () {},
         child: Container(
-          height: 5.h,
-          width: 12.w,
+          height: 4.h,
+          width: 10.w,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
             gradient: const LinearGradient(
-              colors: [Colors.white38, Colors.white10],
+              colors: [Colors.black45, Colors.black12],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
           alignment: Alignment.center,
-          child: const Icon(
-            Icons.favorite_outline_rounded,
+          child: Icon(
+            checkSave ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
             color: Colors.white,
           ),
         ),

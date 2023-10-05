@@ -10,11 +10,11 @@ class QrCodeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // check device mode
-    bool checkMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     // qrCode color (changes dynamically according to device theme mode)
-    Color qrColor = checkMode ? Colors.black : Colors.white;
+    Color qrColor = Colors.black;
 
     return SizedBox(
       height: 30.h,

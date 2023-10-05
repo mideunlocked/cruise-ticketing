@@ -21,13 +21,13 @@ class BottomNavIcon extends StatelessWidget {
     // bool checkMode =
     //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
-    return GestureDetector(
-      onTap: () => changePage(index, context),
-      child: Image.asset(
+    return IconButton(
+      onPressed: () => changePage(index, context),
+      icon: Image.asset(
         iconUrl,
         color: currentIndex == index ? primaryColor2 : Colors.grey,
         height: 5.h,
-        width: 5.h,
+        width: 5.w,
       ),
     );
   }

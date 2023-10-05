@@ -44,6 +44,7 @@ class _EventScreenState extends State<EventScreen> {
                 // custom image widget which also holds the back button
                 EventImageWidget(
                   imageUrl: widget.eventData["imageUrl"] ?? "",
+                  isSaved: widget.eventData["isSaved"] ?? false,
                 ),
 
                 // this widget holds the name of the event and the custom tab bar

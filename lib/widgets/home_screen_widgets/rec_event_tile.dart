@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
-import '../../helpers/location_helper.dart';
 import '../../screens/event_screen.dart';
 import '../general_widgets/save_event_button.dart';
 import 'rec_event_tile_overlay.dart';
@@ -12,9 +12,11 @@ class RecEventTile extends StatefulWidget {
   const RecEventTile({
     super.key,
     required this.data,
+    this.fromSave = false,
   });
 
   final dynamic data;
+  final bool fromSave;
 
   @override
   State<RecEventTile> createState() => _RecEventTileState();
@@ -39,6 +41,8 @@ class _RecEventTileState extends State<RecEventTile> {
     return Padding(
       padding: EdgeInsets.only(
         left: 4.w,
+        right: widget.fromSave == true ? 4.w : 0,
+        bottom: widget.fromSave == true ? 2.h : 0,
       ),
       child: InkWell(
         // navigate to event screen on tap
@@ -55,7 +59,7 @@ class _RecEventTileState extends State<RecEventTile> {
         // rec tile widget
         child: SizedBox(
           height: 28.h,
-          width: 85.w,
+          width: widget.fromSave == true ? 100.w : 85.w,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Stack(
@@ -67,12 +71,16 @@ class _RecEventTileState extends State<RecEventTile> {
                     widget.data["imageUrl"] ?? "",
                     fit: BoxFit.cover,
                     height: 28.h,
-                    width: 85.w,
+                    width: widget.fromSave == true ? 100.w : 85.w,
                   ),
                 ),
 
                 // save event button
-                const SaveEventButton(),
+                SaveEventButton(
+                  isSaved: widget.data["isSaved"] ?? false,
+                  top: 1.h,
+                  left: widget.fromSave == true ? 78.w : 70.w,
+                ),
 
                 // tile overlay adding a shaded overlay to the bottom of image
                 //also holds the even name, date and time
@@ -91,14 +99,15 @@ class _RecEventTileState extends State<RecEventTile> {
   //distance between current location and destination (event location)
   // collecting event LatLng
   Future<dynamic> getDistanceDuration(dynamic passedData) async {
+    LatLng? currentPosition;
     // request persmission if null and get user current location
-    final response = await LocationHelper.requestPermission();
+    await Geolocator.getCurrentPosition().then((value) {
+      double lat = value.latitude;
+      double lng = value.longitude;
+      LatLng valueLatLng = LatLng(lat, lng);
 
-    // pass current location as latitude and longitude
-    final currentPosition = LatLng(
-      response.latitude,
-      response.longitude,
-    );
+      currentPosition = valueLatLng;
+    });
 
     // retieving and passing event
     //Lat and Lng and decalring it to a variable destination
@@ -110,7 +119,8 @@ class _RecEventTileState extends State<RecEventTile> {
     // passed the current location coordinates and destiantion coordinates
     //to get the distance and duration of event from current location and then
     //passing it to duration data
-    durationData = await DirectionsRepo()
-        .getDuration(origin: currentPosition, destination: destination);
+    durationData = await DirectionsRepo().getDuration(
+        origin: currentPosition ?? const LatLng(0, 0),
+        destination: destination);
   }
 }

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../helpers/map_helper.dart';
-
 class CenterFocusWidget extends StatelessWidget {
   const CenterFocusWidget({
     super.key,
     required this.googleMapController,
+    required this.currentLocation,
   });
 
   final GoogleMapController? googleMapController;
+  final LatLng currentLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,11 @@ class CenterFocusWidget extends StatelessWidget {
         child: InkWell(
           onTap: () => googleMapController?.animateCamera(
             CameraUpdate.newCameraPosition(
-                GoogleMapHelper.getInitialCameraLocation()),
+              CameraPosition(
+                target: currentLocation,
+                zoom: 14.0,
+              ),
+            ),
           ),
           child: Image.asset(
             "assets/icons/focus.png",

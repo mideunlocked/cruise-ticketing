@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 class LocationHelper {
-  static Future<Position> requestPermission() async {
+  static Future<void> requestPermission() async {
     // check is location is enabled on the device
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -27,8 +27,6 @@ class LocationHelper {
       Future.error(
           "Location perssion are permanetly denied, we cannot request ");
     }
-
-    return await Geolocator.getCurrentPosition();
   }
 
   static Future<BitmapDescriptor> setCustomMarker() async {

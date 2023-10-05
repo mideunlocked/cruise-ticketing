@@ -55,6 +55,8 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
       {"category": "VVIP", "price": "NGN 50000"},
       {"category": "Table for 10", "price": "NGN 200000"},
     ],
+    "isSaved": true,
+    "isValid": true,
   },
   {
     "id": "1",
@@ -114,6 +116,8 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
       {"category": "Gold", "price": "NGN 50000"},
       {"category": "Platinum", "price": "NGN 100000"},
     ],
+    "isSaved": false,
+    "isValid": true,
   },
   {
     "id": "2",
@@ -171,6 +175,8 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
       {"category": "VVIP", "price": "NGN 50000"},
       {"category": "Table for 10", "price": "NGN 200000"},
     ],
+    "isSaved": true,
+    "isValid": false,
   },
   {
     "id": "3",
@@ -225,6 +231,8 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
     "pricing": [
       {"category": "Regular", "price": "NGN 0.00"},
     ],
+    "isSaved": false,
+    "isValid": false,
   },
 ];
 

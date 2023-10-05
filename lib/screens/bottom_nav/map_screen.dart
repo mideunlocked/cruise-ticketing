@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sizer/sizer.dart';
 
 import '../../data.dart';
 import '../../helpers/directions_repo.dart';
-import '../../helpers/location_helper.dart';
-import '../../helpers/map_helper.dart';
 import '../../models/directions.dart';
 import '../../widgets/map/center_focus_widget.dart';
 import '../../widgets/map/locator_event_detail.dart';
@@ -22,8 +21,9 @@ class MapScreen extends StatefulWidget {
 class _MapPageState extends State<MapScreen> {
   GoogleMapController?
       googleMapController; // google map controller to controll and interract with the map
-  Marker? origin; // this indicates the origin of the route
   Directions? info; // get directions, distance and durations
+
+  Marker? origin;
 
   // String? darkMapStyle; // custome map style for google maps
   String? lightMapStyle; // custome map style for google maps
@@ -35,11 +35,11 @@ class _MapPageState extends State<MapScreen> {
 
   List<Marker> markers = [];
 
+  LatLng current = const LatLng(0, 0);
+
   @override
   void initState() {
     super.initState();
-
-    getCurrentLocation();
 
     // get marker from event details
     markers = event.map((e) {
@@ -57,6 +57,22 @@ class _MapPageState extends State<MapScreen> {
     rootBundle.loadString('assets/map/light_map_style.txt').then((string) {
       lightMapStyle = string;
     });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+
+    await getCurrentLocation();
+
+    googleMapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: current,
+          zoom: 14,
+        ),
+      ),
+    );
   }
 
   @override
@@ -85,7 +101,14 @@ class _MapPageState extends State<MapScreen> {
         GoogleMap(
           zoomControlsEnabled: false,
           myLocationButtonEnabled: false,
-          initialCameraPosition: GoogleMapHelper.getInitialCameraLocation(),
+          myLocationEnabled: false,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(
+              current.latitude,
+              current.longitude,
+            ),
+            zoom: 14,
+          ),
           onMapCreated: (controller) {
             googleMapController = controller;
             googleMapController?.setMapStyle(lightMapStyle);
@@ -110,18 +133,12 @@ class _MapPageState extends State<MapScreen> {
             });
           },
           onCameraIdle: () {
-            googleMapController?.setMapStyle(
-              lightMapStyle,
-            );
             setState(() {
               cameraIsMoving = false;
               if (eventDetail.isNotEmpty) sheetPosition = 32.h;
             });
           },
           onCameraMoveStarted: () {
-            googleMapController?.setMapStyle(
-              lightMapStyle,
-            );
             setState(() {
               sheetPosition = 0;
               cameraIsMoving = true;
@@ -155,6 +172,7 @@ class _MapPageState extends State<MapScreen> {
         // icon button to center the map to a given location from the map controller
         CenterFocusWidget(
           googleMapController: googleMapController,
+          currentLocation: current,
         ),
       ],
     );
@@ -162,16 +180,25 @@ class _MapPageState extends State<MapScreen> {
 
   // get user current location and set it to a default marker
   Future<void> getCurrentLocation() async {
-    markerIcon = await LocationHelper.setCustomMarker();
+    LatLng? latlng;
+    await Geolocator.getCurrentPosition().then((value) {
+      double lat = value.latitude;
+      double lng = value.longitude;
+      LatLng valueLatLng = LatLng(lat, lng);
 
-    await LocationHelper.requestPermission().then(
-      (value) => origin = Marker(
-        position: LatLng(value.latitude, value.longitude),
-        markerId: const MarkerId(""),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-        onTap: () {},
-      ),
+      latlng = valueLatLng;
+    });
+
+    setState(() {
+      current = latlng!;
+    });
+
+    origin = Marker(
+      markerId: const MarkerId("origin"),
+      position: current,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
     );
+
     markers.add(origin!);
   }
 
@@ -204,7 +231,7 @@ class _MapPageState extends State<MapScreen> {
   // get duration from origin to destination
   Future<void> getDirectionDuration(LatLng destinationPos) async {
     final duration = await DirectionsRepo().getDuration(
-      origin: origin!.position,
+      origin: current,
       destination: destinationPos,
     );
 
@@ -214,7 +241,7 @@ class _MapPageState extends State<MapScreen> {
   // get direction and animate camera to bounds
   Future<void> getDirections(LatLng destinationPos) async {
     final directions = await DirectionsRepo().getDirections(
-      origin: origin!.position,
+      origin: current,
       destination: destinationPos,
     );
     setState(() => info = directions);

@@ -17,11 +17,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // the current index of the pagecontroller
-  int currentIndex = 2;
+  int currentIndex = 0;
 
   // pageview controller for handling bottom nav bar
   final pageController = PageController(
-    initialPage: 2,
+    initialPage: 0,
   );
 
   final pages = const [
