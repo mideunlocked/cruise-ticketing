@@ -11,6 +11,7 @@ import 'step2.dart';
 import 'step3.dart';
 import 'step4.dart';
 import 'step5.dart';
+import 'step6.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const routeName = "/CreateEventScreen";
@@ -44,8 +45,11 @@ class _ListEventState extends State<CreateEventScreen> {
   // this will hold the features of the event
   List<dynamic> features = [];
 
+  // this will hold the date and time of the event
+  List<Map<String, dynamic>> dateTime = [];
+
   // this will hold privacy status
-  bool? privacy;
+  bool privacy = false;
 
   @override
   void dispose() {
@@ -62,7 +66,7 @@ class _ListEventState extends State<CreateEventScreen> {
     rulesNode.dispose();
   }
 
-  final _step4FormKey = GlobalKey<FormState>();
+  final _step5FormKey = GlobalKey<FormState>();
   final _step1FormKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -166,22 +170,31 @@ class _ListEventState extends State<CreateEventScreen> {
                         ),
                       ),
 
-                      // fourth step (Ticket pricings)
+                      // fourth step (Event date and time)
                       Step(
                         title: const Text(""),
                         isActive: currentStep >= 3,
                         content: Step4(
-                          // pricings: pricing,
-                          formKey: _step4FormKey,
-                          getFunction: getPricings,
+                          getFunction: getDateTime,
                         ),
                       ),
 
-                      // first step (event privacy and visibilty)
+                      // fifth step (Ticket pricings)
                       Step(
                         title: const Text(""),
                         isActive: currentStep >= 4,
                         content: Step5(
+                          // pricings: pricing,
+                          formKey: _step5FormKey,
+                          getFunction: getPricings,
+                        ),
+                      ),
+
+                      // sixth step (event privacy and visibilty)
+                      Step(
+                        title: const Text(""),
+                        isActive: currentStep >= 5,
+                        content: Step6(
                           getFunction: getPrivacy,
                         ),
                       ),
@@ -215,7 +228,7 @@ class _ListEventState extends State<CreateEventScreen> {
                           StepControl(
                             // check if the current step if the last then
                             //displays finish else next
-                            title: currentStep == 4 ? "Finish" : "Next",
+                            title: currentStep == 5 ? "Finish" : "Next",
                             function: () {
                               // function variable to proceed step
                               proceed() => setState(() => currentStep++);
@@ -273,12 +286,23 @@ class _ListEventState extends State<CreateEventScreen> {
                                   print(features);
                                   proceed();
                                 }
+                              } else if (currentStep == 3) {
+                                if (dateTime.length != 2) {
+                                  print(dateTime);
+                                  showSnackBar(
+                                    scaffoldKey: _scaffoldKey,
+                                    errorMessage: "Select date and time",
+                                  );
+                                } else {
+                                  print(dateTime);
+                                  proceed();
+                                }
                               }
                               // check is function is called from fourth step
-                              else if (currentStep == 3) {
+                              else if (currentStep == 4) {
                                 // validate ticket pricing text form fields
                                 final isValid =
-                                    _step4FormKey.currentState?.validate();
+                                    _step5FormKey.currentState?.validate();
 
                                 // check if the validation was not successful
                                 if (isValid == false) {
@@ -287,7 +311,6 @@ class _ListEventState extends State<CreateEventScreen> {
                                 }
                                 // else is successful so proceed
                                 else {
-                                  print(pricing.first.category);
                                   proceed();
                                 }
                               }
@@ -308,6 +331,12 @@ class _ListEventState extends State<CreateEventScreen> {
         ),
       ),
     );
+  }
+
+  void getDateTime(List<Map<String, dynamic>> newDateTime) {
+    setState(() {
+      dateTime = newDateTime;
+    });
   }
 
   void getImage(File imageFile) {

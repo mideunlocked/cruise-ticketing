@@ -23,6 +23,14 @@ class ProfileBottomSheet extends StatelessWidget {
               height: 2.h,
             ),
             MoreListTileAsset(
+              title: "Wallet",
+              iconUrl: "wallet",
+              function: () => Navigator.pushNamed(
+                context,
+                "/WalletScreen",
+              ),
+            ),
+            MoreListTileAsset(
               title: "Tickets",
               iconUrl: "tickets",
               function: () => Navigator.pushNamed(

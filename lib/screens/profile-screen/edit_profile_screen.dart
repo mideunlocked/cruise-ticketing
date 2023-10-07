@@ -1,7 +1,11 @@
-import 'package:cruise/widgets/general_widgets/custom_app_bar.dart';
-import 'package:cruise/widgets/general_widgets/profile_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../widgets/edit_profile_widgets/custom_text_field.dart';
+import '../../widgets/edit_profile_widgets/profile_input_container.dart';
+import '../../widgets/edit_profile_widgets/select_gender_widget.dart';
+import '../../widgets/general_widgets/custom_app_bar.dart';
+import '../../widgets/general_widgets/profile_image.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const routeName = "/EditProfileScreen";
@@ -127,6 +131,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Text(dateOfBirth),
                         ),
                       ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ElevatedButton(
+                              style: const ButtonStyle(
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Colors.black),
+                              ),
+                              onPressed: () {},
+                              child: const Text("Save"),
+                            ),
+                          ]),
                       SizedBox(height: 20.h),
                     ],
                   ),
@@ -163,146 +182,5 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         dateOfBirth = "${db.day}/${db.month}/${db.year}";
       });
     }
-  }
-}
-
-class ProfileInputContainer extends StatelessWidget {
-  const ProfileInputContainer({
-    super.key,
-    required this.child,
-  });
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 6.5.h,
-      width: 100.w,
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      margin: EdgeInsets.symmetric(vertical: 2.h),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black,
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: child,
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class SelectGenderWidget extends StatefulWidget {
-  SelectGenderWidget({
-    super.key,
-    required this.gender,
-    required this.userGender,
-  });
-
-  late String userGender;
-  final List<String> gender;
-
-  @override
-  State<SelectGenderWidget> createState() => _SelectGenderWidgetState();
-}
-
-class _SelectGenderWidgetState extends State<SelectGenderWidget> {
-  @override
-  Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var textTheme = of.textTheme;
-    var bodyMedium = textTheme.bodyMedium;
-
-    return DropdownButton(
-      value: widget.userGender,
-      isExpanded: true,
-      borderRadius: BorderRadius.circular(20),
-      style: bodyMedium,
-      underline: const SizedBox(),
-      menuMaxHeight: 75.h,
-      items: widget.gender
-          .map(
-            (gender) => DropdownMenuItem(
-              value: gender,
-              child: Text(gender),
-            ),
-          )
-          .toList(),
-      onChanged: (value) {
-        setState(() {
-          widget.userGender = value!.trim().toString();
-        });
-      },
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required this.label,
-    required this.controller,
-    required this.focusNode,
-    this.inputType = TextInputType.name,
-    this.inputAction = TextInputAction.next,
-    this.maxLines,
-    this.maxText,
-  });
-
-  final String label;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final TextInputType inputType;
-  final TextInputAction inputAction;
-  final int? maxLines;
-  final int? maxText;
-
-  @override
-  Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var textTheme = of.textTheme;
-    var primaryColor = of.primaryColor;
-    var bodyMedium = textTheme.bodyMedium;
-
-    var outlineInputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: const BorderSide(
-        color: Colors.black,
-      ),
-    );
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: 2.h,
-      ),
-      child: TextFormField(
-        style: bodyMedium,
-        cursorColor: primaryColor,
-        textInputAction: inputAction,
-        keyboardType: inputType,
-        maxLength: maxText,
-        maxLines: maxLines,
-        decoration: InputDecoration(
-          labelText: label,
-          border: outlineInputBorder,
-          enabledBorder: outlineInputBorder,
-          focusedBorder: outlineInputBorder,
-          labelStyle: bodyMedium?.copyWith(
-            fontSize: 12.sp,
-          ),
-          hintStyle: bodyMedium?.copyWith(
-            color: Colors.black26,
-          ),
-        ),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "This field can't be empty";
-          }
-          return null;
-        },
-      ),
-    );
   }
 }

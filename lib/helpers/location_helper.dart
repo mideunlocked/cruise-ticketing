@@ -9,7 +9,10 @@ class LocationHelper {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      return Future.error("Location services are deisbaled");
+      serviceEnabled = await Geolocator.openLocationSettings();
+      if (!serviceEnabled) {
+        return;
+      }
     }
 
     // get location permission status
