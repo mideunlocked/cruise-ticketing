@@ -9,10 +9,12 @@ class EventImageWidget extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.isSaved,
+    required this.isInitial,
   });
 
   final String imageUrl;
   final bool isSaved;
+  final bool isInitial;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,9 @@ class EventImageWidget extends StatelessWidget {
           Positioned(
             top: 5.h,
             left: 2.w,
-            child: const CustomBackButton(),
+            child: CustomBackButton(
+              isInitial: isInitial,
+            ),
           ),
 
           SaveEventButton(

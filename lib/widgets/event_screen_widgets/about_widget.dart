@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../screens/event_screen.dart';
+import '../../screens/event_screens/event_screen.dart';
 import 'about_host.dart';
 import 'date_time_widget.dart';
 import 'description_text_widget.dart';

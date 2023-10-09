@@ -6,10 +6,12 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.function,
+    this.isInactive = false,
   });
 
   final String title;
   final Function function;
+  final bool isInactive;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class CustomButton extends StatelessWidget {
           vertical: 1.h,
         ),
         decoration: BoxDecoration(
-          color: primaryColor,
+          color: isInactive ? primaryColor.withOpacity(0.2) : primaryColor,
           borderRadius: BorderRadius.circular(5),
         ),
         alignment: Alignment.center,

@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
-import '../../screens/event_screen.dart';
+import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/save_event_button.dart';
 import 'rec_event_tile_overlay.dart';
 

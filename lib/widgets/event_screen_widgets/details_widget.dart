@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../screens/event_screen.dart';
+import '../../screens/event_screens/event_screen.dart';
 import 'event_screen_title_widget.dart';
 import 'features_grid_view.dart';
 import 'padded_widget_event_screen.dart';

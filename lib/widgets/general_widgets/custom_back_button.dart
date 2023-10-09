@@ -4,7 +4,10 @@ import 'package:sizer/sizer.dart';
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
     super.key,
+    this.isInitial = false,
   });
+
+  final bool isInitial;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,12 @@ class CustomBackButton extends StatelessWidget {
     return SizedBox(
       height: 4.h,
       child: InkWell(
-        onTap: () => Navigator.pop(context),
+        onTap: () {
+          isInitial
+              ? Navigator.pushNamedAndRemoveUntil(
+                  context, "/", (route) => false)
+              : Navigator.pop(context);
+        },
         child: Container(
           width: 10.w,
           height: 4.h,

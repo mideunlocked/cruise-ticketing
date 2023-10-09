@@ -317,6 +317,11 @@ class _ListEventState extends State<CreateEventScreen> {
                               // else proceed
                               else {
                                 print(privacy);
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  "/EventCreateSuccessScreen",
+                                  (route) => false,
+                                );
                               }
                             },
                           ),

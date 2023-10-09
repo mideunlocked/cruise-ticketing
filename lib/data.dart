@@ -1,3 +1,5 @@
+import 'models/event_analysis.dart';
+
 List<Map<String, dynamic>> event = [
   {
     "id": "0",
@@ -50,7 +52,10 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
       "Photograph",
     ],
     "pricing": [
-      {"category": "Regular", "price": "NGN 10000"},
+      {
+        "category": "Regular",
+        "price": "NGN 10000",
+      },
       {"category": "VIP", "price": "NGN 25000"},
       {"category": "VVIP", "price": "NGN 50000"},
       {"category": "Table for 10", "price": "NGN 200000"},
@@ -309,3 +314,112 @@ List<String> eventFeatures = [
   'Pool',
   'Rave',
 ];
+
+const demo = EventAnalysis(
+  ages: [
+    {
+      "age": "18",
+      "amount": 100,
+    },
+    {
+      "age": "19",
+      "amount": 50,
+    },
+    {
+      "age": "20",
+      "amount": 30,
+    },
+    {
+      "age": "21",
+      "amount": 20,
+    },
+    {
+      "age": "22",
+      "amount": 10,
+    },
+    {
+      "age": "23",
+      "amount": 10,
+    },
+    {
+      "age": "24",
+      "amount": 10,
+    },
+    {
+      "age": "25",
+      "amount": 20,
+    },
+  ],
+  genders: [
+    {
+      "gender": "male",
+      "amount": 100,
+    },
+    {
+      "gender": "females",
+      "amount": 100,
+    },
+    {
+      "gender": "confused",
+      "amount": 50,
+    },
+  ],
+  ticketSold: 250,
+  totalViews: 400,
+  attendance: 200,
+  deviceSales: [
+    {
+      "platform": "IOS",
+      "amount": 200,
+    },
+    {
+      "platform": "Android",
+      "amount": 50,
+    },
+  ],
+  ticketQuantity: 300,
+  attendeeLocations: [
+    {
+      "location": "Lagos",
+      "amount": 100,
+    },
+    {
+      "location": "Ogun",
+      "amount": 50,
+    },
+    {
+      "location": "Ibadan",
+      "amount": 20,
+    },
+    {
+      "location": "Imo",
+      "amount": 50,
+    },
+    {
+      "location": "Enugu",
+      "amount": 30,
+    },
+  ],
+  soldTicketBreakdown: [
+    {
+      "type": "Regular",
+      "value": 80,
+      "id": 0,
+    },
+    {
+      "type": "VIP",
+      "value": 100,
+      "id": 1,
+    },
+    {
+      "type": "VVIP",
+      "value": 50,
+      "id": 2,
+    },
+    {
+      "type": "Table for 10",
+      "value": 20,
+      "id": 3,
+    },
+  ],
+);

@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import 'helpers/location_helper.dart';
 import 'helpers/themes_helper.dart';
+import 'screens/create-event-screen/create_event_success_screen.dart';
 import 'screens/profile-screen/edit_profile_screen.dart';
 import 'screens/home.dart';
 import 'screens/create-event-screen/create_event.dart';
@@ -37,6 +38,8 @@ class MainApp extends StatelessWidget {
           SavedEventScreen.routeName: (context) => const SavedEventScreen(),
           EditProfileScreen.routeName: (context) => const EditProfileScreen(),
           WalletScreen.routeName: (context) => const WalletScreen(),
+          EventCreateSuccessScreen.routeName: (context) =>
+              const EventCreateSuccessScreen(),
         },
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:cruise/screens/event_screen.dart';
+import 'package:cruise/screens/event_screens/event_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'locator_event_detail.dart';

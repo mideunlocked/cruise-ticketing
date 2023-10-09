@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../screens/event_screen.dart';
+import '../../screens/event_screens/event_screen.dart';
 import 'event_price_container.dart';
 import 'status_tile.dart';
 import 'ticket_detail_tile.dart';
