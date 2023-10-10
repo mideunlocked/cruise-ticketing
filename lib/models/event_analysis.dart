@@ -88,15 +88,17 @@ class EventAnalysis {
     return "$approximateConversion%";
   }
 
-  Map<String, int> getMostPopularTicketType() {
-    dynamic mostPopular = {};
+  Map<String, dynamic> getMostPopularTicketType() {
+    Map<String, dynamic> mostPopular = {};
     int quantity = 0;
     dynamic i;
 
     for (i in soldTicketBreakdown) {
       if (i["value"] > quantity) {
         quantity = i["value"];
-        mostPopular = {i["type"], i["value"]};
+        mostPopular = {
+          i["type"]: i["value"],
+        };
       }
     }
 

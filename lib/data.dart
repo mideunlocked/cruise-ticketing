@@ -318,49 +318,60 @@ List<String> eventFeatures = [
 const demo = EventAnalysis(
   ages: [
     {
+      "id": 0,
       "age": "18",
       "amount": 100,
     },
     {
+      "id": 1,
       "age": "19",
       "amount": 50,
     },
     {
+      "id": 2,
       "age": "20",
       "amount": 30,
     },
     {
+      "id": 3,
       "age": "21",
       "amount": 20,
     },
     {
+      "id": 4,
       "age": "22",
       "amount": 10,
     },
     {
+      "id": 5,
       "age": "23",
       "amount": 10,
     },
     {
+      "id": 6,
       "age": "24",
       "amount": 10,
     },
     {
+      "id": 7,
       "age": "25",
       "amount": 20,
     },
   ],
   genders: [
     {
+      "id": 0,
       "gender": "male",
       "amount": 100,
     },
     {
+      "id": 1,
       "gender": "females",
       "amount": 100,
     },
     {
-      "gender": "confused",
+      "id": 2,
+      "gender": "∞",
       "amount": 50,
     },
   ],
