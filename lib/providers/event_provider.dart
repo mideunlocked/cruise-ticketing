@@ -251,6 +251,12 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
     _events.removeWhere((event) => event.id == id);
   }
 
+  Event getEvent(String eventId) {
+    final event = _events.firstWhere((e) => e.id == eventId);
+
+    return event;
+  }
+
   void saveEvent(String id) {
     if (_savedEvents.contains(id)) {
       return;

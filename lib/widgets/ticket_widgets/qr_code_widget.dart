@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/ticket.dart';
+
 class QrCodeWidget extends StatelessWidget {
   const QrCodeWidget({
     super.key,
+    required this.ticket,
   });
+
+  final Ticket ticket;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,7 @@ class QrCodeWidget extends StatelessWidget {
 
           // ticket qr code for validation
           QrImageView(
-            data: '1234567890',
+            data: ticket.ticketId,
             version: QrVersions.auto,
             size: 120.sp,
             eyeStyle: QrEyeStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../helpers/date_time_formatting.dart';
 import '../../screens/event_screens/event_screen.dart';
 import 'about_host.dart';
 import 'date_time_widget.dart';
@@ -22,6 +23,11 @@ class About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // gets time from the passed data and splits it so we can have the
+    //start time and ending time in a list
+    var time = DateTimeFormatting.formatTimeOfDay(widget.event.time);
+    var date = DateTimeFormatting.formatDateTime(widget.event.date);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,8 +56,8 @@ class About extends StatelessWidget {
 
         // date and time widget
         DateTimeWidget(
-          date: widget.event.date.day.toString(),
-          time: widget.event.time.hour.toString(),
+          date: date,
+          time: time,
         ),
 
         // location and venue widget

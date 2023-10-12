@@ -1,3 +1,4 @@
+import 'package:cruise/helpers/date_time_formatting.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -29,7 +30,8 @@ class EventNameAndDateWidget extends StatelessWidget {
 
     // gets time from the passed data and splits it so we can have the
     //start time and ending time in a list
-    var time = event.time.hour;
+    var time = DateTimeFormatting.formatTimeOfDay(event.time);
+    var date = DateTimeFormatting.formatDateTime(event.date);
 
     // text span text style
     var dateTimeStyle = TextStyle(
@@ -46,7 +48,7 @@ class EventNameAndDateWidget extends StatelessWidget {
         // date and time widget in a text span
         RichText(
           text: TextSpan(
-            text: event.date.year.toString(),
+            text: date,
             style: dateTimeStyle,
             children: <TextSpan>[
               TextSpan(text: " ~ $time", style: dateTimeStyle),

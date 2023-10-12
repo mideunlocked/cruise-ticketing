@@ -1,8 +1,12 @@
-import 'package:cruise/data.dart';
-import 'package:cruise/widgets/general_widgets/custom_app_bar.dart';
-import 'package:cruise/widgets/home_screen_widgets/home_screen_padding.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../providers/ticket_provider.dart';
+import '../../widgets/general_widgets/custom_app_bar.dart';
+import '../../widgets/general_widgets/empty_list_widget.dart';
+import '../../widgets/home_screen_widgets/home_screen_padding.dart';
+import '../../widgets/ticket_widgets/ticket_list_tile.dart';
 
 class TicketListScreen extends StatelessWidget {
   static const routeName = "/TicketListScreen";
@@ -14,6 +18,9 @@ class TicketListScreen extends StatelessWidget {
     var sizedBox = SizedBox(
       height: 1.h,
     );
+
+    var ticketProvider = Provider.of<TicketProvider>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -29,107 +36,20 @@ class TicketListScreen extends StatelessWidget {
               color: Colors.black12,
             ),
             Expanded(
-              child: ListView.builder(
-                  itemCount: event.length,
-                  itemBuilder: (ctx, index) {
-                    var data = event[index];
-                    return TicketListTile(
-                      data: data,
-                    );
-                  }),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TicketListTile extends StatelessWidget {
-  const TicketListTile({
-    super.key,
-    required this.data,
-  });
-
-  final Map<String, dynamic> data;
-
-  @override
-  Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var textTheme = of.textTheme;
-    var bodyMedium = textTheme.bodyMedium;
-
-    var isValid = data["isValid"] == true;
-
-    return InkWell(
-      onTap: () => Navigator.pushNamed(
-        context,
-        "/TicketScreen",
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 1.h,
-          horizontal: 3.w,
-        ),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                data["imageUrl"],
-                width: 30.w,
-                height: 10.h,
-                fit: BoxFit.cover,
-              ),
-            ),
-            SizedBox(
-              width: 2.w,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 60.w,
-                  child: Text(
-                    data["name"],
-                    style: bodyMedium?.copyWith(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w500,
+              child: ticketProvider.tickets.isEmpty
+                  ? const EmptyListWidget(
+                      title: "No tickets available",
+                      subTitle: "Explore more and start adding tickets!",
+                    )
+                  : ListView(
+                      children: ticketProvider.tickets
+                          .map(
+                            (e) => TicketListTile(
+                              ticket: e,
+                            ),
+                          )
+                          .toList(),
                     ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "${data["pricing"][0]['category']}: ",
-                      style: bodyMedium,
-                    ),
-                    Text(
-                      data["pricing"][0]['price'],
-                      style: bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Status: ",
-                      style: bodyMedium?.copyWith(
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      isValid ? "Valid" : "Expired",
-                      style: bodyMedium?.copyWith(
-                        color: isValid ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
           ],
         ),

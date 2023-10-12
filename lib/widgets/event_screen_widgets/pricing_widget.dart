@@ -1,15 +1,16 @@
+import 'package:cruise/models/pricing.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class PricingWidget extends StatelessWidget {
   const PricingWidget({
     super.key,
-    required this.e,
+    required this.price,
     required this.index,
     required this.selectedIndex,
   });
 
-  final dynamic e;
+  final Pricing price;
   final int index, selectedIndex;
 
   @override
@@ -42,7 +43,7 @@ class PricingWidget extends StatelessWidget {
         children: [
           // category title text
           Text(
-            e["category"] ?? "",
+            price.category,
             style: TextStyle(
               fontSize: 10.sp,
               fontWeight: FontWeight.w500,
@@ -56,7 +57,7 @@ class PricingWidget extends StatelessWidget {
 
           // category ticket price text
           Text(
-            e["price"] ?? "",
+            price.price.toString(),
             style: TextStyle(
               fontWeight: FontWeight.w900,
               fontSize: 14.sp,

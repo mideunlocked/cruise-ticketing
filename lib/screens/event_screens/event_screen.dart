@@ -5,11 +5,11 @@ import 'package:sizer/sizer.dart';
 import '../../models/event.dart';
 import '../../providers/event_provider.dart';
 import '../../widgets/event_screen_widgets/about_widget.dart';
-// import '../widgets/event_screen_widgets/buy_tickets_button.dart';
+import '../../widgets/event_screen_widgets/buy_tickets_button.dart';
 import '../../widgets/event_screen_widgets/custom_tab_bar.dart';
 import '../../widgets/event_screen_widgets/details_widget.dart';
 import '../../widgets/event_screen_widgets/event_image_widget.dart';
-import '../../widgets/event_screen_widgets/host_event_action_button.dart';
+// import '../../widgets/event_screen_widgets/host_event_action_button.dart';
 
 class EventScreen extends StatefulWidget {
   static const routeName = "/EventScreen";
@@ -130,12 +130,12 @@ class _EventScreenState extends State<EventScreen> {
 
         // buy ticket floating action button which also
         //intiates the pricing and category bottom sheet
-        // floatingActionButton: BuyTicketButton(
-        //   data: widget.eventData,
-        // ),
-        floatingActionButton: HostEventActionButton(
+        floatingActionButton: BuyTicketButton(
           event: widget.event,
         ),
+        // floatingActionButton: HostEventActionButton(
+        //   event: widget.event,
+        // ),
       ),
     );
   }

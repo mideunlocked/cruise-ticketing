@@ -208,8 +208,6 @@ class _NearByTileState extends State<NearByTile> {
         origin: currentPosition ?? const LatLng(0, 0),
         destination: destination);
 
-    setState(() {
-      durationData = directions;
-    });
+    durationData = directions;
   }
 }

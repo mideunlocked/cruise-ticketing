@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
 import 'ticket_pricing_dialog.dart';
 
 class BuyTicketButton extends StatelessWidget {
   const BuyTicketButton({
     super.key,
-    required this.data,
+    required this.event,
   });
 
-  final Map<String, dynamic> data;
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
     var primaryColor = Theme.of(context).primaryColor;
-
-    var pricing = data["pricing"];
 
     return Container(
       decoration: BoxDecoration(
@@ -31,7 +30,7 @@ class BuyTicketButton extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: primaryColor,
         heroTag: "buy-ticket",
-        onPressed: () => showBuyTicket(context, pricing),
+        onPressed: () => showBuyTicket(context),
         child: Image.asset(
           "assets/icons/ticket-office.png",
           height: 8.h,
@@ -43,13 +42,15 @@ class BuyTicketButton extends StatelessWidget {
   }
 
   // initiates a bottom sheet for ticket pricing and purchasing
-  void showBuyTicket(BuildContext context, List<dynamic> pricing) {
+  void showBuyTicket(
+    BuildContext context,
+  ) {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         builder: (ctx) {
           return TicketPricingDialog(
-            data: data,
+            event: event,
           );
         });
   }

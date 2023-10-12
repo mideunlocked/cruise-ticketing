@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../providers/event_provider.dart';
-import '../../widgets/home_screen_widgets/event_today_tile.dart';
+// import '../../providers/event_provider.dart';
+import '../../widgets/general_widgets/empty_search_widget.dart';
 import '../../widgets/search_widgets/search_widget.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
     var textTheme = of.textTheme;
     var bodyMedium = textTheme.bodyMedium;
 
-    final eventProvider = Provider.of<EventProvider>(context);
+    // final eventProvider = Provider.of<EventProvider>(context);
 
     return WillPopScope(
       onWillPop: () async {
@@ -67,12 +67,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 1.h,
+                    // const ShimmerLoadingTile(),
+                    EmptySearchWidget(
+                      searchKeyWord: controller.text.trim(),
                     ),
-                    EventListTile(
-                      event: eventProvider.events.first,
-                    )
                   ],
                 ),
               ),

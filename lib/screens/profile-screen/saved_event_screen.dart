@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../providers/event_provider.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
+import '../../widgets/general_widgets/empty_list_widget.dart';
 import '../../widgets/home_screen_widgets/rec_event_tile.dart';
 
 class SavedEventScreen extends StatelessWidget {
@@ -29,19 +30,24 @@ class SavedEventScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: eventProvider.events
-                    .where(
-                      (e) => eventProvider.savedEvents.contains(e.id),
+              child: eventProvider.savedEvents.isEmpty
+                  ? const EmptyListWidget(
+                      title: "No saved events yet",
+                      subTitle: 'Explore events and save your favorites!',
                     )
-                    .map(
-                      (e) => RecEventTile(
-                        fromSave: true,
-                        event: eventProvider.events.first,
-                      ),
-                    )
-                    .toList(),
-              ),
+                  : ListView(
+                      children: eventProvider.events
+                          .where(
+                            (e) => eventProvider.savedEvents.contains(e.id),
+                          )
+                          .map(
+                            (e) => RecEventTile(
+                              fromSave: true,
+                              event: eventProvider.events.first,
+                            ),
+                          )
+                          .toList(),
+                    ),
             ),
           ],
         ),

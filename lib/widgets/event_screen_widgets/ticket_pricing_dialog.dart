@@ -1,16 +1,21 @@
+import 'package:cruise/models/ticket.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
+import '../../providers/ticket_provider.dart';
 import '../general_widgets/custom_button.dart';
 import 'pricing_widget.dart';
+import 'purchase_status_widget.dart';
 
 class TicketPricingDialog extends StatefulWidget {
   const TicketPricingDialog({
     super.key,
-    required this.data,
+    required this.event,
   });
 
-  final Map<String, dynamic> data;
+  final Event event;
 
   @override
   State<TicketPricingDialog> createState() => _TicketPricingDialogState();
@@ -31,7 +36,7 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
     var primaryColor = of.primaryColor;
     var scaffoldBackgroundColor = of.scaffoldBackgroundColor;
 
-    var pricing = widget.data["pricing"];
+    var pricing = widget.event.pricing;
 
     return Container(
       height: double.infinity,
@@ -80,16 +85,17 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
                     setState(() {
                       selectedIndex = index; // pass currently selected index
                       selectedPrice = pricing[index]
-                          ["price"]; // pass currently selected price
+                          .price
+                          .toString(); // pass currently selected price
                       selectedCatgeory = pricing[index]
-                          ["category"]; // pass currently selected category
+                          .category; // pass currently selected category
                     });
                   }
                 },
 
                 // category and price widget
                 child: PricingWidget(
-                  e: pricing[index] ?? {},
+                  price: pricing[index],
                   selectedIndex: selectedIndex,
                   index: index,
                 ),
@@ -101,7 +107,7 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
           CustomButton(
             title: "Purchase",
             function: () {
-              selectedIndex == -1 ? null : showPurchaseStatus();
+              selectedIndex == -1 ? null : purchaseTicket();
             },
             isInactive: selectedIndex == -1 ? true : false,
           ),
@@ -110,89 +116,30 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
     );
   }
 
-  void showPurchaseStatus() {
+  void purchaseTicket() {
+    var ticketProvider = Provider.of<TicketProvider>(context, listen: false);
+    var event = widget.event;
+
+    Ticket ticket = Ticket(
+      price: selectedPrice,
+      status: true,
+      eventId: event.id,
+      category: selectedCatgeory,
+      ticketId: "${event.id}1",
+    );
+
+    ticketProvider.addTicket(ticket);
+
+    showPurchaseStatus(ticket);
+  }
+
+  void showPurchaseStatus(Ticket ticket) {
     showDialog(
       context: context,
       builder: (ctx) => PurchaseStatusWidget(
         selectedCatgeory: selectedCatgeory,
         widget: widget,
-      ),
-    );
-  }
-}
-
-class PurchaseStatusWidget extends StatelessWidget {
-  const PurchaseStatusWidget({
-    super.key,
-    required this.selectedCatgeory,
-    required this.widget,
-  });
-
-  final String selectedCatgeory;
-  final TicketPricingDialog widget;
-
-  @override
-  Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var textTheme = of.textTheme;
-    var sizedBoxH5 = SizedBox(
-      height: 5.h,
-    );
-    return Dialog(
-      insetPadding: EdgeInsets.symmetric(
-        vertical: 20.h,
-        horizontal: 10.w,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/icons/check.png",
-            ),
-            sizedBoxH5,
-            Text(
-              "Congratulations!",
-              style: textTheme.bodyMedium?.copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const SizedBox(
-              height: 3,
-            ),
-            Text(
-              """You've successfully acquired a ticket for $selectedCatgeory to attend ${widget.data["name"]}. 
-Enjoy the event!""",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
-              ),
-            ),
-            SizedBox(
-              height: 3.h,
-            ),
-            CustomButton(
-              title: "View ticket",
-              function: () {
-                Navigator.pushNamed(context, "/TicketScreen");
-              },
-            ),
-            CustomButton(
-              title: "Cancel",
-              function: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              isInactive: true,
-            ),
-          ],
-        ),
+        ticket: ticket,
       ),
     );
   }
