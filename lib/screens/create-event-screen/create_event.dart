@@ -322,12 +322,6 @@ class _ListEventState extends State<CreateEventScreen> {
                               // else proceed
                               else {
                                 createEvent();
-                                // print(privacy);
-                                // Navigator.pushNamedAndRemoveUntil(
-                                //   context,
-                                //   "/EventCreateSuccessScreen",
-                                //   (route) => false,
-                                // );
                               }
                             },
                           ),
@@ -451,7 +445,11 @@ class _ListEventState extends State<CreateEventScreen> {
     );
 
     response == true
-        ? print("Event created")
+        ? Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/EventCreateSuccessScreen",
+            (route) => false,
+          )
         : showSnackBar(
             scaffoldKey: _scaffoldKey,
             errorMessage:

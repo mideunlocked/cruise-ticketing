@@ -77,25 +77,27 @@ class PopularTicketType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          data.entries.first.key,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 13.sp,
-          ),
-        ),
-        Text(
-          data.entries.first.value.toString(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 13.sp,
-          ),
-        ),
-      ],
-    );
+    return data.isEmpty
+        ? const Text("No analysis yet")
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                data.entries.first.key,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13.sp,
+                ),
+              ),
+              Text(
+                data.entries.first.value.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13.sp,
+                ),
+              ),
+            ],
+          );
   }
 }
 

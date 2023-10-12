@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class SaveEventButton extends StatelessWidget {
+import '../../providers/event_provider.dart';
+
+class SaveEventButton extends StatefulWidget {
   const SaveEventButton({
     super.key,
     required this.isSaved,
     required this.left,
     required this.top,
+    required this.eventId,
   });
 
   final bool isSaved;
+  final String eventId;
   final double left;
   final double top;
+
+  @override
+  State<SaveEventButton> createState() => _SaveEventButtonState();
+}
+
+class _SaveEventButtonState extends State<SaveEventButton> {
+  bool isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isSaved = widget.isSaved;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +40,11 @@ class SaveEventButton extends StatelessWidget {
     // bool checkMode =
     //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
-    var checkSave = isSaved == true;
-
     return Positioned(
-      left: left,
-      top: top,
+      left: widget.left,
+      top: widget.top,
       child: InkWell(
-        onTap: () {},
+        onTap: toggleSave,
         child: Container(
           height: 4.h,
           width: 10.w,
@@ -41,11 +58,23 @@ class SaveEventButton extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Icon(
-            checkSave ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+            isSaved ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
             color: Colors.white,
           ),
         ),
       ),
     );
+  }
+
+  void toggleSave() {
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
+
+    setState(() {
+      isSaved = !isSaved;
+    });
+
+    !isSaved
+        ? eventProvider.unsaveEvent(widget.eventId)
+        : eventProvider.saveEvent(widget.eventId);
   }
 }

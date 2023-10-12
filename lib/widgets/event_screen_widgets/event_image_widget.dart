@@ -12,8 +12,10 @@ class EventImageWidget extends StatelessWidget {
     required this.imageUrl,
     required this.isSaved,
     required this.isInitial,
+    required this.eventId,
   });
 
+  final String eventId;
   final String imageUrl;
   final bool isSaved;
   final bool isInitial;
@@ -64,6 +66,7 @@ class EventImageWidget extends StatelessWidget {
           ),
 
           SaveEventButton(
+            eventId: eventId,
             isSaved: isSaved,
             top: 5.h,
             left: 85.w,

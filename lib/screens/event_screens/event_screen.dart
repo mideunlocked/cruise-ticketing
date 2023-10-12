@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/event.dart';
+import '../../providers/event_provider.dart';
 import '../../widgets/event_screen_widgets/about_widget.dart';
 // import '../widgets/event_screen_widgets/buy_tickets_button.dart';
 import '../../widgets/event_screen_widgets/custom_tab_bar.dart';
@@ -39,6 +41,8 @@ class _EventScreenState extends State<EventScreen> {
   Widget build(BuildContext context) {
     var sizedBox = SizedBox(height: 3.h);
 
+    final eventProvider = Provider.of<EventProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
         widget.isInitial
@@ -57,8 +61,10 @@ class _EventScreenState extends State<EventScreen> {
                   // custom image widget which also holds the back button
                   EventImageWidget(
                     imageUrl: widget.event.imageUrl,
-                    isSaved: false,
+                    isSaved:
+                        eventProvider.savedEvents.contains(widget.event.id),
                     isInitial: widget.isInitial,
+                    eventId: widget.event.id,
                   ),
 
                   // this widget holds the name of the event and the custom tab bar
@@ -128,7 +134,7 @@ class _EventScreenState extends State<EventScreen> {
         //   data: widget.eventData,
         // ),
         floatingActionButton: HostEventActionButton(
-          pricing: widget.event.pricing,
+          event: widget.event,
         ),
       ),
     );

@@ -7,7 +7,7 @@ import '../models/pricing.dart';
 class EventProvider with ChangeNotifier {
   final List<Event> _events = [
     Event(
-      id: "1",
+      id: "0",
       name: "FireMonesters Wine Party",
       date: DateTime(2023, 10, 24),
       time: TimeOfDay.now(),
@@ -217,8 +217,14 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
     ),
   ];
 
+  List<dynamic> _savedEvents = [];
+
   List<Event> get events {
     return [..._events];
+  }
+
+  List<dynamic> get savedEvents {
+    return [..._savedEvents];
   }
 
   dynamic addEvent(Event event) {
@@ -243,5 +249,20 @@ A Firemonsters Wine Party combines the sophistication of wine tasting with the t
 
   void deleteEvent(String id) {
     _events.removeWhere((event) => event.id == id);
+  }
+
+  void saveEvent(String id) {
+    if (_savedEvents.contains(id)) {
+      return;
+    }
+    _savedEvents.add(id);
+
+    print(_savedEvents);
+  }
+
+  void unsaveEvent(String id) {
+    _savedEvents.remove(id);
+
+    print(_savedEvents);
   }
 }

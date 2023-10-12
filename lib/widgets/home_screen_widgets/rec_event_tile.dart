@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
 import '../../models/event.dart';
+import '../../providers/event_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
 import '../general_widgets/custom_loading_indicator.dart';
@@ -45,67 +47,70 @@ class _RecEventTileState extends State<RecEventTile> {
   Widget build(BuildContext context) {
     double imageHeight = 28.h;
 
+    final eventProvider = Provider.of<EventProvider>(context);
+
     return Padding(
       padding: EdgeInsets.only(
         left: 4.w,
         right: widget.fromSave == true ? 4.w : 0,
         bottom: widget.fromSave == true ? 2.h : 0,
       ),
-      child: InkWell(
-        // navigate to event screen on tap
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (ctx) => EventScreen(
-              durationData: durationData ?? {},
-              event: widget.event,
-            ),
-          ),
-        ),
+      child: SizedBox(
+        height: 28.h,
+        width: widget.fromSave == true ? 100.w : 85.w,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            children: [
+              // event image widget
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  widget.event.imageUrl,
+                  fit: BoxFit.cover,
+                  height: imageHeight,
+                  width: widget.fromSave == true ? 100.w : 85.w,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return CustomLoadingIndicator(
+                      height: imageHeight,
+                      width: null,
+                    );
+                  },
+                  errorBuilder: (ctx, _, stacktrace) {
+                    return const CustomImageErrorWidget();
+                  },
+                ),
+              ),
 
-        // rec tile widget
-        child: SizedBox(
-          height: 28.h,
-          width: widget.fromSave == true ? 100.w : 85.w,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Stack(
-              children: [
-                // event image widget
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    widget.event.imageUrl,
-                    fit: BoxFit.cover,
-                    height: imageHeight,
-                    width: widget.fromSave == true ? 100.w : 85.w,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return CustomLoadingIndicator(
-                        height: imageHeight,
-                        width: null,
-                      );
-                    },
-                    errorBuilder: (ctx, _, stacktrace) {
-                      return const CustomImageErrorWidget();
-                    },
+              // tile overlay adding a shaded overlay to the bottom of image
+              //also holds the even name, date and time
+              InkWell(
+                // navigate to event screen on tap
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => EventScreen(
+                      durationData: durationData ?? {},
+                      event: widget.event,
+                    ),
                   ),
                 ),
-
-                // save event button
-                SaveEventButton(
-                  isSaved: false,
-                  top: 1.h,
-                  left: widget.fromSave == true ? 78.w : 70.w,
-                ),
-
-                // tile overlay adding a shaded overlay to the bottom of image
-                //also holds the even name, date and time
-                RecEventTileOverlay(
+                child: RecEventTileOverlay(
                   event: widget.event,
                 ),
-              ],
-            ),
+              ),
+
+              // save event button
+              SaveEventButton(
+                eventId: widget.event.id,
+                isSaved: eventProvider.savedEvents.contains(
+                  widget.event.id,
+                ),
+                top: 1.h,
+                left: widget.fromSave == true ? 78.w : 70.w,
+              ),
+            ],
           ),
         ),
       ),

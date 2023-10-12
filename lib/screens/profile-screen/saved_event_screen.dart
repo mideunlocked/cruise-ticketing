@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../data.dart';
 import '../../providers/event_provider.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
 import '../../widgets/home_screen_widgets/rec_event_tile.dart';
@@ -30,12 +29,18 @@ class SavedEventScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: event.length,
-                itemBuilder: (ctx, index) => RecEventTile(
-                  fromSave: true,
-                  event: eventProvider.events.first,
-                ),
+              child: ListView(
+                children: eventProvider.events
+                    .where(
+                      (e) => eventProvider.savedEvents.contains(e.id),
+                    )
+                    .map(
+                      (e) => RecEventTile(
+                        fromSave: true,
+                        event: eventProvider.events.first,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
           ],

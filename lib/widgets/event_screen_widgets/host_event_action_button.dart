@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../data.dart';
+import '../../models/event.dart';
 import '../../screens/event_screens/analysis_screen.dart';
 import '../../screens/event_screens/scan_ticket_screen.dart';
 import '../general_widgets/custom_floating_action_button.dart';
@@ -9,10 +9,10 @@ import '../general_widgets/custom_floating_action_button.dart';
 class HostEventActionButton extends StatelessWidget {
   const HostEventActionButton({
     super.key,
-    required this.pricing,
+    required this.event,
   });
 
-  final dynamic pricing;
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class HostEventActionButton extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (ctx) => AnalysisScreen(
-                  pricing: pricing,
-                  data: demo,
+                  pricing: event.pricing,
+                  data: event.analysis,
                 ),
               ),
             );
