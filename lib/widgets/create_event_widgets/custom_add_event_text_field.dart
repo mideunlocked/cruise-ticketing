@@ -6,6 +6,7 @@ import 'text_field_title.dart';
 class CustomAddEventTextField extends StatelessWidget {
   const CustomAddEventTextField({
     super.key,
+    this.textInputAction = TextInputAction.next,
     required this.controller,
     required this.node,
     required this.hint,
@@ -15,6 +16,7 @@ class CustomAddEventTextField extends StatelessWidget {
   });
 
   final TextEditingController controller;
+  final TextInputAction textInputAction;
   final FocusNode node;
   final String hint;
   final String title;

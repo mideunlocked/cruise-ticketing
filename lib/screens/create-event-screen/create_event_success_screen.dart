@@ -1,8 +1,10 @@
-import 'package:cruise/data.dart';
-import 'package:cruise/screens/event_screens/event_screen.dart';
-import 'package:cruise/widgets/general_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../providers/event_provider.dart';
+import '../../widgets/general_widgets/custom_button.dart';
+import '../event_screens/event_screen.dart';
 
 class EventCreateSuccessScreen extends StatelessWidget {
   static const routeName = "/EventCreateSuccessScreen";
@@ -10,6 +12,8 @@ class EventCreateSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventProvider = Provider.of<EventProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushNamedAndRemoveUntil(
@@ -50,7 +54,7 @@ class EventCreateSuccessScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (ctx) => EventScreen(
                           durationData: const {},
-                          eventData: event[1],
+                          event: eventProvider.events.last,
                           isInitial: true,
                         ),
                       ),

@@ -42,21 +42,22 @@ class About extends StatelessWidget {
 
         // description text
         DescriptionTextWidget(
-            description: widget.eventData["description"] ?? ""),
+          description: widget.event.description,
+        ),
 
         // some space
         sizedBox,
 
         // date and time widget
         DateTimeWidget(
-          date: widget.eventData["date"] ?? "",
-          time: widget.eventData["time"] ?? "",
+          date: widget.event.date.day.toString(),
+          time: widget.event.time.hour.toString(),
         ),
 
         // location and venue widget
         LocationVenueWidget(
-          venue: widget.eventData["venue"] ?? "",
-          location: widget.eventData["address"] ?? "",
+          venue: widget.event.venue,
+          location: "Event address from lat lng",
         ),
 
         // some space
@@ -73,7 +74,9 @@ class About extends StatelessWidget {
         ),
 
         // staggered profile image of people going
-        const WhosGoing(),
+        WhosGoing(
+          attendees: widget.event.attendees,
+        ),
       ],
     );
   }

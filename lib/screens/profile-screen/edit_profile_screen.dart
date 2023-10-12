@@ -1,3 +1,4 @@
+import 'package:cruise/widgets/general_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -134,18 +135,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(
                         height: 5.h,
                       ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ElevatedButton(
-                              style: const ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(Colors.black),
-                              ),
-                              onPressed: () {},
-                              child: const Text("Save"),
-                            ),
-                          ]),
+                      CustomButton(
+                        function: () {},
+                        title: "Save",
+                      ),
                       SizedBox(height: 20.h),
                     ],
                   ),

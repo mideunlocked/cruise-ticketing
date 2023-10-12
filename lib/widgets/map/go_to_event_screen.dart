@@ -23,7 +23,7 @@ class GoToEventScreen extends StatelessWidget {
           MaterialPageRoute(
             builder: (ctx) => EventScreen(
               durationData: widget.duration,
-              eventData: widget.data,
+              event: widget.event,
             ),
           )),
       backgroundColor: Colors.grey,

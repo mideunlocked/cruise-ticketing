@@ -4,13 +4,20 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
+import '../../models/event.dart';
 import '../../screens/event_screens/event_screen.dart';
+import '../general_widgets/custom_image_error_widget.dart';
+import '../general_widgets/custom_loading_indicator.dart';
 import '../general_widgets/profile_image.dart';
 
 class EventListTile extends StatefulWidget {
-  const EventListTile({super.key, required this.data});
+  const EventListTile({
+    super.key,
+    required this.event,
+  });
 
-  final dynamic data; // get event data
+  final Event event; // get event data
+
   @override
   State<EventListTile> createState() => _EventTodayTileState();
 }
@@ -23,10 +30,12 @@ class _EventTodayTileState extends State<EventListTile> {
     super.initState();
 
     // var holding passed data from parent
-    final passedData = widget.data;
+    final passedData = widget.event;
+    final lat = passedData.latlng["lat"];
+    final lng = passedData.latlng["lng"];
 
     // calling function to get distance and duration
-    getDistanceDuration(passedData);
+    getDistanceDuration(lat, lng);
   }
 
   @override
@@ -38,13 +47,17 @@ class _EventTodayTileState extends State<EventListTile> {
     // bool checkMode =
     //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
+    double imageWidth = 35.w;
+
     return InkWell(
       // move to event screen
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (ctx) => EventScreen(
-              durationData: durationData ?? {}, eventData: widget.data),
+            durationData: durationData ?? {},
+            event: widget.event,
+          ),
         ),
       ),
       child: Container(
@@ -62,10 +75,23 @@ class _EventTodayTileState extends State<EventListTile> {
                 left: Radius.circular(10),
               ),
               child: Image.network(
-                widget.data["imageUrl"], // event image url string
+                widget.event.imageUrl, // event image url string
                 height: 100.h,
-                width: 35.w,
+                width: imageWidth,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return CustomLoadingIndicator(
+                    width: imageWidth,
+                    height: null,
+                  );
+                },
+                errorBuilder: (ctx, _, stacktrace) {
+                  return SizedBox(
+                    width: imageWidth,
+                    child: const CustomImageErrorWidget(),
+                  );
+                },
               ),
             ),
             SizedBox(
@@ -82,7 +108,7 @@ class _EventTodayTileState extends State<EventListTile> {
                   // event name
                   sizedBoxHolder(
                     Text(
-                      widget.data["name"] ?? "",
+                      widget.event.name,
                       maxLines: 2,
                       softWrap: true,
                       style: TextStyle(
@@ -96,7 +122,7 @@ class _EventTodayTileState extends State<EventListTile> {
                   // event venue
                   sizedBoxHolder(
                     Text(
-                      widget.data["venue"] ?? "",
+                      widget.event.venue,
                       maxLines: 1,
                       style: TextStyle(
                           fontSize: 9.sp, fontWeight: FontWeight.w500),
@@ -158,7 +184,7 @@ class _EventTodayTileState extends State<EventListTile> {
   // function to get user current location and calculating the
   //distance between current location and destination (event location)
   // collecting event LatLng
-  Future<dynamic> getDistanceDuration(dynamic passedData) async {
+  Future<dynamic> getDistanceDuration(dynamic lat, dynamic lng) async {
     LatLng? currentPosition;
     // request persmission if null and get user current location
     await Geolocator.getCurrentPosition().then((value) {
@@ -172,8 +198,8 @@ class _EventTodayTileState extends State<EventListTile> {
     // retieving and passing event
     //Lat and Lng and decalring it to a variable destination
     final destination = LatLng(
-      passedData["lat"],
-      passedData["lng"],
+      lat,
+      lng,
     );
 
     // passed the current location coordinates and destiantion coordinates

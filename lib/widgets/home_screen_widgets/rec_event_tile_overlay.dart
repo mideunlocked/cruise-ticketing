@@ -6,10 +6,10 @@ import 'event_name_date_widget.dart';
 class RecEventTileOverlay extends StatelessWidget {
   const RecEventTileOverlay({
     super.key,
-    required this.data,
+    required this.event,
   });
 
-  final dynamic data; // passed data
+  final dynamic event; // passed data
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class RecEventTileOverlay extends StatelessWidget {
       ),
 
       // event name and date widget
-      child: EventNameAndDateWidget(data: data),
+      child: EventNameAndDateWidget(event: event),
     );
   }
 }

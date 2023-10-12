@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../providers/event_provider.dart';
-import '../../widgets/home_screen_widgets/event_today_tile.dart';
-import '../../widgets/profile_widgets/profile_app_bar.dart';
-import '../../widgets/profile_widgets/profile_screen_pad.dart';
-import '../../widgets/profile_widgets/profile_tab_container.dart';
-import '../../widgets/profile_widgets/user_detail_card.dart';
+import '../providers/event_provider.dart';
+import '../widgets/general_widgets/custom_back_button.dart';
+import '../widgets/home_screen_widgets/event_today_tile.dart';
+import '../widgets/profile_widgets/profile_screen_pad.dart';
+import '../widgets/profile_widgets/profile_tab_container.dart';
+import '../widgets/profile_widgets/user_detail_card.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   bool isPast = true;
   bool isUpcoming = false;
 
@@ -27,26 +27,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var bodyMedium = textTheme.bodyMedium;
     var color = bodyMedium?.color;
 
+    var sizedBoxH2 = SizedBox(
+      height: 2.h,
+    );
+    var sizedBoxH1 = SizedBox(
+      height: 1.h,
+    );
+
     final eventProvider = Provider.of<EventProvider>(context);
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pushNamed(context, "/");
-        throw 1;
-      },
-      child: SafeArea(
+    return Scaffold(
+      body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              height: 1.h,
-            ),
+            sizedBoxH2,
             ProfileScreenPad(
-              child: ProfileAppBar(color: color),
+              child: Row(
+                children: [
+                  const CustomBackButton(),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Text(
+                    "_username",
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ),
+            sizedBoxH1,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    sizedBoxH1,
                     UserDetailCard(
                       of: of,
                       color: color,

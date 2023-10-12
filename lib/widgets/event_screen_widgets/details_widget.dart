@@ -18,7 +18,7 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> features = widget.eventData["features"] ?? "";
+    List<dynamic> features = widget.event.features;
 
     return PaddedWidgetEventScreen(
       child: Column(
@@ -38,7 +38,7 @@ class Details extends StatelessWidget {
           ),
 
           // rules text
-          Text(widget.eventData["rules"] ?? ""),
+          Text(widget.event.rules),
 
           // some space
           sizedBox,

@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:cruise/models/event.dart';
+import 'package:cruise/models/event_analysis.dart';
+import 'package:cruise/providers/event_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/ticket_type.dart';
+import '../../models/pricing.dart';
 import '../../widgets/create_event_widgets/step_control.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
 import 'step1.dart';
@@ -311,17 +315,19 @@ class _ListEventState extends State<CreateEventScreen> {
                                 }
                                 // else is successful so proceed
                                 else {
+                                  calculateTotalQuantity();
                                   proceed();
                                 }
                               }
                               // else proceed
                               else {
-                                print(privacy);
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  "/EventCreateSuccessScreen",
-                                  (route) => false,
-                                );
+                                createEvent();
+                                // print(privacy);
+                                // Navigator.pushNamedAndRemoveUntil(
+                                //   context,
+                                //   "/EventCreateSuccessScreen",
+                                //   (route) => false,
+                                // );
                               }
                             },
                           ),
@@ -388,5 +394,68 @@ class _ListEventState extends State<CreateEventScreen> {
         backgroundColor: Colors.red,
       ),
     );
+  }
+
+  int calculateTotalQuantity() {
+    int quantity = 0;
+
+    for (var e in pricing) {
+      quantity = quantity + e.quantity;
+    }
+
+    return quantity;
+  }
+
+  // create event
+  void createEvent() {
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
+
+    int demoId = eventProvider.events.length + 1;
+
+    final response = eventProvider.addEvent(
+      Event(
+        id: demoId.toString(),
+        name: nameController.text.trim(),
+        date: dateTime[0]["date"] as DateTime,
+        time: dateTime[1]["time"] as TimeOfDay,
+        venue: "Whiteley Event Center",
+        rules: rulesController.text.trim(),
+        hostId: "12345",
+        latlng: {
+          "lat": 6.499952,
+          "lng": 3.346991,
+        },
+        isValid: true,
+        rating: 4.0,
+        pricing: pricing,
+        imageUrl: bannerFile.path,
+        videoUrl: "",
+        features: features,
+        attendees: [],
+        isPrivate: privacy,
+        timestamp: DateTime.now(),
+        description: descriptionController.text.trim(),
+        ticketQuantity: calculateTotalQuantity(),
+        analysis: EventAnalysis(
+          ages: [],
+          genders: [],
+          ticketSold: 0,
+          totalViews: 0,
+          attendance: 0,
+          deviceSales: [],
+          ticketQuantity: calculateTotalQuantity(),
+          attendeeLocations: [],
+          soldTicketBreakdown: [],
+        ),
+      ),
+    );
+
+    response == true
+        ? print("Event created")
+        : showSnackBar(
+            scaffoldKey: _scaffoldKey,
+            errorMessage:
+                "Something went wrong can't create event, Try again later.",
+          );
   }
 }

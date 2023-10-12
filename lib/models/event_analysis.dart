@@ -1,3 +1,5 @@
+import 'package:cruise/models/pricing.dart';
+
 class EventAnalysis {
   final int ticketSold;
   final int totalViews;
@@ -21,22 +23,13 @@ class EventAnalysis {
     required this.soldTicketBreakdown,
   });
 
-  double getPriceFromString(String pricing) {
-    String stringPrice = pricing.toString();
-    List getPriceDouble = stringPrice.split(" ");
-    double priceDouble = double.parse(getPriceDouble.last);
-
-    return priceDouble;
-  }
-
-  double getEstimatedRevenue(List<Map<String, dynamic>> pricing) {
+  double getEstimatedRevenue(List<Pricing> pricing) {
     double estimatedRevenue = 0;
-    dynamic prices;
+    Pricing price;
 
-    for (prices in pricing) {
-      double priceDouble = getPriceFromString(prices["price"]);
-      double quantity = double.parse(prices["quantity"]);
-      double ticketTypeEstimate = quantity * priceDouble;
+    for (price in pricing) {
+      double quantity = double.parse(price.quantity.toString());
+      double ticketTypeEstimate = quantity * price.price;
 
       estimatedRevenue = estimatedRevenue + ticketTypeEstimate;
     }
@@ -44,17 +37,16 @@ class EventAnalysis {
     return estimatedRevenue;
   }
 
-  List<dynamic> calculateTypeRevenue(List<Map<String, dynamic>> pricing) {
-    dynamic price;
+  List<dynamic> calculateTypeRevenue(List<Pricing> pricing) {
+    Pricing price;
     List<Map<String, dynamic>> breakDown = [];
 
     for (price in pricing) {
       dynamic i;
 
       for (i in soldTicketBreakdown) {
-        if (i["type"] == price["category"]) {
-          double priceDouble = getPriceFromString(price["price"]);
-          double categoryRevenue = priceDouble * i["value"];
+        if (i["type"] == price.category) {
+          double categoryRevenue = price.price * i["value"];
           breakDown.add({
             "type": i["type"],
             "value": categoryRevenue,

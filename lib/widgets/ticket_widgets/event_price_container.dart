@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
+
 class EventPriceContainer extends StatelessWidget {
   const EventPriceContainer({
     super.key,
     required this.detailTileEdgeInsets,
-    required this.data,
+    required this.event,
   });
 
   // ticket screen detail tile edgeinsets
   final EdgeInsets detailTileEdgeInsets;
-  final Map<String, dynamic> data;
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,11 @@ class EventPriceContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // ticket category text
-          Text(data["pricing"][1]["category"] ?? ""),
+          Text(event.pricing.first.category),
 
           // ticket price text
           Text(
-            data["pricing"][1]["price"] ?? "",
+            event.pricing.first.price.toString(),
             style: TextStyle(
               color: primaryColor,
               fontWeight: FontWeight.bold,

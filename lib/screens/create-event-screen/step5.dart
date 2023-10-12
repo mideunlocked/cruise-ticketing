@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/ticket_type.dart';
+import '../../models/pricing.dart';
 import '../../widgets/create_event_widgets/text_field_title.dart';
 import '../../widgets/event_screen_widgets/event_screen_title_widget.dart';
 
@@ -25,6 +25,7 @@ class _Step4State extends State<Step5> {
   bool isFree = true;
 
   List<Pricing> pricings = [];
+  int totalQuantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +52,11 @@ class _Step4State extends State<Step5> {
                       setState(() {
                         pricings.add(
                           Pricing(
+                            id: index,
                             category: '',
                             price: 0.0,
                             quantity: 0,
+                            quantityLeft: 0,
                           ),
                         );
                         widget.getFunction(pricings);
@@ -148,7 +151,7 @@ class _Step4State extends State<Step5> {
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           setState(() {
-                            pricing.price = double.parse(value);
+                            pricing.quantity = int.parse(value);
                             widget.getFunction(pricings);
                           });
                         },

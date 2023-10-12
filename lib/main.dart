@@ -1,4 +1,6 @@
+import 'package:cruise/providers/event_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'helpers/location_helper.dart';
@@ -25,22 +27,29 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(
-      builder: (context, orientation, deviceType) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        // darkTheme: ThemesHelper.lightTheme,
-        theme: ThemesHelper.lightTheme,
-        initialRoute: "/",
-        routes: {
-          Home.routeName: (context) => const Home(),
-          TicketScreen.routeName: (context) => const TicketScreen(),
-          CreateEventScreen.routeName: (context) => const CreateEventScreen(),
-          TicketListScreen.routeName: (context) => const TicketListScreen(),
-          SavedEventScreen.routeName: (context) => const SavedEventScreen(),
-          EditProfileScreen.routeName: (context) => const EditProfileScreen(),
-          WalletScreen.routeName: (context) => const WalletScreen(),
-          EventCreateSuccessScreen.routeName: (context) =>
-              const EventCreateSuccessScreen(),
-        },
+      builder: (context, orientation, deviceType) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (ctx) => EventProvider(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          // darkTheme: ThemesHelper.lightTheme,
+          theme: ThemesHelper.lightTheme,
+          initialRoute: "/",
+          routes: {
+            Home.routeName: (context) => const Home(),
+            TicketScreen.routeName: (context) => const TicketScreen(),
+            CreateEventScreen.routeName: (context) => const CreateEventScreen(),
+            TicketListScreen.routeName: (context) => const TicketListScreen(),
+            SavedEventScreen.routeName: (context) => const SavedEventScreen(),
+            EditProfileScreen.routeName: (context) => const EditProfileScreen(),
+            WalletScreen.routeName: (context) => const WalletScreen(),
+            EventCreateSuccessScreen.routeName: (context) =>
+                const EventCreateSuccessScreen(),
+          },
+        ),
       ),
     );
   }

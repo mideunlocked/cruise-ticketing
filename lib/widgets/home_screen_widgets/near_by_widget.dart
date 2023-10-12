@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../data.dart';
+import '../../providers/event_provider.dart';
 import 'near_by_tile.dart';
 
 class NearByWidget extends StatelessWidget {
@@ -11,6 +12,8 @@ class NearByWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventProvider = Provider.of<EventProvider>(context);
+
     return SizedBox(
       height: 28.h,
       width: 100.w,
@@ -18,9 +21,9 @@ class NearByWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         // event data iterate through with map
-        children: event.map((e) {
+        children: eventProvider.events.map((e) {
           return NearByTile(
-            data: e,
+            event: e,
           );
         }).toList(),
       ),

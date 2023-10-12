@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
+
 class EventNameAndDateWidget extends StatelessWidget {
   const EventNameAndDateWidget({
     super.key,
-    required this.data,
+    required this.event,
     this.isStart = false,
     this.largeText = true,
   });
 
   // event passed date
-  final dynamic data;
+  final Event event;
   // checks if column should align vertically from start or end
   final bool isStart;
   // check if the text requires a larger font or smaller font
@@ -27,10 +29,7 @@ class EventNameAndDateWidget extends StatelessWidget {
 
     // gets time from the passed data and splits it so we can have the
     //start time and ending time in a list
-    var time = data["time"].toString().split(" - ");
-
-    // gets the start time
-    var startTime = time[0];
+    var time = event.time.hour;
 
     // text span text style
     var dateTimeStyle = TextStyle(
@@ -47,10 +46,10 @@ class EventNameAndDateWidget extends StatelessWidget {
         // date and time widget in a text span
         RichText(
           text: TextSpan(
-            text: data["date"] ?? "",
+            text: event.date.year.toString(),
             style: dateTimeStyle,
             children: <TextSpan>[
-              TextSpan(text: " ~ $startTime", style: dateTimeStyle),
+              TextSpan(text: " ~ $time", style: dateTimeStyle),
             ],
           ),
         ),
@@ -64,7 +63,7 @@ class EventNameAndDateWidget extends StatelessWidget {
         SizedBox(
           width: 100.w,
           child: Text(
-            data["name"] ?? "",
+            event.name,
             softWrap: true,
             style: TextStyle(
               fontWeight: FontWeight.bold,

@@ -40,6 +40,7 @@ class _Step3State extends State<Step3> {
           height: 5.h,
         ),
         CustomAddEventTextField(
+          textInputAction: TextInputAction.newline,
           controller: widget.rulesController,
           node: widget.rulesNode,
           hint: "Set rules",

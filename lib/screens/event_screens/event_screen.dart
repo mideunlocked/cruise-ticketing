@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
 import '../../widgets/event_screen_widgets/about_widget.dart';
 // import '../widgets/event_screen_widgets/buy_tickets_button.dart';
 import '../../widgets/event_screen_widgets/custom_tab_bar.dart';
@@ -14,12 +15,12 @@ class EventScreen extends StatefulWidget {
   const EventScreen({
     super.key,
     required this.durationData,
-    required this.eventData,
+    required this.event,
     this.isInitial = false,
   });
 
   final Map<String, dynamic> durationData;
-  final Map<String, dynamic> eventData;
+  final Event event;
   final bool
       isInitial; // check if event is being view by the host after creation
 
@@ -55,8 +56,8 @@ class _EventScreenState extends State<EventScreen> {
                 children: [
                   // custom image widget which also holds the back button
                   EventImageWidget(
-                    imageUrl: widget.eventData["imageUrl"] ?? "",
-                    isSaved: widget.eventData["isSaved"] ?? false,
+                    imageUrl: widget.event.imageUrl,
+                    isSaved: false,
                     isInitial: widget.isInitial,
                   ),
 
@@ -72,7 +73,7 @@ class _EventScreenState extends State<EventScreen> {
                           SizedBox(
                             width: 90.w,
                             child: Text(
-                              widget.eventData["name"] ?? "",
+                              widget.event.name,
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w900,
@@ -127,7 +128,7 @@ class _EventScreenState extends State<EventScreen> {
         //   data: widget.eventData,
         // ),
         floatingActionButton: HostEventActionButton(
-          pricing: widget.eventData["pricing"] ?? {},
+          pricing: widget.event.pricing,
         ),
       ),
     );

@@ -4,18 +4,21 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
+import '../../models/event.dart';
 import '../../screens/event_screens/event_screen.dart';
+import '../general_widgets/custom_image_error_widget.dart';
+import '../general_widgets/custom_loading_indicator.dart';
 import '../general_widgets/save_event_button.dart';
 import 'rec_event_tile_overlay.dart';
 
 class RecEventTile extends StatefulWidget {
   const RecEventTile({
     super.key,
-    required this.data,
+    required this.event,
     this.fromSave = false,
   });
 
-  final dynamic data;
+  final Event event;
   final bool fromSave;
 
   @override
@@ -26,18 +29,22 @@ class _RecEventTileState extends State<RecEventTile> {
   Map<String, dynamic>? durationData; // should hold duration data
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
 
-    // var holding passed data from parent
-    final passedData = widget.data;
+// var holding passed data from parent
+    final passedData = widget.event;
+    final lat = passedData.latlng["lat"];
+    final lng = passedData.latlng["lng"];
 
     // calling function to get distance and duration
-    getDistanceDuration(passedData);
+    await getDistanceDuration(lat, lng);
   }
 
   @override
   Widget build(BuildContext context) {
+    double imageHeight = 28.h;
+
     return Padding(
       padding: EdgeInsets.only(
         left: 4.w,
@@ -51,7 +58,7 @@ class _RecEventTileState extends State<RecEventTile> {
           MaterialPageRoute(
             builder: (ctx) => EventScreen(
               durationData: durationData ?? {},
-              eventData: widget.data,
+              event: widget.event,
             ),
           ),
         ),
@@ -68,16 +75,26 @@ class _RecEventTileState extends State<RecEventTile> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    widget.data["imageUrl"] ?? "",
+                    widget.event.imageUrl,
                     fit: BoxFit.cover,
-                    height: 28.h,
+                    height: imageHeight,
                     width: widget.fromSave == true ? 100.w : 85.w,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return CustomLoadingIndicator(
+                        height: imageHeight,
+                        width: null,
+                      );
+                    },
+                    errorBuilder: (ctx, _, stacktrace) {
+                      return const CustomImageErrorWidget();
+                    },
                   ),
                 ),
 
                 // save event button
                 SaveEventButton(
-                  isSaved: widget.data["isSaved"] ?? false,
+                  isSaved: false,
                   top: 1.h,
                   left: widget.fromSave == true ? 78.w : 70.w,
                 ),
@@ -85,7 +102,7 @@ class _RecEventTileState extends State<RecEventTile> {
                 // tile overlay adding a shaded overlay to the bottom of image
                 //also holds the even name, date and time
                 RecEventTileOverlay(
-                  data: widget.data,
+                  event: widget.event,
                 ),
               ],
             ),
@@ -98,7 +115,7 @@ class _RecEventTileState extends State<RecEventTile> {
   // function to get user current location and calculating the
   //distance between current location and destination (event location)
   // collecting event LatLng
-  Future<dynamic> getDistanceDuration(dynamic passedData) async {
+  Future<dynamic> getDistanceDuration(lat, lng) async {
     LatLng? currentPosition;
     // request persmission if null and get user current location
     await Geolocator.getCurrentPosition().then((value) {
@@ -112,8 +129,8 @@ class _RecEventTileState extends State<RecEventTile> {
     // retieving and passing event
     //Lat and Lng and decalring it to a variable destination
     final destination = LatLng(
-      passedData["lat"],
-      passedData["lng"],
+      lat,
+      lng,
     );
 
     // passed the current location coordinates and destiantion coordinates

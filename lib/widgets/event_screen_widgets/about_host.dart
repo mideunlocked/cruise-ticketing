@@ -1,3 +1,4 @@
+import 'package:cruise/widgets/general_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,6 +20,9 @@ class AboutHost extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 1.h,
+          ),
           // host header widget
           const EventScreenTitleWidget(title: "HOST"),
 
@@ -60,6 +64,17 @@ class AboutHost extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const Spacer(),
+              SizedBox(
+                width: 25.w,
+                height: 6.h,
+                child: CustomButton(
+                  function: () {},
+                  title: "Following",
+                  radius: 15,
+                  isInactive: true,
+                ),
               ),
             ],
           ),

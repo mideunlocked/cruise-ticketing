@@ -8,6 +8,7 @@ class ThemesHelper {
   );
 
   static final lightTheme = ThemeData(
+    useMaterial3: true,
     primaryColor: Colors.black,
     textTheme: TextTheme(
       bodyMedium: const TextStyle(
@@ -26,6 +27,7 @@ class ThemesHelper {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
+      surfaceTintColor: Colors.white,
     ),
     bottomSheetTheme: BottomSheetThemeData(
       shape: RoundedRectangleBorder(

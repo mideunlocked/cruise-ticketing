@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../data.dart';
 import '../../helpers/directions_repo.dart';
 import '../../models/directions.dart';
+import '../../models/event.dart';
+import '../../providers/event_provider.dart';
 import '../../widgets/map/center_focus_widget.dart';
 import '../../widgets/map/locator_event_detail.dart';
 import '../../widgets/map/text_bar.dart';
@@ -41,8 +43,10 @@ class _MapPageState extends State<MapScreen> {
   void initState() {
     super.initState();
 
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
+
     // get marker from event details
-    markers = event.map((e) {
+    markers = eventProvider.events.map((e) {
       return addMarkers(
         event: e,
       );
@@ -87,7 +91,7 @@ class _MapPageState extends State<MapScreen> {
   double sheetPosition = 0;
 
   //event details data
-  Map<String, dynamic> eventDetail = {};
+  List<Event> eventDetail = [];
   Map<String, dynamic> infoDuration = {};
 
   @override
@@ -95,86 +99,92 @@ class _MapPageState extends State<MapScreen> {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
 
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        GoogleMap(
-          zoomControlsEnabled: false,
-          myLocationButtonEnabled: false,
-          myLocationEnabled: false,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(
-              current.latitude,
-              current.longitude,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamed(context, "/");
+        throw 1;
+      },
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          GoogleMap(
+            zoomControlsEnabled: false,
+            myLocationButtonEnabled: false,
+            myLocationEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                current.latitude,
+                current.longitude,
+              ),
+              zoom: 14,
             ),
-            zoom: 14,
+            onMapCreated: (controller) {
+              googleMapController = controller;
+              googleMapController?.setMapStyle(lightMapStyle);
+            },
+            markers: Set<Marker>.of(markers),
+            polylines: {
+              if (info != null)
+                Polyline(
+                  polylineId: const PolylineId("overview_polyline"),
+                  color: primaryColor,
+                  width: 5,
+                  points: info!.polylinePoints
+                      .map((e) => LatLng(e.latitude, e.longitude))
+                      .toList(),
+                ),
+            },
+            onTap: (_) {
+              setState(() {
+                info = null;
+                sheetPosition = 0;
+                eventDetail = [];
+              });
+            },
+            onCameraIdle: () {
+              setState(() {
+                cameraIsMoving = false;
+                if (eventDetail.isNotEmpty) sheetPosition = 32.h;
+              });
+            },
+            onCameraMoveStarted: () {
+              setState(() {
+                sheetPosition = 0;
+                cameraIsMoving = true;
+              });
+            },
           ),
-          onMapCreated: (controller) {
-            googleMapController = controller;
-            googleMapController?.setMapStyle(lightMapStyle);
-          },
-          markers: Set<Marker>.of(markers),
-          polylines: {
-            if (info != null)
-              Polyline(
-                polylineId: const PolylineId("overview_polyline"),
-                color: primaryColor,
-                width: 5,
-                points: info!.polylinePoints
-                    .map((e) => LatLng(e.latitude, e.longitude))
-                    .toList(),
-              ),
-          },
-          onTap: (_) {
-            setState(() {
-              info = null;
-              sheetPosition = 0;
-              eventDetail = {};
-            });
-          },
-          onCameraIdle: () {
-            setState(() {
-              cameraIsMoving = false;
-              if (eventDetail.isNotEmpty) sheetPosition = 32.h;
-            });
-          },
-          onCameraMoveStarted: () {
-            setState(() {
-              sheetPosition = 0;
-              cameraIsMoving = true;
-            });
-          },
-        ),
 
-        // text app bar
-        const TextBar(),
+          // text app bar
+          const TextBar(),
 
-        // event detail dialog
-        eventDetail.isEmpty // check if event detail is empty
-            ? const SizedBox()
-            : LocatorEventDetail(
-                sheetPosition: sheetPosition,
-                data: eventDetail,
-                duration: infoDuration,
-                getDirection: () {
-                  double lat = eventDetail["lat"] ?? 0.0;
-                  double lng = eventDetail["lng"] ?? 0.0;
+          // event detail dialog
+          eventDetail.isEmpty // check if event detail is empty
+              ? const SizedBox()
+              : LocatorEventDetail(
+                  sheetPosition: sheetPosition,
+                  event: eventDetail.first,
+                  duration: infoDuration,
+                  getDirection: () {
+                    double lat = eventDetail.first.latlng["lat"] ?? 0.0;
+                    double lng = eventDetail.first.latlng["lng"] ?? 0.0;
 
-                  getDirections(
-                    LatLng(
-                      lat,
-                      lng,
-                    ),
-                  );
-                },
-              ),
+                    getDirections(
+                      LatLng(
+                        lat,
+                        lng,
+                      ),
+                    );
+                  },
+                ),
 
-        // icon button to center the map to a given location from the map controller
-        CenterFocusWidget(
-          googleMapController: googleMapController,
-          currentLocation: current,
-        ),
-      ],
+          // icon button to center the map to a given location from the map controller
+          CenterFocusWidget(
+            googleMapController: googleMapController,
+            currentLocation: current,
+          ),
+        ],
+      ),
     );
   }
 
@@ -203,12 +213,12 @@ class _MapPageState extends State<MapScreen> {
   }
 
   // add marker function
-  Marker addMarkers({required Map<String, dynamic> event}) {
-    double lat = event["lat"] ?? 0.0;
-    double lng = event["lng"] ?? 0.0;
+  Marker addMarkers({required Event event}) {
+    double lat = event.latlng["lat"] ?? 0.0;
+    double lng = event.latlng["lng"] ?? 0.0;
 
     LatLng pos = LatLng(lat, lng);
-    String id = event["id"] ?? "";
+    String id = event.id;
 
     Marker marker = Marker(
       position: pos,
@@ -216,7 +226,7 @@ class _MapPageState extends State<MapScreen> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       onTap: () async {
         setState(() {
-          eventDetail = {};
+          eventDetail = [];
           info = null;
           infoDuration = {};
         });
@@ -249,11 +259,11 @@ class _MapPageState extends State<MapScreen> {
   }
 
   // Function to toggle the sheet's position
-  void _toggleSheet(Map<String, dynamic> event) {
+  void _toggleSheet(event) {
     setState(() {
       sheetPosition =
           sheetPosition == 0 ? 32.h : 0; // Adjust the height as needed
-      eventDetail = event;
+      eventDetail = [event];
     });
   }
 }

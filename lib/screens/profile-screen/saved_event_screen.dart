@@ -1,9 +1,11 @@
-import 'package:cruise/widgets/home_screen_widgets/rec_event_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../data.dart';
+import '../../providers/event_provider.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
+import '../../widgets/home_screen_widgets/rec_event_tile.dart';
 
 class SavedEventScreen extends StatelessWidget {
   static const routeName = "/SavedEventScreen";
@@ -12,6 +14,8 @@ class SavedEventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventProvider = Provider.of<EventProvider>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -28,12 +32,10 @@ class SavedEventScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemCount: event.length,
-                itemBuilder: (ctx, index) => event[index]["isSaved"] == true
-                    ? RecEventTile(
-                        fromSave: true,
-                        data: event[index],
-                      )
-                    : const SizedBox(),
+                itemBuilder: (ctx, index) => RecEventTile(
+                  fromSave: true,
+                  event: eventProvider.events.first,
+                ),
               ),
             ),
           ],

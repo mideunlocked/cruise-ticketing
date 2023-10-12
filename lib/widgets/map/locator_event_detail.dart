@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
 import 'detail_image_widget.dart';
 import 'event_detail_column.dart';
 import 'event_duration_widget.dart';
@@ -13,14 +14,14 @@ class LocatorEventDetail extends StatefulWidget {
     super.key,
     required this.sheetPosition,
     required this.getDirection,
-    required this.data,
+    required this.event,
     required this.duration,
   });
 
   double sheetPosition;
   final Map<String, dynamic> duration;
   final Function getDirection;
-  final Map<String, dynamic> data;
+  final Event event;
 
   @override
   State<LocatorEventDetail> createState() => _LocatorEventDetailState();
@@ -74,7 +75,7 @@ class _LocatorEventDetailState extends State<LocatorEventDetail> {
                   children: [
                     // display event image
                     DetailImageWidget(
-                      image: widget.data["imageUrl"] ?? "",
+                      image: widget.event.imageUrl,
                     ),
 
                     // some spacing
@@ -114,7 +115,9 @@ class _LocatorEventDetailState extends State<LocatorEventDetail> {
                         ),
                         color: Colors.grey,
                       ),
-
+                      SizedBox(
+                        width: 2.w,
+                      ),
                       // go to even screen button
                       GoToEventScreen(
                         widget: widget,

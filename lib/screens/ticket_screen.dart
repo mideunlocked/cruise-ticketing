@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../data.dart';
+import '../providers/event_provider.dart';
 import '../widgets/general_widgets/custom_app_bar.dart';
 import '../widgets/ticket_widgets/event_detail_box.dart';
 import '../widgets/ticket_widgets/qr_code_widget.dart';
@@ -19,8 +20,7 @@ class TicketScreen extends StatelessWidget {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
 
-    // custom data
-    var data = event[0];
+    final eventProvider = Provider.of<EventProvider>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -68,7 +68,7 @@ class TicketScreen extends StatelessWidget {
 
                                 // ticket event details (name, date, time, venue, category, price)
                                 EventDetailBox(
-                                  data: data,
+                                  event: eventProvider.events.first,
                                 ),
                               ],
                             ),

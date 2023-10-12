@@ -4,16 +4,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
+import '../../models/event.dart';
 import '../../screens/event_screens/event_screen.dart';
+import '../general_widgets/custom_image_error_widget.dart';
+import '../general_widgets/custom_loading_indicator.dart';
 import 'event_name_date_widget.dart';
 
 class NearByTile extends StatefulWidget {
   const NearByTile({
     super.key,
-    required this.data,
+    required this.event,
   });
 
-  final dynamic data; // get event data
+  final Event event; // get event data
 
   @override
   State<NearByTile> createState() => _NearByTileState();
@@ -27,10 +30,12 @@ class _NearByTileState extends State<NearByTile> {
     super.didChangeDependencies();
 
     // var holding passed data from parent
-    final passedData = widget.data;
+    final passedData = widget.event;
+    final lat = passedData.latlng["lat"];
+    final lng = passedData.latlng["lng"];
 
     // calling function to get distance and duration
-    await getDistanceDuration(passedData);
+    await getDistanceDuration(lat, lng);
   }
 
   @override
@@ -42,6 +47,8 @@ class _NearByTileState extends State<NearByTile> {
     // bool checkMode =
     //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
+    double imageHeight = 12.h;
+
     return Stack(
       alignment: Alignment.bottomLeft,
       children: [
@@ -51,7 +58,9 @@ class _NearByTileState extends State<NearByTile> {
             context,
             MaterialPageRoute(
               builder: (ctx) => EventScreen(
-                  durationData: durationData ?? {}, eventData: widget.data),
+                durationData: durationData ?? {},
+                event: widget.event,
+              ),
             ),
           ),
           child: Container(
@@ -72,10 +81,23 @@ class _NearByTileState extends State<NearByTile> {
                     top: Radius.circular(10),
                   ),
                   child: Image.network(
-                    widget.data["imageUrl"],
-                    height: 12.h,
+                    widget.event.imageUrl,
+                    height: imageHeight,
                     width: 100.w,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return CustomLoadingIndicator(
+                        height: imageHeight,
+                        width: null,
+                      );
+                    },
+                    errorBuilder: (ctx, _, stacktrace) {
+                      return SizedBox(
+                        height: imageHeight,
+                        child: const CustomImageErrorWidget(),
+                      );
+                    },
                   ),
                 ),
 
@@ -87,7 +109,7 @@ class _NearByTileState extends State<NearByTile> {
                     children: [
                       // custom widget holding event date, day and name
                       EventNameAndDateWidget(
-                        data: widget.data,
+                        event: widget.event,
                         isStart: true,
                         largeText: false,
                       ),
@@ -99,7 +121,7 @@ class _NearByTileState extends State<NearByTile> {
 
                       // venue text widget
                       Text(
-                        widget.data["venue"] ?? "",
+                        widget.event.venue,
                         style: TextStyle(
                           fontSize: 8.sp,
                           color: Colors.black,
@@ -161,7 +183,7 @@ class _NearByTileState extends State<NearByTile> {
   // function to get user current location and calculating the
   //distance between current location and destination (event location)
   // collecting event LatLng
-  Future<dynamic> getDistanceDuration(dynamic passedData) async {
+  Future<dynamic> getDistanceDuration(lat, lng) async {
     LatLng? currentPosition;
     // request persmission if null and get user current location
     await Geolocator.getCurrentPosition().then((value) {
@@ -175,8 +197,8 @@ class _NearByTileState extends State<NearByTile> {
     // retieving and passing event
     //Lat and Lng and decalring it to a variable destination
     final destination = LatLng(
-      passedData["lat"],
-      passedData["lng"],
+      lat,
+      lng,
     );
 
     // passed the current location coordinates and destiantion coordinates

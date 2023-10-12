@@ -1,7 +1,9 @@
+import 'package:cruise/widgets/general_widgets/shimmer_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../general_widgets/custom_back_button.dart';
+import '../general_widgets/custom_loading_indicator.dart';
 import '../general_widgets/save_event_button.dart';
 
 class EventImageWidget extends StatelessWidget {
@@ -18,6 +20,8 @@ class EventImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double imageHeight = 65.h;
+
     return ShaderMask(
       shaderCallback: (rect) {
         // adds a linear gradient to the image (makes the bottom shaded)
@@ -33,9 +37,21 @@ class EventImageWidget extends StatelessWidget {
           // event image
           Image.network(
             imageUrl,
-            height: 65.h,
+            height: imageHeight,
             width: 100.w,
             fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return CustomLoadingIndicator(
+                height: imageHeight,
+                width: null,
+              );
+            },
+            errorBuilder: (ctx, _, stacktrace) {
+              return ShimmerLoader(
+                height: imageHeight,
+              );
+            },
           ),
 
           // custom back button

@@ -7,7 +7,10 @@ import 'padded_widget_event_screen.dart';
 class WhosGoing extends StatelessWidget {
   const WhosGoing({
     super.key,
+    required this.attendees,
   });
+
+  final List<dynamic> attendees;
 
   @override
   Widget build(BuildContext context) {

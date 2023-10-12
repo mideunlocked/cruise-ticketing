@@ -7,11 +7,13 @@ class CustomButton extends StatelessWidget {
     required this.title,
     required this.function,
     this.isInactive = false,
+    this.radius = 5,
   });
 
   final String title;
   final Function function;
   final bool isInactive;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class CustomButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isInactive ? primaryColor.withOpacity(0.2) : primaryColor,
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(radius),
         ),
         alignment: Alignment.center,
         child: Text(

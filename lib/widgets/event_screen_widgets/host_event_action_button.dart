@@ -16,12 +16,6 @@ class HostEventActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic demoPricing = [
-      {"category": "Regular", "price": "NGN 10000", "quantity": "100"},
-      {"category": "VIP", "price": "NGN 25000", "quantity": "100"},
-      {"category": "VVIP", "price": "NGN 50000", "quantity": "50"},
-      {"category": "Table for 10", "price": "NGN 200000", "quantity": "50"},
-    ];
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -31,7 +25,7 @@ class HostEventActionButton extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (ctx) => AnalysisScreen(
-                  pricing: demoPricing,
+                  pricing: pricing,
                   data: demo,
                 ),
               ),

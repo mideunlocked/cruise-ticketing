@@ -27,7 +27,7 @@ class EventDetailColumn extends StatelessWidget {
         SizedBox(
           width: 55.w,
           child: Text(
-            widget.data["name"] ?? "",
+            widget.event.name,
             softWrap: true,
             overflow: TextOverflow.clip,
             style: TextStyle(
@@ -45,7 +45,7 @@ class EventDetailColumn extends StatelessWidget {
         SizedBox(
           width: 55.w,
           child: Text(
-            widget.data["venue"] ?? "",
+            widget.event.venue,
             maxLines: 2,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
@@ -80,7 +80,7 @@ class EventDetailColumn extends StatelessWidget {
 
               // event date
               Text(
-                widget.data["date"] ?? "",
+                widget.event.date.year.toString(),
                 style: TextStyle(
                   fontSize: 6.sp,
                   color: Colors.grey,

@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
 import '../../screens/event_screens/event_screen.dart';
 import 'event_price_container.dart';
 import 'status_tile.dart';
 import 'ticket_detail_tile.dart';
 
 class EventDetailBox extends StatelessWidget {
-  const EventDetailBox({super.key, required this.data});
+  const EventDetailBox({
+    super.key,
+    required this.event,
+  });
 
-  final Map<String, dynamic> data;
+  final Event event;
 
   @override
   Widget build(BuildContext context) {
     // edgeinstets for details tile
     var detailTileEdgeInsets = EdgeInsets.only(left: 6.w, right: 4.w);
-    var isValid = data["isValid"] == true;
+    var isValid = event.isValid == true;
 
     return SizedBox(
       height: 32.h,
@@ -33,13 +37,13 @@ class EventDetailBox extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (ctx) => EventScreen(
                       durationData: const {},
-                      eventData: data,
+                      event: event,
                     ),
                   ),
                 ),
                 // event name text widget
                 child: Text(
-                  data["name"] ?? "",
+                  event.name,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w900,
@@ -60,21 +64,21 @@ class EventDetailBox extends StatelessWidget {
           TicketDetailTile(
             edgeInsets: detailTileEdgeInsets,
             iconUrl: "calendar",
-            text: data["date"] ?? "",
+            text: event.date.year.toString(),
           ),
 
           // event time text
           TicketDetailTile(
             edgeInsets: detailTileEdgeInsets,
             iconUrl: "clock",
-            text: data["time"] ?? "",
+            text: event.time.toString(),
           ),
 
           // event venue text
           TicketDetailTile(
             edgeInsets: detailTileEdgeInsets,
             iconUrl: "placeholder",
-            text: data["venue"] ?? "",
+            text: event.venue,
           ),
 
           StatusTile(
@@ -85,7 +89,7 @@ class EventDetailBox extends StatelessWidget {
           // event price and category container
           EventPriceContainer(
             detailTileEdgeInsets: detailTileEdgeInsets,
-            data: data,
+            event: event,
           ),
         ],
       ),
