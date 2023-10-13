@@ -1,3 +1,4 @@
+import 'package:cruise/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -9,7 +10,7 @@ import '../../widgets/event_screen_widgets/buy_tickets_button.dart';
 import '../../widgets/event_screen_widgets/custom_tab_bar.dart';
 import '../../widgets/event_screen_widgets/details_widget.dart';
 import '../../widgets/event_screen_widgets/event_image_widget.dart';
-// import '../../widgets/event_screen_widgets/host_event_action_button.dart';
+import '../../widgets/event_screen_widgets/host_event_action_button.dart';
 
 class EventScreen extends StatefulWidget {
   static const routeName = "/EventScreen";
@@ -41,7 +42,9 @@ class _EventScreenState extends State<EventScreen> {
   Widget build(BuildContext context) {
     var sizedBox = SizedBox(height: 3.h);
 
-    final eventProvider = Provider.of<EventProvider>(context);
+    var eventProvider = Provider.of<EventProvider>(context);
+    var userProvider = Provider.of<UsersProvider>(context);
+    var userData = userProvider.userData;
 
     return WillPopScope(
       onWillPop: () async {
@@ -130,12 +133,13 @@ class _EventScreenState extends State<EventScreen> {
 
         // buy ticket floating action button which also
         //intiates the pricing and category bottom sheet
-        floatingActionButton: BuyTicketButton(
-          event: widget.event,
-        ),
-        // floatingActionButton: HostEventActionButton(
-        //   event: widget.event,
-        // ),
+        floatingActionButton: userData.id != widget.event.id
+            ? BuyTicketButton(
+                event: widget.event,
+              )
+            : HostEventActionButton(
+                event: widget.event,
+              ),
       ),
     );
   }

@@ -40,6 +40,8 @@ class CustomTextField extends StatelessWidget {
         vertical: 2.h,
       ),
       child: TextFormField(
+        controller: controller,
+        focusNode: focusNode,
         style: bodyMedium,
         cursorColor: primaryColor,
         textInputAction: inputAction,

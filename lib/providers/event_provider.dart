@@ -19,7 +19,7 @@ class EventProvider with ChangeNotifier {
 - Desginated Driver Program
 - Fire Safety
 """,
-      hostId: "12345",
+      hostId: "0",
       latlng: {
         "lat": 6.499952,
         "lng": 3.346991,
@@ -68,7 +68,14 @@ class EventProvider with ChangeNotifier {
         "Rave",
         "Photograph",
       ],
-      attendees: [],
+      attendees: [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+      ],
       isPrivate: false,
       timestamp: DateTime.now(),
       description: """

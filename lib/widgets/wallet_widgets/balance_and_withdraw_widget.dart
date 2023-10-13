@@ -1,3 +1,4 @@
+import 'package:cruise/widgets/general_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -82,12 +83,9 @@ class _BalanceAndWithdrawWidgetState extends State<BalanceAndWithdrawWidget> {
             ),
           ),
           SizedBox(height: 1.h),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(primaryColor),
-            ),
-            onPressed: () {},
-            child: const Text("Withdraw"),
+          CustomButton(
+            function: () {},
+            title: "Withdraw",
           ),
         ],
       ),

@@ -40,6 +40,7 @@ class TransactionsTile extends StatelessWidget {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: isDeposit ? Colors.green : null,
+          fontSize: 10.sp,
         ),
       ),
       shape: const Border(

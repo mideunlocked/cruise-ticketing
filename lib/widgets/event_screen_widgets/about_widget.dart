@@ -32,7 +32,9 @@ class About extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // widget contains some info about the host
-        const AboutHost(),
+        AboutHost(
+          hostId: widget.event.hostId,
+        ),
 
         // some space
         sizedBox,

@@ -1,11 +1,13 @@
-import 'package:cruise/widgets/general_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../helpers/date_time_formatting.dart';
+import '../../models/users.dart';
 import '../../widgets/edit_profile_widgets/custom_text_field.dart';
 import '../../widgets/edit_profile_widgets/profile_input_container.dart';
 import '../../widgets/edit_profile_widgets/select_gender_widget.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
+import '../../widgets/general_widgets/custom_button.dart';
 import '../../widgets/general_widgets/profile_image.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -18,17 +20,25 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final nameController = TextEditingController();
-  final usernameController = TextEditingController();
-  final emailController = TextEditingController();
-  final bioController = TextEditingController();
-  final numberController = TextEditingController();
+  String imageUrl = "";
+  String name = "";
 
-  final nameNode = FocusNode();
-  final usernameNode = FocusNode();
-  final emailNode = FocusNode();
-  final bioNode = FocusNode();
-  final numberNode = FocusNode();
+  var nameController = TextEditingController();
+  var usernameController = TextEditingController();
+  var emailController = TextEditingController();
+  var bioController = TextEditingController();
+  var numberController = TextEditingController();
+
+  var nameNode = FocusNode();
+  var usernameNode = FocusNode();
+  var emailNode = FocusNode();
+  var bioNode = FocusNode();
+  var numberNode = FocusNode();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
@@ -66,6 +76,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       height: 1.h,
     );
 
+    getAndSetUserData();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -80,10 +92,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const ProfileImage(
-                        imageUrl:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTApbxj4499GJJWMYvKUVnzMUBJBt1b_Aob0A&usqp=CAU",
+                      ProfileImage(
+                        imageUrl: imageUrl,
                         radius: 70.0,
+                        userId: "",
+                        isAuthUser: true,
                       ),
                       sizedBox,
                       TextButton(
@@ -100,6 +113,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         label: "Name",
                         controller: nameController,
                         focusNode: nameNode,
+                      ),
+                      CustomTextField(
+                        label: "Username",
+                        controller: usernameController,
+                        focusNode: usernameNode,
                       ),
                       CustomTextField(
                         label: "Email",
@@ -152,7 +170,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void showBirthdayPicker() async {
-    final db = await showDatePicker(
+    var db = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1900, 1, 1),
@@ -175,5 +193,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         dateOfBirth = "${db.day}/${db.month}/${db.year}";
       });
     }
+  }
+
+  void getAndSetUserData() {
+    var arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    Users user = arguments["user"] as Users;
+
+    setState(() {
+      nameController = TextEditingController(text: user.name);
+      usernameController = TextEditingController(text: user.username);
+      emailController = TextEditingController(text: user.email);
+      numberController = TextEditingController(text: user.number);
+      bioController = TextEditingController(text: user.bio);
+
+      imageUrl = user.imageUrl;
+      userGender = user.gender;
+      dateOfBirth = DateTimeFormatting.formatDateTime(user.dateOfBirth);
+    });
   }
 }

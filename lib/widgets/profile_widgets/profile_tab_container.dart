@@ -21,6 +21,7 @@ class ProfileTabContainer extends StatelessWidget {
       onTap: () {
         toggleTab();
       },
+      splashColor: Colors.transparent,
       child: Container(
         width: 50.w,
         height: 8.h,

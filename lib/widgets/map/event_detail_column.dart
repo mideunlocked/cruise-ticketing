@@ -65,6 +65,7 @@ class EventDetailColumn extends StatelessWidget {
                 imageUrl:
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTApbxj4499GJJWMYvKUVnzMUBJBt1b_Aob0A&usqp=CAU",
                 radius: 10.sp,
+                userId: widget.event.hostId,
               ),
 
               // some spacing

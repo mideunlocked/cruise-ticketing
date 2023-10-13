@@ -1,25 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 import '../general_widgets/custom_button.dart';
 import '../general_widgets/profile_image.dart';
 import 'user_number_data.dart';
 
-class UserDetailCard extends StatelessWidget {
+class UserDetailCard extends StatefulWidget {
   const UserDetailCard({
     super.key,
     required this.of,
     required this.color,
+    required this.userId,
   });
 
   final ThemeData of;
   final Color? color;
+  final String userId;
+
+  @override
+  State<UserDetailCard> createState() => _UserDetailCardState();
+}
+
+class _UserDetailCardState extends State<UserDetailCard> {
+  Users? user;
+  dynamic userNumbers;
+  bool isCurrentUser = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
     var sizedBox = SizedBox(
       height: 1.h,
     );
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 3.w),
       child: Padding(
@@ -28,25 +50,25 @@ class UserDetailCard extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 1.h),
-              child: const ProfileImage(
-                imageUrl:
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTApbxj4499GJJWMYvKUVnzMUBJBt1b_Aob0A&usqp=CAU",
+              child: ProfileImage(
+                imageUrl: user?.imageUrl ?? "",
                 radius: 70.0,
                 isAuthUser: true,
+                userId: user?.id ?? "",
               ),
             ),
             Text(
-              "John Doe",
+              user?.name ?? "",
               style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Text(
-              "@johndoe",
+              "@${user?.username}",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: of.primaryColor,
+                color: widget.of.primaryColor,
               ),
             ),
             SizedBox(
@@ -56,24 +78,24 @@ class UserDetailCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 UserNumberData(
-                  color: color,
+                  color: widget.color,
                   title: "Hosted",
-                  data: "10",
+                  data: userNumbers["hosted"],
                 ),
                 UserNumberData(
-                  color: color,
+                  color: widget.color,
                   title: "Attended",
-                  data: "51",
+                  data: userNumbers["attended"],
                 ),
                 UserNumberData(
-                  color: color,
+                  color: widget.color,
                   title: "Followers",
-                  data: "100k",
+                  data: userNumbers["followers"],
                 ),
                 UserNumberData(
-                  color: color,
+                  color: widget.color,
                   title: "Following",
-                  data: "121",
+                  data: userNumbers["following"],
                 ),
               ],
             ),
@@ -92,22 +114,44 @@ class UserDetailCard extends StatelessWidget {
               ],
             ),
             sizedBox,
-            const Text(
-              "Passionate event organizer dedicated to creating unforgettable experiences. Expert in coordinating logistics, engaging activities, and ensuring seamless execution. Committed to turning visions into remarkable events.",
+            Text(
+              user?.bio ?? "",
             ),
             SizedBox(
               height: 3.h,
             ),
-            CustomButton(
-              title: "Edit profile",
-              function: () => Navigator.pushNamed(
-                context,
-                "/EditProfileScreen",
-              ),
-            ),
+            !isCurrentUser
+                ? CustomButton(
+                    title: "Follow",
+                    function: () {},
+                  )
+                : CustomButton(
+                    title: "Edit profile",
+                    function: () => Navigator.pushNamed(
+                      context,
+                      "/EditProfileScreen",
+                      arguments: {
+                        "user": user,
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
     );
+  }
+
+  void getUserDetails() {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+    Users userData = userProvider.userData;
+
+    if (userData.id == widget.userId) {
+      isCurrentUser = true;
+      user = userData;
+      userNumbers = userData.getUserNumbersInFormatedString();
+    } else {
+      user = userProvider.getUser(widget.userId);
+      userNumbers = user?.getUserNumbersInFormatedString();
+    }
   }
 }

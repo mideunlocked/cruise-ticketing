@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 import '../general_widgets/profile_image.dart';
 import 'padded_widget_event_screen.dart';
 
-class WhosGoing extends StatelessWidget {
+class WhosGoing extends StatefulWidget {
   const WhosGoing({
     super.key,
     required this.attendees,
   });
 
   final List<dynamic> attendees;
+
+  @override
+  State<WhosGoing> createState() => _WhosGoingState();
+}
+
+class _WhosGoingState extends State<WhosGoing> {
+  List<Users> attendees = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    getAttendees();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,36 +40,54 @@ class WhosGoing extends StatelessWidget {
             width: 100,
           ),
           ProfileImage(
-            imageUrl:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm3RFDZM21teuCMFYx_AROjt-AzUwDBROFww&usqp=CAU",
+            imageUrl: attendees.first.imageUrl,
             radius: 20.sp,
+            userId: attendees.first.id,
           ),
           Padding(
             padding: EdgeInsets.only(left: 8.w),
             child: ProfileImage(
-              imageUrl:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRB-r-33_9ZqU1sAITY2wlJNXYt-qkzsLszA&usqp=CAU",
+              imageUrl: attendees[1].imageUrl,
               radius: 20.sp,
+              userId: attendees[1].id,
             ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 16.w),
             child: ProfileImage(
-              imageUrl:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPCjXb5kLk4GFjjgcpHIJfruGGZXUctuhtBw&usqp=CAU",
+              imageUrl: attendees[2].imageUrl,
               radius: 20.sp,
+              userId: attendees[2].id,
             ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: ProfileImage(
-              imageUrl:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5THWiBbv_RWTA-v_XImaLNEJj-IMaKUlpVg&usqp=CAU",
+              imageUrl: attendees[3].imageUrl,
               radius: 20.sp,
+              userId: attendees[3].id,
             ),
           ),
         ],
       ),
     );
+  }
+
+  void getAttendees() {
+    dynamic id;
+
+    for (id in widget.attendees) {
+      Users user;
+
+      user = getUser(id);
+
+      attendees.add(user);
+    }
+  }
+
+  Users getUser(String userId) {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
+    return userProvider.getUser(userId);
   }
 }

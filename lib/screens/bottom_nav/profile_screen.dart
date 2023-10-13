@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../providers/event_provider.dart';
+import '../../providers/users_provider.dart';
+import '../../widgets/general_widgets/empty_list_widget.dart';
 import '../../widgets/home_screen_widgets/event_today_tile.dart';
 import '../../widgets/profile_widgets/profile_app_bar.dart';
 import '../../widgets/profile_widgets/profile_screen_pad.dart';
@@ -28,6 +30,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var color = bodyMedium?.color;
 
     final eventProvider = Provider.of<EventProvider>(context);
+    final userProvider = Provider.of<UsersProvider>(context, listen: false);
+    var userData = userProvider.userData;
+
+    const emptyPastEvents = EmptyListWidget(
+      title: "No past events",
+      subTitle: "No past events founds for this user",
+    );
+    const emptyUpcomingEvents = EmptyListWidget(
+      title: "No upcoming events",
+      subTitle: "No upcoming events founds for this user",
+    );
+    const emptyEventsList = EmptyListWidget(
+      title: "No events",
+      subTitle: "No events founds for this user",
+    );
 
     return WillPopScope(
       onWillPop: () async {
@@ -50,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     UserDetailCard(
                       of: of,
                       color: color,
+                      userId: userData.id,
                     ),
                     SizedBox(
                       height: 1.h,
@@ -73,26 +91,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(
                       height: 1.h,
                     ),
-                    ProfileScreenPad(
-                      child: isPast == true
-                          ? ListView(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              children: eventProvider.events
-                                  .map(
-                                    (e) => EventListTile(event: e),
+                    SizedBox(
+                      height: 60.h,
+                      child: ProfileScreenPad(
+                        child: userData.hosted.isEmpty
+                            ? emptyEventsList
+                            : isPast == true
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    children: eventProvider.events.where((e) {
+                                      if (e.hostId == userData.id &&
+                                          e.isValid == false) {
+                                        return true;
+                                      }
+
+                                      return false;
+                                    }).isEmpty
+                                        ? [emptyPastEvents]
+                                        : eventProvider.events
+                                            .where((e) {
+                                              if (e.hostId == userData.id &&
+                                                  e.isValid == false) {
+                                                return true;
+                                              }
+
+                                              return false;
+                                            })
+                                            .map(
+                                              (e) => EventListTile(event: e),
+                                            )
+                                            .toList(),
                                   )
-                                  .toList(),
-                            )
-                          : ListView(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              children: eventProvider.events
-                                  .map(
-                                    (e) => EventListTile(event: e),
-                                  )
-                                  .toList(),
-                            ),
+                                : ListView(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    children: eventProvider.events.where((e) {
+                                      if (e.hostId == userData.id &&
+                                          e.isValid == true) {
+                                        return true;
+                                      }
+
+                                      return false;
+                                    }).isEmpty
+                                        ? [emptyUpcomingEvents]
+                                        : eventProvider.events
+                                            .where((e) {
+                                              if (e.hostId == userData.id &&
+                                                  e.isValid == true) {
+                                                return true;
+                                              }
+
+                                              return false;
+                                            })
+                                            .map(
+                                              (e) => EventListTile(event: e),
+                                            )
+                                            .toList(),
+                                  ),
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,

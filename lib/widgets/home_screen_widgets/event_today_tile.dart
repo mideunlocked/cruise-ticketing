@@ -138,6 +138,7 @@ class _EventTodayTileState extends State<EventListTile> {
                           imageUrl:
                               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTApbxj4499GJJWMYvKUVnzMUBJBt1b_Aob0A&usqp=CAU",
                           radius: 8.sp,
+                          userId: widget.event.hostId,
                         ),
 
                         // some space

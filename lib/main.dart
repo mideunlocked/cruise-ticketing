@@ -1,3 +1,4 @@
+import 'package:cruise/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -34,6 +35,9 @@ class MainApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (ctx) => TicketProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => UsersProvider(),
           ),
         ],
         child: MaterialApp(
