@@ -12,4 +12,14 @@ class TicketProvider with ChangeNotifier {
   void addTicket(Ticket ticket) {
     _tickets.add(ticket);
   }
+
+  dynamic checkTicket(String eventId) {
+    Ticket ticket;
+
+    for (ticket in _tickets) {
+      ticket.eventId == eventId;
+      return ticket;
+    }
+    return false;
+  }
 }

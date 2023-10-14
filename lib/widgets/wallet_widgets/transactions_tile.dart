@@ -1,3 +1,4 @@
+import 'package:cruise/helpers/date_time_formatting.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -7,8 +8,10 @@ class TransactionsTile extends StatelessWidget {
     required this.isVisible,
     required this.amount,
     required this.isDeposit,
+    required this.timestamp,
   });
 
+  final DateTime timestamp;
   final bool isVisible;
   final String amount;
   final bool isDeposit;
@@ -18,6 +21,9 @@ class TransactionsTile extends StatelessWidget {
     var of = Theme.of(context);
     var textTheme = of.textTheme;
     var bodyMedium = textTheme.bodyMedium;
+
+    var time = DateTimeFormatting.formatedTime(timestamp);
+    String sign = isDeposit ? "+" : "-";
 
     return ListTile(
       minVerticalPadding: 2.h,
@@ -34,9 +40,9 @@ class TransactionsTile extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
       ),
-      subtitle: const Text("5:42 PM"),
+      subtitle: Text(time),
       trailing: Text(
-        !isVisible ? "" : amount,
+        !isVisible ? "" : sign + amount,
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: isDeposit ? Colors.green : null,

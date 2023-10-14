@@ -1,5 +1,6 @@
 import 'package:cruise/screens/ticket_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/ticket.dart';
@@ -38,8 +39,11 @@ class PurchaseStatusWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              "assets/icons/check.png",
+            LottieBuilder.asset(
+              "assets/lottie/success_check.json",
+              height: 15.h,
+              width: 40.w,
+              fit: BoxFit.cover,
             ),
             sizedBoxH5,
             Text(

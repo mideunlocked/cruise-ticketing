@@ -12,4 +12,11 @@ class Pricing {
     required this.quantity,
     required this.quantityLeft,
   });
+
+  bool isSoldOut() {
+    if (quantityLeft == 0) {
+      return true;
+    }
+    return false;
+  }
 }

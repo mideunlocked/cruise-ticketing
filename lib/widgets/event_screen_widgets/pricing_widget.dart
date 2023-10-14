@@ -1,5 +1,6 @@
 import 'package:cruise/models/pricing.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
 class PricingWidget extends StatelessWidget {
@@ -21,6 +22,7 @@ class PricingWidget extends StatelessWidget {
     var bodyMedium = textTheme.bodyMedium;
 
     bool isSelected = selectedIndex == index || selectedIndex == -1;
+    bool isSoldOut = price.isSoldOut();
 
     return Container(
       height: 8.h,
@@ -29,7 +31,6 @@ class PricingWidget extends StatelessWidget {
         vertical: 1.h,
       ),
       padding: EdgeInsets.symmetric(
-        vertical: 2.h,
         horizontal: 4.w,
       ),
       decoration: BoxDecoration(
@@ -52,6 +53,16 @@ class PricingWidget extends StatelessWidget {
                   ? null
                   : bodyMedium?.color?.withOpacity(
                       0.4), // checks if this category is selected and assigns color values to show it
+            ),
+          ),
+
+          Visibility(
+            visible: isSoldOut,
+            child: LottieBuilder.asset(
+              "assets/lottie/sold_out.json",
+              height: 10.h,
+              width: 15.w,
+              fit: BoxFit.cover,
             ),
           ),
 

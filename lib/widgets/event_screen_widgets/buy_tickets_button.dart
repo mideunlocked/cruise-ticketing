@@ -28,6 +28,7 @@ class BuyTicketButton extends StatelessWidget {
         ],
       ),
       child: FloatingActionButton(
+        tooltip: "Get ticket",
         backgroundColor: primaryColor,
         heroTag: "buy-ticket",
         onPressed: () => showBuyTicket(context),

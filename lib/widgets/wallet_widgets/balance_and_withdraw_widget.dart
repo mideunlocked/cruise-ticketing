@@ -1,8 +1,7 @@
-import 'package:cruise/widgets/general_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../general_widgets/custom_app_bar.dart';
+import '../general_widgets/custom_button.dart';
 
 // ignore: must_be_immutable
 class BalanceAndWithdrawWidget extends StatefulWidget {
@@ -37,10 +36,6 @@ class _BalanceAndWithdrawWidgetState extends State<BalanceAndWithdrawWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CustomAppBar(
-            title: "Wallet",
-            bottomPadding: 2.h,
-          ),
           const Text(
             "🇳🇬 Nigerian Naira",
             style: TextStyle(

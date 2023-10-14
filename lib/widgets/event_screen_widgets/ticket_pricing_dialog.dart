@@ -75,21 +75,23 @@ class _TicketPricingDialogState extends State<TicketPricingDialog> {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (ctx, index) => InkWell(
                 onTap: () {
-                  if (selectedIndex == index) {
-                    setState(() {
-                      selectedIndex = -1;
-                      selectedPrice = "";
-                      selectedCatgeory = "";
-                    });
-                  } else {
-                    setState(() {
-                      selectedIndex = index; // pass currently selected index
-                      selectedPrice = pricing[index]
-                          .price
-                          .toString(); // pass currently selected price
-                      selectedCatgeory = pricing[index]
-                          .category; // pass currently selected category
-                    });
+                  if (!pricing[index].isSoldOut()) {
+                    if (selectedIndex == index) {
+                      setState(() {
+                        selectedIndex = -1;
+                        selectedPrice = "";
+                        selectedCatgeory = "";
+                      });
+                    } else {
+                      setState(() {
+                        selectedIndex = index; // pass currently selected index
+                        selectedPrice = pricing[index]
+                            .price
+                            .toString(); // pass currently selected price
+                        selectedCatgeory = pricing[index]
+                            .category; // pass currently selected category
+                      });
+                    }
                   }
                 },
 

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class FormatNumber {
   static String formatLargeNumber(int number) {
     const int billion = 1000000000;
@@ -13,5 +15,11 @@ class FormatNumber {
     } else {
       return number.toString();
     }
+  }
+
+  static String addCommas(double number) {
+    String formattedAmount = NumberFormat.decimalPattern().format(number);
+
+    return formattedAmount;
   }
 }

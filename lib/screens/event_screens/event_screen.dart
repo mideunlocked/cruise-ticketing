@@ -1,9 +1,11 @@
+import 'package:cruise/providers/ticket_provider.dart';
 import 'package:cruise/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/event.dart';
+import '../../models/ticket.dart';
 import '../../providers/event_provider.dart';
 import '../../widgets/event_screen_widgets/about_widget.dart';
 import '../../widgets/event_screen_widgets/buy_tickets_button.dart';
@@ -11,6 +13,7 @@ import '../../widgets/event_screen_widgets/custom_tab_bar.dart';
 import '../../widgets/event_screen_widgets/details_widget.dart';
 import '../../widgets/event_screen_widgets/event_image_widget.dart';
 import '../../widgets/event_screen_widgets/host_event_action_button.dart';
+import '../ticket_screen.dart';
 
 class EventScreen extends StatefulWidget {
   static const routeName = "/EventScreen";
@@ -38,6 +41,21 @@ class _EventScreenState extends State<EventScreen> {
   // holds detail is selected
   bool isDetails = false;
 
+  // holds event sold out
+  bool isSoldOut = false;
+
+  // holds ticket if user has event ticket
+  bool hasTicket = false;
+  Ticket? ticket;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isSoldOut = widget.event.analysis.checkSoldOut();
+    checkIfTicket();
+  }
+
   @override
   Widget build(BuildContext context) {
     var sizedBox = SizedBox(height: 3.h);
@@ -64,6 +82,7 @@ class _EventScreenState extends State<EventScreen> {
                 isSaved: eventProvider.savedEvents.contains(widget.event.id),
                 isInitial: widget.isInitial,
                 eventId: widget.event.id,
+                isSoldOut: isSoldOut,
               ),
 
               // this widget holds the name of the event and the custom tab bar
@@ -125,9 +144,22 @@ class _EventScreenState extends State<EventScreen> {
         // buy ticket floating action button which also
         //intiates the pricing and category bottom sheet
         floatingActionButton: userData.id != widget.event.hostId
-            ? BuyTicketButton(
-                event: widget.event,
-              )
+            ? hasTicket
+                ? ViewTicket(
+                    ticket: ticket ??
+                        const Ticket(
+                            price: "0",
+                            status: false,
+                            eventId: "",
+                            category: "",
+                            ticketId: ""),
+                  )
+                : Visibility(
+                    visible: !isSoldOut,
+                    child: BuyTicketButton(
+                      event: widget.event,
+                    ),
+                  )
             : HostEventActionButton(
                 event: widget.event,
               ),
@@ -148,5 +180,63 @@ class _EventScreenState extends State<EventScreen> {
               isAbout = true,
             };
     });
+  }
+
+  void checkIfTicket() {
+    var ticketProvider = Provider.of<TicketProvider>(context, listen: false);
+    var ticketResult = ticketProvider.checkTicket(widget.event.id);
+
+    if (ticketResult != false) {
+      hasTicket = true;
+      ticket = ticketResult;
+    }
+  }
+}
+
+class ViewTicket extends StatelessWidget {
+  const ViewTicket({
+    super.key,
+    required this.ticket,
+  });
+
+  final Ticket ticket;
+
+  @override
+  Widget build(BuildContext context) {
+    var of = Theme.of(context);
+    var primaryColor = of.primaryColor;
+
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: primaryColor.withOpacity(0.6), // Glow color
+            blurRadius: 20.0, // Spread of the glow
+            spreadRadius: 2.0, // Spread radius
+          ),
+        ],
+      ),
+      child: FloatingActionButton(
+        heroTag: "View ticket",
+        tooltip: "View ticket",
+        backgroundColor: primaryColor,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => TicketScreen(
+                ticket: ticket,
+              ),
+            ),
+          );
+        },
+        child: Image.asset(
+          "assets/icons/tickets_white.png",
+          height: 8.h,
+          width: 8.w,
+        ),
+      ),
+    );
   }
 }

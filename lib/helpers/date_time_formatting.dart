@@ -9,6 +9,12 @@ class DateTimeFormatting {
     return formattedDateTime;
   }
 
+  static String formatedTime(DateTime dateTime) {
+    String time = DateFormat('h:mm a').format(dateTime);
+
+    return time;
+  }
+
   static String formatTimeOfDay(TimeOfDay time) {
     return '${time.hour}:${time.minute} ${time.period.name}';
   }

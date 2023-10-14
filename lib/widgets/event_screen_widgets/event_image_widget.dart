@@ -1,5 +1,6 @@
 import 'package:cruise/widgets/general_widgets/shimmer_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
 
 import '../general_widgets/custom_back_button.dart';
@@ -13,16 +14,18 @@ class EventImageWidget extends StatelessWidget {
     required this.isSaved,
     required this.isInitial,
     required this.eventId,
+    required this.isSoldOut,
   });
 
   final String eventId;
   final String imageUrl;
   final bool isSaved;
   final bool isInitial;
+  final bool isSoldOut;
 
   @override
   Widget build(BuildContext context) {
-    double imageHeight = 40.h;
+    double imageHeight = 50.h;
 
     return ShaderMask(
       shaderCallback: (rect) {
@@ -54,6 +57,22 @@ class EventImageWidget extends StatelessWidget {
                 height: imageHeight,
               );
             },
+          ),
+
+          // sold out animation
+          Visibility(
+            visible: isSoldOut,
+            child: Positioned(
+              top: 10.h,
+              left: 10.w,
+              child: Center(
+                child: LottieBuilder.asset(
+                  "assets/lottie/sold_out.json",
+                  height: 30.h,
+                  width: 80.w,
+                ),
+              ),
+            ),
           ),
 
           // custom back button

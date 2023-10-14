@@ -23,6 +23,13 @@ class EventAnalysis {
     required this.soldTicketBreakdown,
   });
 
+  bool checkSoldOut() {
+    if (ticketQuantity == ticketSold) {
+      return true;
+    }
+    return false;
+  }
+
   double getEstimatedRevenue(List<Pricing> pricing) {
     double estimatedRevenue = 0;
     Pricing price;
