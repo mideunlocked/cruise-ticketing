@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
@@ -39,5 +40,15 @@ class LocationHelper {
         ImageConfiguration(size: Size(7.w, 7.w)), "assets/icons/pin.png");
 
     return icon;
+  }
+
+  static Future<LatLng> getLatLngFromAddress(String address) async {
+    List<Location> location =
+        await GeocodingPlatform.instance.locationFromAddress(address);
+
+    double lat = location.first.latitude;
+    double lng = location.first.longitude;
+
+    return LatLng(lat, lng);
   }
 }

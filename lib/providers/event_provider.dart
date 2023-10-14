@@ -10,8 +10,10 @@ class EventProvider with ChangeNotifier {
       id: "0",
       name: "FireMonesters Wine Party",
       date: DateTime(2023, 10, 24),
-      time: TimeOfDay.now(),
+      startTime: TimeOfDay.now(),
+      endTime: const TimeOfDay(hour: 0, minute: 00),
       venue: "Civic center",
+      address: "174 Okota road",
       rules: """
 - 18+
 - Responsible drinking

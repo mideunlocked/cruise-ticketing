@@ -32,44 +32,46 @@ class _WhosGoingState extends State<WhosGoing> {
   @override
   Widget build(BuildContext context) {
     return PaddedWidgetEventScreen(
-      child: Stack(
-        children: [
-          // profile image list of some people attending the event
+      child: widget.attendees.isEmpty
+          ? const SizedBox()
+          : Stack(
+              children: [
+                // profile image list of some people attending the event
 
-          const SizedBox(
-            width: 100,
-          ),
-          ProfileImage(
-            imageUrl: attendees.first.imageUrl,
-            radius: 20.sp,
-            userId: attendees.first.id,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 8.w),
-            child: ProfileImage(
-              imageUrl: attendees[1].imageUrl,
-              radius: 20.sp,
-              userId: attendees[1].id,
+                const SizedBox(
+                  width: 100,
+                ),
+                ProfileImage(
+                  imageUrl: attendees.first.imageUrl,
+                  radius: 20.sp,
+                  userId: attendees.first.id,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8.w),
+                  child: ProfileImage(
+                    imageUrl: attendees[1].imageUrl,
+                    radius: 20.sp,
+                    userId: attendees[1].id,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.w),
+                  child: ProfileImage(
+                    imageUrl: attendees[2].imageUrl,
+                    radius: 20.sp,
+                    userId: attendees[2].id,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: ProfileImage(
+                    imageUrl: attendees[3].imageUrl,
+                    radius: 20.sp,
+                    userId: attendees[3].id,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.w),
-            child: ProfileImage(
-              imageUrl: attendees[2].imageUrl,
-              radius: 20.sp,
-              userId: attendees[2].id,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 24.w),
-            child: ProfileImage(
-              imageUrl: attendees[3].imageUrl,
-              radius: 20.sp,
-              userId: attendees[3].id,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

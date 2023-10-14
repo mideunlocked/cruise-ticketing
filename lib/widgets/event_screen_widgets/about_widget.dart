@@ -25,7 +25,8 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     // gets time from the passed data and splits it so we can have the
     //start time and ending time in a list
-    var time = DateTimeFormatting.formatTimeOfDay(widget.event.time);
+    var start = DateTimeFormatting.formatTimeOfDay(widget.event.startTime);
+    var end = DateTimeFormatting.formatTimeOfDay(widget.event.endTime);
     var date = DateTimeFormatting.formatDateTime(widget.event.date);
 
     return Column(
@@ -59,13 +60,15 @@ class About extends StatelessWidget {
         // date and time widget
         DateTimeWidget(
           date: date,
-          time: time,
+          start: start,
+          end: end,
         ),
 
         // location and venue widget
         LocationVenueWidget(
           venue: widget.event.venue,
-          location: "Event address from lat lng",
+          location: widget.event.address,
+          latlng: widget.event.latlng,
         ),
 
         // some space

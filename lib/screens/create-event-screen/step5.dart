@@ -24,7 +24,15 @@ class Step5 extends StatefulWidget {
 class _Step4State extends State<Step5> {
   bool isFree = true;
 
-  List<Pricing> pricings = [];
+  List<Pricing> pricings = [
+    Pricing(
+      id: 0,
+      category: '',
+      price: 0.0,
+      quantity: 0,
+      quantityLeft: 0,
+    ),
+  ];
   int totalQuantity = 0;
 
   @override
@@ -80,16 +88,19 @@ class _Step4State extends State<Step5> {
                             color: primaryColor.withOpacity(0.7),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              pricings.removeAt(index);
-                              widget.getFunction(pricings);
-                            });
-                          },
-                          child: const Icon(
-                            Icons.delete_rounded,
-                            color: Colors.red,
+                        Visibility(
+                          visible: pricings.length != 1,
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                pricings.removeAt(index);
+                                widget.getFunction(pricings);
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.delete_rounded,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ],

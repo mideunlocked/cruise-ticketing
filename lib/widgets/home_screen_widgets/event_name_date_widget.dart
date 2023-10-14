@@ -30,7 +30,7 @@ class EventNameAndDateWidget extends StatelessWidget {
 
     // gets time from the passed data and splits it so we can have the
     //start time and ending time in a list
-    var time = DateTimeFormatting.formatTimeOfDay(event.time);
+    var time = DateTimeFormatting.formatTimeOfDay(event.startTime);
     var date = DateTimeFormatting.formatDateTime(event.date);
 
     // text span text style

@@ -7,11 +7,13 @@ class DateTimeWidget extends StatelessWidget {
   const DateTimeWidget({
     super.key,
     required this.date,
-    required this.time,
+    required this.start,
+    required this.end,
   });
 
   final String date;
-  final String time;
+  final String start;
+  final String end;
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +73,15 @@ class DateTimeWidget extends StatelessWidget {
                 ),
               ),
 
-              // time text widget
-              Text(time),
+              Row(
+                children: [
+                  // start time text widget
+                  Text("$start - "),
+
+                  // end time text widget
+                  Text(end),
+                ],
+              ),
             ],
           ),
         ],

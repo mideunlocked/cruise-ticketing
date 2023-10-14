@@ -9,7 +9,7 @@ class Step4 extends StatefulWidget {
     required this.getFunction,
   });
 
-  final Function(List<Map<String, dynamic>>) getFunction;
+  final Function(Map<String, dynamic>) getFunction;
 
   @override
   State<Step4> createState() => _Step4State();
@@ -17,9 +17,16 @@ class Step4 extends StatefulWidget {
 
 class _Step4State extends State<Step4> {
   String? selectedDate;
-  String? selectedTime;
+  Map<String, dynamic> selectedTime = {
+    "start": "",
+    "end": "",
+  };
 
-  List<Map<String, dynamic>> dateTime = [];
+  Map<String, dynamic> dateTime = {
+    "date": "",
+    "start": "",
+    "end": "",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -57,16 +64,38 @@ class _Step4State extends State<Step4> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const EventScreenTitleWidget(title: "Time:"),
+            const EventScreenTitleWidget(title: "Start time:"),
             Text(
-              selectedTime ?? "No time selected",
+              selectedTime["start"] != ""
+                  ? selectedTime["start"]
+                  : "No time selected",
               style: selectedStyle,
             ),
           ],
         ),
         sizedBox2,
         ElevatedButton(
-          onPressed: () => showTimeSelector(context),
+          onPressed: () => showTimeSelector(context, "start"),
+          child: const Text("Select time"),
+        ),
+        SizedBox(
+          height: 5.h,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const EventScreenTitleWidget(title: "End time:"),
+            Text(
+              selectedTime["end"] != ""
+                  ? selectedTime["end"]
+                  : "No time selected",
+              style: selectedStyle,
+            ),
+          ],
+        ),
+        sizedBox2,
+        ElevatedButton(
+          onPressed: () => showTimeSelector(context, "end"),
           child: const Text("Select time"),
         ),
       ],
@@ -85,15 +114,16 @@ class _Step4State extends State<Step4> {
     if (date != null) {
       setState(() {
         selectedDate = "${date.day}/${date.month}/${date.year}";
-        dateTime.add(
-          {"date": date},
+        dateTime.update(
+          "date",
+          (value) => date,
         );
       });
     }
     widget.getFunction(dateTime);
   }
 
-  void showTimeSelector(BuildContext context) async {
+  void showTimeSelector(BuildContext context, String key) async {
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -101,9 +131,12 @@ class _Step4State extends State<Step4> {
     );
 
     setState(() {
-      selectedTime = "${time?.hour}:${time?.minute} ${time?.period.name}";
-      dateTime.add(
-        {"time": time},
+      String timeString = "${time?.hour}:${time?.minute} ${time?.period.name}";
+      selectedTime.update(key, (value) => timeString);
+
+      dateTime.update(
+        key,
+        (value) => time,
       );
     });
     widget.getFunction(dateTime);

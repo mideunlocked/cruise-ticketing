@@ -9,16 +9,15 @@ class LocationVenueWidget extends StatelessWidget {
     super.key,
     required this.venue,
     required this.location,
+    required this.latlng,
   });
 
   final String venue;
   final String location;
+  final Map<String, dynamic> latlng;
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var primaryColor = of.primaryColor;
-
     var lightGradient = [
       Colors.black87.withOpacity(0.8),
       Colors.black12,
@@ -102,7 +101,9 @@ class LocationVenueWidget extends StatelessWidget {
           ),
 
           // directs users to google map for further info on getting to the venue
-          GoToGoogleMapIcon(primaryColor: primaryColor),
+          GoToGoogleMapIcon(
+            latlng: latlng,
+          ),
         ],
       ),
     );

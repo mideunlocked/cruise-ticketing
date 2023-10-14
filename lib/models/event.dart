@@ -12,13 +12,15 @@ class Event {
   final String hostId;
   final DateTime date;
   final double rating;
-  final TimeOfDay time;
+  final String address;
   final bool isPrivate;
   final String imageUrl;
   final String videoUrl;
+  final TimeOfDay endTime;
   final int ticketQuantity;
   final String description;
   final DateTime timestamp;
+  final TimeOfDay startTime;
   final List<Pricing> pricing;
   final List<dynamic> features;
   final EventAnalysis analysis;
@@ -29,14 +31,15 @@ class Event {
     required this.id,
     required this.name,
     required this.date,
-    required this.time,
     required this.venue,
     required this.rules,
     required this.hostId,
     required this.latlng,
     required this.rating,
     required this.isValid,
+    required this.address,
     required this.pricing,
+    required this.endTime,
     required this.imageUrl,
     required this.videoUrl,
     required this.analysis,
@@ -44,6 +47,7 @@ class Event {
     required this.attendees,
     required this.isPrivate,
     required this.timestamp,
+    required this.startTime,
     required this.description,
     required this.ticketQuantity,
   });

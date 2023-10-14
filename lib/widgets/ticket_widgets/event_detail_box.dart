@@ -43,7 +43,7 @@ class _EventDetailBoxState extends State<EventDetailBox> {
     // gets time from the passed data and splits it so we can have the
     //start time and ending time in a list
     var time = DateTimeFormatting.formatTimeOfDay(
-      event?.time ?? TimeOfDay.now(),
+      event?.startTime ?? TimeOfDay.now(),
     );
     var date = DateTimeFormatting.formatDateTime(
       event?.date ?? DateTime.now(),

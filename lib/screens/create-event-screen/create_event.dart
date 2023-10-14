@@ -1,13 +1,15 @@
 import 'dart:io';
 
-import 'package:cruise/models/event.dart';
-import 'package:cruise/models/event_analysis.dart';
-import 'package:cruise/providers/event_provider.dart';
+import 'package:cruise/helpers/location_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/event.dart';
+import '../../models/event_analysis.dart';
 import '../../models/pricing.dart';
+import '../../providers/event_provider.dart';
 import '../../widgets/create_event_widgets/step_control.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
 import 'step1.dart';
@@ -16,6 +18,7 @@ import 'step3.dart';
 import 'step4.dart';
 import 'step5.dart';
 import 'step6.dart';
+import 'step7.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const routeName = "/CreateEventScreen";
@@ -34,6 +37,8 @@ class _ListEventState extends State<CreateEventScreen> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final rulesController = TextEditingController();
+  final venueController = TextEditingController();
+  final addressController = TextEditingController();
 
   // all the focus node used in the screen
   final nameNode = FocusNode();
@@ -50,7 +55,7 @@ class _ListEventState extends State<CreateEventScreen> {
   List<dynamic> features = [];
 
   // this will hold the date and time of the event
-  List<Map<String, dynamic>> dateTime = [];
+  Map<String, dynamic> dateTime = {};
 
   // this will hold privacy status
   bool privacy = false;
@@ -63,6 +68,8 @@ class _ListEventState extends State<CreateEventScreen> {
     nameController.dispose();
     descriptionController.dispose();
     rulesController.dispose();
+    venueController.dispose();
+    addressController.dispose();
 
     // dispose all focus nodes
     nameNode.dispose();
@@ -71,6 +78,7 @@ class _ListEventState extends State<CreateEventScreen> {
   }
 
   final _step5FormKey = GlobalKey<FormState>();
+  final _step6FormKey = GlobalKey<FormState>();
   final _step1FormKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -199,6 +207,17 @@ class _ListEventState extends State<CreateEventScreen> {
                         title: const Text(""),
                         isActive: currentStep >= 5,
                         content: Step6(
+                          venueController: venueController,
+                          addressController: addressController,
+                          formKey: _step6FormKey,
+                        ),
+                      ),
+
+                      // 7 step (event privacy and visibilty)
+                      Step(
+                        title: const Text(""),
+                        isActive: currentStep >= 6,
+                        content: Step7(
                           getFunction: getPrivacy,
                         ),
                       ),
@@ -232,7 +251,7 @@ class _ListEventState extends State<CreateEventScreen> {
                           StepControl(
                             // check if the current step if the last then
                             //displays finish else next
-                            title: currentStep == 5 ? "Finish" : "Next",
+                            title: currentStep == 6 ? "Finish" : "Next",
                             function: () {
                               // function variable to proceed step
                               proceed() => setState(() => currentStep++);
@@ -291,7 +310,7 @@ class _ListEventState extends State<CreateEventScreen> {
                                   proceed();
                                 }
                               } else if (currentStep == 3) {
-                                if (dateTime.length != 2) {
+                                if (dateTime.length != 3) {
                                   print(dateTime);
                                   showSnackBar(
                                     scaffoldKey: _scaffoldKey,
@@ -318,6 +337,18 @@ class _ListEventState extends State<CreateEventScreen> {
                                   calculateTotalQuantity();
                                   proceed();
                                 }
+                              } else if (currentStep == 5) {
+                                // validate venue and address text form fields
+                                final isValid =
+                                    _step6FormKey.currentState?.validate();
+
+                                // check if the validation was not successful
+                                if (isValid == false) {
+                                  // throw errors
+                                  return;
+                                } else {
+                                  proceed();
+                                }
                               }
                               // else proceed
                               else {
@@ -338,7 +369,7 @@ class _ListEventState extends State<CreateEventScreen> {
     );
   }
 
-  void getDateTime(List<Map<String, dynamic>> newDateTime) {
+  void getDateTime(Map<String, dynamic> newDateTime) {
     setState(() {
       dateTime = newDateTime;
     });
@@ -401,23 +432,30 @@ class _ListEventState extends State<CreateEventScreen> {
   }
 
   // create event
-  void createEvent() {
+  void createEvent() async {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
 
     int demoId = eventProvider.events.length + 1;
+
+    LatLng latlng = await LocationHelper.getLatLngFromAddress(
+        addressController.text.trim());
+
+    print(latlng);
 
     final response = eventProvider.addEvent(
       Event(
         id: demoId.toString(),
         name: nameController.text.trim(),
-        date: dateTime[0]["date"] as DateTime,
-        time: dateTime[1]["time"] as TimeOfDay,
-        venue: "Whiteley Event Center",
+        date: dateTime["date"] as DateTime,
+        startTime: dateTime["start"] as TimeOfDay,
+        endTime: dateTime["end"] as TimeOfDay,
+        venue: venueController.text.trim(),
+        address: addressController.text.trim(),
         rules: rulesController.text.trim(),
-        hostId: "12345",
+        hostId: "0",
         latlng: {
-          "lat": 6.499952,
-          "lng": 3.346991,
+          "lat": latlng.latitude,
+          "lng": latlng.longitude,
         },
         isValid: true,
         rating: 4.0,
@@ -444,16 +482,20 @@ class _ListEventState extends State<CreateEventScreen> {
       ),
     );
 
-    response == true
-        ? Navigator.pushNamedAndRemoveUntil(
-            context,
-            "/EventCreateSuccessScreen",
-            (route) => false,
-          )
-        : showSnackBar(
-            scaffoldKey: _scaffoldKey,
-            errorMessage:
-                "Something went wrong can't create event, Try again later.",
-          );
+    if (response == true) {
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/EventCreateSuccessScreen",
+          (route) => false,
+        );
+      }
+    } else {
+      showSnackBar(
+        scaffoldKey: _scaffoldKey,
+        errorMessage:
+            "Something went wrong can't create event, Try again later.",
+      );
+    }
   }
 }
