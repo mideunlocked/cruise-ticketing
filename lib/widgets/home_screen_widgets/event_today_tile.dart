@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
 import '../../models/event.dart';
+import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
 import '../general_widgets/custom_loading_indicator.dart';
@@ -23,6 +26,8 @@ class EventListTile extends StatefulWidget {
 }
 
 class _EventTodayTileState extends State<EventListTile> {
+  Users? user;
+
   Map<String, dynamic>? durationData; // should hold duration data
 
   @override
@@ -36,6 +41,8 @@ class _EventTodayTileState extends State<EventListTile> {
 
     // calling function to get distance and duration
     getDistanceDuration(lat, lng);
+
+    getUser();
   }
 
   @override
@@ -135,8 +142,7 @@ class _EventTodayTileState extends State<EventListTile> {
                       children: [
                         // host profile image
                         ProfileImage(
-                          imageUrl:
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTApbxj4499GJJWMYvKUVnzMUBJBt1b_Aob0A&usqp=CAU",
+                          imageUrl: user?.imageUrl ?? "",
                           radius: 8.sp,
                           userId: widget.event.hostId,
                         ),
@@ -146,9 +152,14 @@ class _EventTodayTileState extends State<EventListTile> {
                           width: 2.w,
                         ),
                         // host full name
-                        Text(
-                          "John Doe",
-                          style: TextStyle(fontSize: 8.sp),
+                        SizedBox(
+                          width: 35.w,
+                          child: Text(
+                            user?.name ?? "",
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 8.sp),
+                          ),
                         ),
 
                         // some spacing to push next widget to the extreme
@@ -172,6 +183,12 @@ class _EventTodayTileState extends State<EventListTile> {
         ),
       ),
     );
+  }
+
+  void getUser() {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
+    user = userProvider.getUser(widget.event.hostId);
   }
 
   // custom sized box widget method

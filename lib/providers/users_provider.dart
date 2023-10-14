@@ -12,7 +12,6 @@ class UsersProvider with ChangeNotifier {
     number: "07040225758",
     gender: "Male",
     hosted: [
-      "0",
       1,
       2,
       3,
@@ -318,7 +317,7 @@ class UsersProvider with ChangeNotifier {
       email: "temilade@gmail.com",
       number: "+1234567890",
       gender: "Female",
-      hosted: [],
+      hosted: ["0"],
       videoUrl: "",
       username: "Tems",
       imageUrl:

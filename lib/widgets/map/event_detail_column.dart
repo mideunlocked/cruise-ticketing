@@ -1,16 +1,34 @@
+import 'package:cruise/helpers/date_time_formatting.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 import '../general_widgets/profile_image.dart';
 import 'locator_event_detail.dart';
 
-class EventDetailColumn extends StatelessWidget {
+class EventDetailColumn extends StatefulWidget {
   const EventDetailColumn({
     super.key,
     required this.widget,
   });
 
   final LocatorEventDetail widget;
+
+  @override
+  State<EventDetailColumn> createState() => _EventDetailColumnState();
+}
+
+class _EventDetailColumnState extends State<EventDetailColumn> {
+  Users? user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +45,7 @@ class EventDetailColumn extends StatelessWidget {
         SizedBox(
           width: 55.w,
           child: Text(
-            widget.event.name,
+            widget.widget.event.name,
             softWrap: true,
             overflow: TextOverflow.clip,
             style: TextStyle(
@@ -45,7 +63,7 @@ class EventDetailColumn extends StatelessWidget {
         SizedBox(
           width: 55.w,
           child: Text(
-            widget.event.venue,
+            widget.widget.event.venue,
             maxLines: 2,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
@@ -62,10 +80,9 @@ class EventDetailColumn extends StatelessWidget {
             children: [
               // host image
               ProfileImage(
-                imageUrl:
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTApbxj4499GJJWMYvKUVnzMUBJBt1b_Aob0A&usqp=CAU",
+                imageUrl: user?.imageUrl ?? "",
                 radius: 10.sp,
-                userId: widget.event.hostId,
+                userId: widget.widget.event.hostId,
               ),
 
               // some spacing
@@ -74,14 +91,20 @@ class EventDetailColumn extends StatelessWidget {
               ),
 
               // host name
-              const Text("John Doe"),
+              SizedBox(
+                  width: 25.w,
+                  child: Text(
+                    "${user?.name}",
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                  )),
 
               // some spacing
               const Spacer(),
 
               // event date
               Text(
-                widget.event.date.year.toString(),
+                DateTimeFormatting.formatDateTime(widget.widget.event.date),
                 style: TextStyle(
                   fontSize: 6.sp,
                   color: Colors.grey,
@@ -92,5 +115,11 @@ class EventDetailColumn extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void getUser() {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
+    user = userProvider.getUser(widget.widget.event.hostId);
   }
 }

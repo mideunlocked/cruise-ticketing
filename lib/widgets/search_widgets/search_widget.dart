@@ -10,12 +10,14 @@ class SearchWidget extends StatelessWidget {
     required this.controller,
     required this.node,
     required this.bodyMedium,
+    required this.search,
   });
 
   final Color primaryColor;
   final TextEditingController controller;
   final FocusNode node;
   final TextStyle? bodyMedium;
+  final Function search;
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +59,12 @@ class SearchWidget extends StatelessWidget {
           suffixIcon: InkWell(
             onTap: () {
               controller.clear();
+              search();
             },
-            child: const TextFieldIcon(iconUrl: "assets/icons/close.png"),
+            child: SizedBox(
+              height: 5.h,
+              child: const TextFieldIcon(iconUrl: "assets/icons/close.png"),
+            ),
           ),
           prefixIconConstraints: BoxConstraints(
             maxHeight: 5.h,
@@ -69,6 +75,12 @@ class SearchWidget extends StatelessWidget {
             maxWidth: 3.w,
           ),
         ),
+        onChanged: (value) {
+          search();
+        },
+        onSubmitted: (value) {
+          search();
+        },
       ),
     );
   }

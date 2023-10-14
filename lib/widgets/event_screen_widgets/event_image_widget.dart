@@ -22,7 +22,7 @@ class EventImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double imageHeight = 65.h;
+    double imageHeight = 40.h;
 
     return ShaderMask(
       shaderCallback: (rect) {

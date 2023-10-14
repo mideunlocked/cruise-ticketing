@@ -59,53 +59,44 @@ class _EventScreenState extends State<EventScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  // custom image widget which also holds the back button
-                  EventImageWidget(
-                    imageUrl: widget.event.imageUrl,
-                    isSaved:
-                        eventProvider.savedEvents.contains(widget.event.id),
-                    isInitial: widget.isInitial,
-                    eventId: widget.event.id,
-                  ),
+              EventImageWidget(
+                imageUrl: widget.event.imageUrl,
+                isSaved: eventProvider.savedEvents.contains(widget.event.id),
+                isInitial: widget.isInitial,
+                eventId: widget.event.id,
+              ),
 
-                  // this widget holds the name of the event and the custom tab bar
-                  Positioned(
-                    top: 48.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // event name
-                          SizedBox(
-                            width: 90.w,
-                            child: Text(
-                              widget.event.name,
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 2.0,
-                                wordSpacing: 4.0,
-                              ),
-                            ),
-                          ),
-
-                          // some space
-                          SizedBox(height: 1.h),
-
-                          // custom tab bar
-                          CustomTabBar(
-                            toggleTab: toggleTab,
-                            isAbout: isAbout,
-                            isDetails: isDetails,
-                          )
-                        ],
+              // this widget holds the name of the event and the custom tab bar
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // event name
+                    SizedBox(
+                      width: 90.w,
+                      child: Text(
+                        widget.event.name,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 2.0,
+                          wordSpacing: 4.0,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+
+                    // some space
+                    SizedBox(height: 1.h),
+
+                    // custom tab bar
+                    CustomTabBar(
+                      toggleTab: toggleTab,
+                      isAbout: isAbout,
+                      isDetails: isDetails,
+                    )
+                  ],
+                ),
               ),
 
               // about and details widget
@@ -133,7 +124,7 @@ class _EventScreenState extends State<EventScreen> {
 
         // buy ticket floating action button which also
         //intiates the pricing and category bottom sheet
-        floatingActionButton: userData.id != widget.event.id
+        floatingActionButton: userData.id != widget.event.hostId
             ? BuyTicketButton(
                 event: widget.event,
               )

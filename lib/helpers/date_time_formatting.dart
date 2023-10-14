@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class DateTimeFormatting {
   static String formatDateTime(DateTime date) {
     // Format DateTime using a pattern
-    String formattedDateTime = DateFormat.yMMMMEEEEd().format(date);
+    String formattedDateTime = DateFormat.yMMMd().format(date);
 
     return formattedDateTime;
   }

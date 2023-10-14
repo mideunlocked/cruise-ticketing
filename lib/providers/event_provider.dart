@@ -19,7 +19,7 @@ class EventProvider with ChangeNotifier {
 - Desginated Driver Program
 - Fire Safety
 """,
-      hostId: "0",
+      hostId: "5",
       latlng: {
         "lat": 6.499952,
         "lng": 3.346991,
