@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'attendee.dart';
 import 'event_analysis.dart';
 import 'pricing.dart';
 
@@ -24,7 +25,7 @@ class Event {
   final List<Pricing> pricing;
   final List<dynamic> features;
   final EventAnalysis analysis;
-  final List<dynamic> attendees;
+  final List<Attendee> attendees;
   final Map<String, dynamic> latlng;
 
   const Event({

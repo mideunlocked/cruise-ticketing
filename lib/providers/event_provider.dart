@@ -1,3 +1,4 @@
+import 'package:cruise/models/attendee.dart';
 import 'package:flutter/material.dart';
 
 import '../models/event.dart';
@@ -21,7 +22,7 @@ class EventProvider with ChangeNotifier {
 - Desginated Driver Program
 - Fire Safety
 """,
-      hostId: "5",
+      hostId: "0",
       latlng: {
         "lat": 6.499952,
         "lng": 3.346991,
@@ -70,13 +71,49 @@ class EventProvider with ChangeNotifier {
         "Rave",
         "Photograph",
       ],
-      attendees: [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
+      attendees: const [
+        Attendee(
+          price: "10000",
+          userId: "1",
+          ticketId: "01",
+          category: "Regular",
+          isValidated: false,
+        ),
+        Attendee(
+          price: "10000",
+          userId: "2",
+          ticketId: "02",
+          category: "Regular",
+          isValidated: true,
+        ),
+        Attendee(
+          price: "10000",
+          userId: "3",
+          ticketId: "03",
+          category: "Regular",
+          isValidated: true,
+        ),
+        Attendee(
+          price: "10000",
+          userId: "4",
+          ticketId: "04",
+          category: "Regular",
+          isValidated: false,
+        ),
+        Attendee(
+          price: "10000",
+          userId: "5",
+          ticketId: "05",
+          category: "Regular",
+          isValidated: false,
+        ),
+        Attendee(
+          price: "10000",
+          userId: "6",
+          ticketId: "06",
+          category: "Regular",
+          isValidated: true,
+        ),
       ],
       isPrivate: false,
       timestamp: DateTime.now(),

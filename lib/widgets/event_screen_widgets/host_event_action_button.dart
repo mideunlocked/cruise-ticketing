@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../models/event.dart';
 import '../../screens/event_screens/analysis_screen.dart';
-import '../../screens/event_screens/scan_ticket_screen.dart';
+import '../../screens/event_screens/control_center_screen.dart';
 import '../general_widgets/custom_floating_action_button.dart';
 
 class HostEventActionButton extends StatelessWidget {
@@ -42,7 +42,9 @@ class HostEventActionButton extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (ctx) => const ScanEventScreen(),
+                builder: (ctx) => ControlCenterScreen(
+                  event: event,
+                ),
               ),
             );
           },

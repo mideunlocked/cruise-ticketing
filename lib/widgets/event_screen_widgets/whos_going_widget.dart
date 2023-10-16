@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/attendee.dart';
 import '../../models/users.dart';
 import '../../providers/users_provider.dart';
 import '../general_widgets/profile_image.dart';
@@ -13,7 +14,7 @@ class WhosGoing extends StatefulWidget {
     required this.attendees,
   });
 
-  final List<dynamic> attendees;
+  final List<Attendee> attendees;
 
   @override
   State<WhosGoing> createState() => _WhosGoingState();
@@ -76,12 +77,12 @@ class _WhosGoingState extends State<WhosGoing> {
   }
 
   void getAttendees() {
-    dynamic id;
+    Attendee attendee;
 
-    for (id in widget.attendees) {
+    for (attendee in widget.attendees) {
       Users user;
 
-      user = getUser(id);
+      user = getUser(attendee.userId);
 
       attendees.add(user);
     }
