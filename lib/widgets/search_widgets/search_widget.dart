@@ -80,6 +80,7 @@ class SearchWidget extends StatelessWidget {
         },
         onSubmitted: (value) {
           search();
+          FocusScope.of(context).unfocus();
         },
       ),
     );

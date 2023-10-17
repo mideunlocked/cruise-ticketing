@@ -71,13 +71,14 @@ class EventProvider with ChangeNotifier {
         "Rave",
         "Photograph",
       ],
-      attendees: const [
-        Attendee(
+      attendees: [
+        const Attendee(
           price: "10000",
           userId: "1",
           ticketId: "01",
           category: "Regular",
           isValidated: false,
+          scannedTime: null,
         ),
         Attendee(
           price: "10000",
@@ -85,6 +86,7 @@ class EventProvider with ChangeNotifier {
           ticketId: "02",
           category: "Regular",
           isValidated: true,
+          scannedTime: DateTime(2023, 10, 16, 23, 50),
         ),
         Attendee(
           price: "10000",
@@ -92,20 +94,22 @@ class EventProvider with ChangeNotifier {
           ticketId: "03",
           category: "Regular",
           isValidated: true,
+          scannedTime: DateTime(2023, 10, 16, 23, 54),
         ),
-        Attendee(
-          price: "10000",
-          userId: "4",
-          ticketId: "04",
-          category: "Regular",
-          isValidated: false,
-        ),
-        Attendee(
+        const Attendee(
+            price: "10000",
+            userId: "4",
+            ticketId: "04",
+            category: "Regular",
+            isValidated: false,
+            scannedTime: null),
+        const Attendee(
           price: "10000",
           userId: "5",
           ticketId: "05",
           category: "Regular",
           isValidated: false,
+          scannedTime: null,
         ),
         Attendee(
           price: "10000",
@@ -113,6 +117,7 @@ class EventProvider with ChangeNotifier {
           ticketId: "06",
           category: "Regular",
           isValidated: true,
+          scannedTime: DateTime(2023, 10, 16, 23, 55),
         ),
       ],
       isPrivate: false,

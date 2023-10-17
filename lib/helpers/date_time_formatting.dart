@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DateTimeFormatting {
   static String formatDateTime(DateTime date) {
@@ -17,5 +18,11 @@ class DateTimeFormatting {
 
   static String formatTimeOfDay(TimeOfDay time) {
     return '${time.hour}:${time.minute} ${time.period.name}';
+  }
+
+  static String timeAgo(DateTime dateTime) {
+    var dateTimeAgo = timeago.format(dateTime, locale: "en_short");
+
+    return dateTimeAgo;
   }
 }

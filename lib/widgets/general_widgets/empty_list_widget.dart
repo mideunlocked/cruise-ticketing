@@ -30,7 +30,10 @@ class EmptyListWidget extends StatelessWidget {
         SizedBox(
           height: 1.h,
         ),
-        Text(subTitle),
+        Text(
+          subTitle,
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
