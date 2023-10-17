@@ -22,12 +22,15 @@ class SavedEventScreen extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: 3.w,
+                horizontal: 4.w,
               ),
-              child: CustomAppBar(
+              child: const CustomAppBar(
                 title: "Saved",
-                bottomPadding: 1.h,
+                bottomPadding: 0,
               ),
+            ),
+            const Divider(
+              color: Colors.black12,
             ),
             Expanded(
               child: eventProvider.savedEvents.isEmpty
