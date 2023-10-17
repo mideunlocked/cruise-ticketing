@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import 'custom_back_button.dart';
-
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
@@ -21,23 +19,28 @@ class CustomAppBar extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(bottom: bottomPadding),
-      child: Stack(
-        alignment: Alignment.center,
+      child: Row(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 1.h),
-            child: const Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // custom back button
-                CustomBackButton(),
-              ],
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // custom back button
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                ),
+              ),
+            ],
           ),
-// app bar title
+          SizedBox(
+            width: 7.w,
+          ),
+          // app bar title
           Text(
             title,
-            style: titleLarge,
+            style: titleLarge?.copyWith(
+                letterSpacing: 0, fontWeight: FontWeight.w500),
           ),
         ],
       ),

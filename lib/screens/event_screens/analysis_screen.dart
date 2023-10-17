@@ -39,8 +39,8 @@ class AnalysisScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.w),
               child: CustomAppBar(
-                title: "Analytics",
-                bottomPadding: 2.h,
+                title: "Analysis",
+                bottomPadding: 0,
               ),
             ),
             Expanded(

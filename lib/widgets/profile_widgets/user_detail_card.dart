@@ -1,3 +1,4 @@
+import 'package:cruise/screens/followers_following_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -87,15 +88,25 @@ class _UserDetailCardState extends State<UserDetailCard> {
                   title: "Attended",
                   data: userNumbers["attended"],
                 ),
-                UserNumberData(
-                  color: widget.color,
-                  title: "Followers",
-                  data: userNumbers["followers"],
+                InkWell(
+                  onTap: () {
+                    navigateToFollowersFollowing(user);
+                  },
+                  child: UserNumberData(
+                    color: widget.color,
+                    title: "Followers",
+                    data: userNumbers["followers"],
+                  ),
                 ),
-                UserNumberData(
-                  color: widget.color,
-                  title: "Following",
-                  data: userNumbers["following"],
+                InkWell(
+                  onTap: () {
+                    navigateToFollowersFollowing(user);
+                  },
+                  child: UserNumberData(
+                    color: widget.color,
+                    title: "Following",
+                    data: userNumbers["following"],
+                  ),
                 ),
               ],
             ),
@@ -153,5 +164,14 @@ class _UserDetailCardState extends State<UserDetailCard> {
       user = userProvider.getUser(widget.userId);
       userNumbers = user?.getUserNumbersInFormatedString();
     }
+  }
+
+  void navigateToFollowersFollowing(Users? user) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => FollowersFollowingScreen(user: user),
+      ),
+    );
   }
 }

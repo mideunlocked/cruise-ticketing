@@ -464,6 +464,7 @@ class _ListEventState extends State<CreateEventScreen> {
         videoUrl: "",
         features: features,
         attendees: [],
+        reviews: [],
         isPrivate: privacy,
         timestamp: DateTime.now(),
         description: descriptionController.text.trim(),

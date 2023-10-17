@@ -14,37 +14,37 @@ class SeeAllScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
+    var insetSymmetric = EdgeInsets.symmetric(horizontal: 3.w);
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.5.w),
-          child: Column(
-            children: [
-              // some spacing
-              SizedBox(
-                height: 2.h,
-              ),
-
-              // custom app bar
-              CustomAppBar(
+        child: Column(
+          children: [
+            // custom app bar
+            Padding(
+              padding: insetSymmetric,
+              child: CustomAppBar(
                 title: title,
-                bottomPadding: 4.h,
+                bottomPadding: 1.h,
               ),
+            ),
+            const Divider(),
 
-              // list of events to see
-              Expanded(
-                  child: ListView(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                children: eventProvider.events // list of events
-                    .map(
-                      (e) => EventListTile(event: e), // event today tile
-                    )
-                    .toList(),
-              )),
-            ],
-          ),
+            // list of events to see
+            Expanded(
+                child: ListView(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              children: eventProvider.events // list of events
+                  .map(
+                    (e) => Padding(
+                      padding: insetSymmetric,
+                      child: EventListTile(event: e),
+                    ), // event today tile
+                  )
+                  .toList(),
+            )),
+          ],
         ),
       ),
     );

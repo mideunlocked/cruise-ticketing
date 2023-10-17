@@ -3,19 +3,21 @@ import 'package:sizer/sizer.dart';
 
 import '../search_widgets/text_field_icon.dart';
 
-class AttendeeSearchWidget extends StatefulWidget {
-  const AttendeeSearchWidget({
+class SecondarySearchWidget extends StatefulWidget {
+  const SecondarySearchWidget({
     super.key,
     required this.passSearchQuery,
+    this.hint = "Search",
   });
 
   final Function(String) passSearchQuery;
+  final String hint;
 
   @override
-  State<AttendeeSearchWidget> createState() => _AttendeeSearchWidgetState();
+  State<SecondarySearchWidget> createState() => _AttendeeSearchWidgetState();
 }
 
-class _AttendeeSearchWidgetState extends State<AttendeeSearchWidget> {
+class _AttendeeSearchWidgetState extends State<SecondarySearchWidget> {
   final controller = TextEditingController();
 
   @override
@@ -46,11 +48,11 @@ class _AttendeeSearchWidgetState extends State<AttendeeSearchWidget> {
           filled: true,
           fillColor: Colors.grey[200],
           contentPadding: EdgeInsets.only(left: 3.w),
-          hintText: "Search attendee by name, username or category",
+          hintText: widget.hint,
           border: customOutlineBorder,
           enabledBorder: customOutlineBorder,
           focusedBorder: customOutlineBorder,
-          suffixIcon: FocusScope.of(context).hasFocus == false
+          suffixIcon: !FocusScope.of(context).hasFocus
               ? const SizedBox()
               : InkWell(
                   onTap: () {

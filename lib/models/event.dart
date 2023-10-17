@@ -23,6 +23,7 @@ class Event {
   final DateTime timestamp;
   final TimeOfDay startTime;
   final List<Pricing> pricing;
+  final List<dynamic> reviews;
   final List<dynamic> features;
   final EventAnalysis analysis;
   final List<Attendee> attendees;
@@ -38,6 +39,7 @@ class Event {
     required this.latlng,
     required this.rating,
     required this.isValid,
+    required this.reviews,
     required this.address,
     required this.pricing,
     required this.endTime,

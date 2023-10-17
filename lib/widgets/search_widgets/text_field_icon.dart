@@ -17,8 +17,8 @@ class TextFieldIcon extends StatelessWidget {
 
     return Image.asset(
       iconUrl,
-      height: 5.h,
-      width: 5.w,
+      height: 3.h,
+      width: 3.w,
       color: Colors.black38,
     );
   }

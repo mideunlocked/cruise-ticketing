@@ -8,7 +8,7 @@ import '../../models/attendee.dart';
 import '../../models/event.dart';
 import '../../models/users.dart';
 import '../../providers/users_provider.dart';
-import '../../widgets/control_center_widget/attendee_search_widget.dart';
+import '../../widgets/general_widgets/secondary_search_widget.dart';
 import '../../widgets/control_center_widget/attendee_tile.dart';
 import '../../widgets/control_center_widget/control_center_filter.dart';
 import '../../widgets/control_center_widget/failed_scan_dialog.dart';
@@ -53,8 +53,9 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
                 bottomPadding: 1.h,
               ),
             ),
-            AttendeeSearchWidget(
+            SecondarySearchWidget(
               passSearchQuery: getSearchQuery,
+              hint: "Search attendee by name, username or category",
             ),
             ControlCenterFilter(
               filterIndex: filterIndex,

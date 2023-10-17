@@ -71,6 +71,7 @@ class EventProvider with ChangeNotifier {
         "Rave",
         "Photograph",
       ],
+      reviews: [],
       attendees: [
         const Attendee(
           price: "10000",

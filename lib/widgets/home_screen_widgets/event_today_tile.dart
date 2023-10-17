@@ -74,7 +74,7 @@ class _EventTodayTileState extends State<EventListTile> {
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.only(bottom: 2.h),
+        margin: EdgeInsets.symmetric(vertical: 1.h),
         child: Row(
           children: [
             ClipRRect(

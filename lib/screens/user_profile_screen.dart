@@ -1,4 +1,3 @@
-import 'package:cruise/widgets/general_widgets/empty_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -6,7 +5,8 @@ import 'package:sizer/sizer.dart';
 import '../models/users.dart';
 import '../providers/event_provider.dart';
 import '../providers/users_provider.dart';
-import '../widgets/general_widgets/custom_back_button.dart';
+import '../widgets/general_widgets/custom_app_bar.dart';
+import '../widgets/general_widgets/empty_list_widget.dart';
 import '../widgets/home_screen_widgets/event_today_tile.dart';
 import '../widgets/profile_widgets/profile_screen_pad.dart';
 import '../widgets/profile_widgets/profile_tab_container.dart';
@@ -44,9 +44,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     var bodyMedium = textTheme.bodyMedium;
     var color = bodyMedium?.color;
 
-    var sizedBoxH2 = SizedBox(
-      height: 2.h,
-    );
     var sizedBoxH1 = SizedBox(
       height: 1.h,
     );
@@ -70,25 +67,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            sizedBoxH2,
-            ProfileScreenPad(
-              child: Row(
-                children: [
-                  const CustomBackButton(),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text(
-                    user?.username ?? "",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            sizedBoxH1,
+            CustomAppBar(title: user?.username ?? "", bottomPadding: 0),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

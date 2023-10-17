@@ -38,10 +38,12 @@ class CustomButton extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           title, // button title
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors
-                .white, // checks if device is in dark or light mode and changes ui dynamically
+            color: isInactive
+                ? Colors.black
+                : Colors
+                    .white, // checks if device is in dark or light mode and changes ui dynamically
           ),
         ),
       ),
