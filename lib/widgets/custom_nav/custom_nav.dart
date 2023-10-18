@@ -47,9 +47,15 @@ class CustomBottomNav extends StatelessWidget {
             currentIndex: currentIndex,
           ),
           BottomNavIcon(
-            iconUrl: "assets/icons/user.png",
+            iconUrl: "assets/icons/lobby.png",
             pageController: pageController,
             index: 3,
+            currentIndex: currentIndex,
+          ),
+          BottomNavIcon(
+            iconUrl: "assets/icons/user.png",
+            pageController: pageController,
+            index: 4,
             currentIndex: currentIndex,
           ),
         ],
