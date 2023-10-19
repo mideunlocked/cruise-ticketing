@@ -96,6 +96,7 @@ class _LobbyTileState extends State<LobbyTile> {
         overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           fontWeight: FontWeight.w500,
+          fontFamily: "Poppins",
         ),
       ),
       subtitle: Row(
@@ -104,6 +105,7 @@ class _LobbyTileState extends State<LobbyTile> {
             "New message",
             style: TextStyle(
               fontWeight: FontWeight.bold,
+              fontFamily: "Poppins",
             ),
           ),
           SizedBox(
@@ -121,6 +123,7 @@ class _LobbyTileState extends State<LobbyTile> {
         style: TextStyle(
           color: Colors.black45,
           fontSize: 10.sp,
+          fontFamily: "Poppins",
         ),
       ),
     );

@@ -24,12 +24,16 @@ class FollowersFollowingTile extends StatelessWidget {
       ),
       title: Text(
         user.name,
-        style: const TextStyle(fontWeight: FontWeight.w500),
+        style: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontFamily: "Poppins",
+        ),
       ),
       subtitle: Text(
         "@${user.username}",
         style: const TextStyle(
           color: Colors.black45,
+          fontFamily: "Poppins",
         ),
       ),
       trailing: SizedBox(

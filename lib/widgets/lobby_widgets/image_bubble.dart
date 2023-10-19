@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../models/users.dart';
 import '../general_widgets/profile_image.dart';
+import 'view_image_sheet.dart';
 
 class ImageBubble extends StatelessWidget {
   const ImageBubble({
@@ -19,15 +20,18 @@ class ImageBubble extends StatelessWidget {
     return Stack(
       alignment: Alignment.bottomLeft,
       children: [
-        Padding(
-          padding: paddingInsets.copyWith(left: 0, top: 0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              "https://images.pexels.com/photos/2147029/pexels-photo-2147029.jpeg?auto=compress&cs=tinysrgb&w=600",
-              width: 35.w,
-              height: 25.h,
-              fit: BoxFit.cover,
+        InkWell(
+          onTap: () => showImageDialog(context),
+          child: Padding(
+            padding: paddingInsets.copyWith(left: 0, top: 0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.network(
+                "https://images.pexels.com/photos/2147029/pexels-photo-2147029.jpeg?auto=compress&cs=tinysrgb&w=600",
+                width: 35.w,
+                height: 25.h,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -40,6 +44,14 @@ class ImageBubble extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void showImageDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (ctx) => const ViewImageSheet(),
     );
   }
 }

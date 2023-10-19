@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/message.dart';
 import '../../models/users.dart';
 import '../../screens/user_profile_screen.dart';
-import 'message_bubble.dart';
 
 class Bubble extends StatelessWidget {
   const Bubble({
     super.key,
-    required this.marginInsets,
     required this.paddingInsets,
     required this.checkIsMe,
-    required this.widget,
+    required this.message,
     required this.user,
   });
 
-  final EdgeInsets marginInsets;
   final EdgeInsets paddingInsets;
   final bool checkIsMe;
-  final MessageBubble widget;
+  final Message message;
   final Users? user;
 
   @override
   Widget build(BuildContext context) {
+    var marginInsets = EdgeInsets.only(
+      left: checkIsMe ? 15.w : 0,
+      right: checkIsMe ? 0 : 15.w,
+      bottom: 2.h,
+    );
+
     return Container(
       margin: marginInsets.copyWith(top: 0, bottom: 0.5.h),
       padding: paddingInsets,
@@ -36,7 +40,7 @@ class Bubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Visibility(
-            visible: widget.message.userId != "0",
+            visible: message.userId != "0",
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -58,7 +62,7 @@ class Bubble extends StatelessWidget {
             ),
           ),
           Text(
-            widget.message.text,
+            message.text,
             style: TextStyle(
               color: checkIsMe ? Colors.white : null,
             ),
