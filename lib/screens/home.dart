@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/custom_nav/bottom_nav_bar.dart';
 import 'bottom_nav/home_screen.dart';
-import 'bottom_nav/lobby_screen.dart';
+import 'bottom_nav/lobbies_screen.dart';
 import 'bottom_nav/map_screen.dart';
 import 'bottom_nav/profile_screen.dart';
 import 'bottom_nav/search_screen.dart';
@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
     HomeScreen(),
     SearchScreen(),
     MapScreen(),
-    LobbyScreen(),
+    LobbiesScreen(),
     ProfileScreen(),
   ];
 

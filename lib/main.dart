@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'helpers/location_helper.dart';
 import 'helpers/themes_helper.dart';
 import 'providers/event_provider.dart';
+import 'providers/lobby_provider.dart';
 import 'providers/ticket_provider.dart';
 import 'providers/users_provider.dart';
 import 'providers/wallet_provider.dart';
@@ -46,6 +47,9 @@ class MainApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (ctx) => WalletProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => LobbyProvider(),
           ),
         ],
         child: MaterialApp(

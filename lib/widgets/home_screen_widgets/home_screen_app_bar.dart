@@ -15,8 +15,8 @@ class HomeScreenAppBar extends StatelessWidget {
     var titleLarge = textTheme.titleMedium;
 
     // checks if device is in light mode or dark mode
-    bool checkDeviceMode =
-        MediaQuery.platformBrightnessOf(context) == Brightness.light;
+    // bool checkDeviceMode =
+    //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     return HomeScreenPadding(
       child: Row(
@@ -36,7 +36,7 @@ class HomeScreenAppBar extends StatelessWidget {
             Icons.notifications_rounded,
             // check if the device is light mode or dark and update
             //the ui accoridingly
-            color: checkDeviceMode ? primaryColor : Colors.white,
+            color: primaryColor,
           ),
         ],
       ),
