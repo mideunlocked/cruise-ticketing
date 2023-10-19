@@ -15,19 +15,30 @@ class LobbiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var lobbyProvider = Provider.of<LobbyProvider>(context);
 
-    return SafeArea(
-      child: Column(
-        children: [
-          const LobbyAppBar(),
-          Expanded(
-            child: ListView(
-                children: lobbyProvider.lobbies
-                    .map(
-                      (lobby) => LobbyTile(lobby: lobby),
-                    )
-                    .toList()),
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/",
+          (route) => false,
+        );
+
+        throw 0;
+      },
+      child: SafeArea(
+        child: Column(
+          children: [
+            const LobbyAppBar(),
+            Expanded(
+              child: ListView(
+                  children: lobbyProvider.lobbies
+                      .map(
+                        (lobby) => LobbyTile(lobby: lobby),
+                      )
+                      .toList()),
+            ),
+          ],
+        ),
       ),
     );
   }

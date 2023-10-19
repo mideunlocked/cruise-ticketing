@@ -107,8 +107,8 @@ class LobbyProvider with ChangeNotifier {
     return [..._replies];
   }
 
-  Lobby getMessages(String lobbyId) {
-    return _lobbies.firstWhere((lobby) => lobby.id == lobbyId);
+  List<Message> getMessages(String lobbyId) {
+    return _lobbies.firstWhere((lobby) => lobby.id == lobbyId).messages;
   }
 
   void addMessage(String lobbyId, Message message) {
