@@ -1,11 +1,12 @@
-import 'package:cruise/providers/event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/date_time_formatting.dart';
+import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
 import '../../models/ticket.dart';
+import '../../providers/event_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import 'event_price_container.dart';
 import 'status_tile.dart';
@@ -25,6 +26,7 @@ class EventDetailBox extends StatefulWidget {
 
 class _EventDetailBoxState extends State<EventDetailBox> {
   Event? event;
+  Map<String, dynamic> durationData = {};
 
   @override
   void initState() {
@@ -32,6 +34,16 @@ class _EventDetailBoxState extends State<EventDetailBox> {
 
     var eventProvider = Provider.of<EventProvider>(context, listen: false);
     event = eventProvider.getEvent(widget.ticket.eventId);
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+
+    final eventLatLng = event?.latlng ?? {};
+
+    durationData = await DistanceAndDuration.getDistanceDuration(
+        eventLatLng["lat"] ?? "", eventLatLng["lng"] ?? "");
   }
 
   @override
@@ -64,7 +76,7 @@ class _EventDetailBoxState extends State<EventDetailBox> {
                   context,
                   MaterialPageRoute(
                     builder: (ctx) => EventScreen(
-                      durationData: const {},
+                      durationData: durationData,
                       event: event!,
                     ),
                   ),

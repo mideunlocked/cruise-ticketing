@@ -20,7 +20,7 @@ class LobbyScreen extends StatefulWidget {
   });
 
   final Lobby lobby;
-  final Event? event;
+  final Event event;
 
   @override
   State<LobbyScreen> createState() => _LobbyScreenState();
@@ -99,7 +99,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
             ),
             LobbySendActionsWidget(
               controller: _controller,
-              sendMessage: () => sendMessage,
+              sendMessage: () => sendMessage(),
               controllerHasInput: controllerHasInput,
             ),
           ],

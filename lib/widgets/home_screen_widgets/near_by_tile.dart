@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../helpers/directions_repo.dart';
+import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
 import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
@@ -35,7 +33,7 @@ class _NearByTileState extends State<NearByTile> {
     final lng = passedData.latlng["lng"];
 
     // calling function to get distance and duration
-    await getDistanceDuration(lat, lng);
+    durationData = await DistanceAndDuration.getDistanceDuration(lat, lng);
   }
 
   @override
@@ -178,36 +176,5 @@ class _NearByTileState extends State<NearByTile> {
         ),
       ],
     );
-  }
-
-  // function to get user current location and calculating the
-  //distance between current location and destination (event location)
-  // collecting event LatLng
-  Future<dynamic> getDistanceDuration(lat, lng) async {
-    LatLng? currentPosition;
-    // request persmission if null and get user current location
-    await Geolocator.getCurrentPosition().then((value) {
-      double lat = value.latitude;
-      double lng = value.longitude;
-      LatLng valueLatLng = LatLng(lat, lng);
-
-      currentPosition = valueLatLng;
-    });
-
-    // retieving and passing event
-    //Lat and Lng and decalring it to a variable destination
-    final destination = LatLng(
-      lat,
-      lng,
-    );
-
-    // passed the current location coordinates and destiantion coordinates
-    //to get the distance and duration of event from current location and then
-    //passing it to duration data
-    final directions = await DirectionsRepo().getDuration(
-        origin: currentPosition ?? const LatLng(0, 0),
-        destination: destination);
-
-    durationData = directions;
   }
 }

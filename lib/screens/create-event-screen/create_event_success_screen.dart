@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../helpers/distance_duration_helper.dart';
+import '../../models/event.dart';
 import '../../providers/event_provider.dart';
 import '../../widgets/general_widgets/custom_button.dart';
 import '../event_screens/event_screen.dart';
 
-class EventCreateSuccessScreen extends StatelessWidget {
+class EventCreateSuccessScreen extends StatefulWidget {
   static const routeName = "/EventCreateSuccessScreen";
   const EventCreateSuccessScreen({super.key});
 
+  @override
+  State<EventCreateSuccessScreen> createState() =>
+      _EventCreateSuccessScreenState();
+}
+
+class _EventCreateSuccessScreenState extends State<EventCreateSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
@@ -48,17 +56,28 @@ class EventCreateSuccessScreen extends StatelessWidget {
               const Spacer(),
               CustomButton(
                 title: "View event",
-                function: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => EventScreen(
-                          durationData: const {},
-                          event: eventProvider.events.last,
-                          isInitial: true,
+                function: () async {
+                  Event newEvent = eventProvider.events.last;
+                  dynamic latLng = newEvent.latlng;
+
+                  final durationData =
+                      await DistanceAndDuration.getDistanceDuration(
+                    latLng["lat"],
+                    latLng["lng"],
+                  );
+
+                  if (mounted) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) => EventScreen(
+                            durationData: durationData,
+                            event: newEvent,
+                            isInitial: true,
+                          ),
                         ),
-                      ),
-                      (route) => false);
+                        (route) => false);
+                  }
                 },
               ),
               CustomButton(

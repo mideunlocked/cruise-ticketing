@@ -20,17 +20,10 @@ class LobbyTile extends StatefulWidget {
 }
 
 class _LobbyTileState extends State<LobbyTile> {
-  Event? event;
-
-  @override
-  void initState() {
-    super.initState();
-
-    getLobbyEvent();
-  }
-
   @override
   Widget build(BuildContext context) {
+    Event event = getLobbyEvent();
+
     return ListTile(
       onTap: () {
         Navigator.push(
@@ -46,14 +39,14 @@ class _LobbyTileState extends State<LobbyTile> {
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Image.network(
-          event?.imageUrl ?? "",
+          event.imageUrl,
           height: 8.h,
           width: 20.w,
           fit: BoxFit.cover,
         ),
       ),
       title: Text(
-        "${event?.name}",
+        event.name,
         maxLines: 1,
         softWrap: true,
         overflow: TextOverflow.ellipsis,
@@ -92,9 +85,9 @@ class _LobbyTileState extends State<LobbyTile> {
     );
   }
 
-  void getLobbyEvent() {
+  Event getLobbyEvent() {
     var eventProvider = Provider.of<EventProvider>(context, listen: false);
 
-    event = eventProvider.getEvent(widget.lobby.eventId);
+    return eventProvider.getEvent(widget.lobby.eventId);
   }
 }

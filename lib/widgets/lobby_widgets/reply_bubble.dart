@@ -96,7 +96,7 @@ class ReplyBubble extends StatelessWidget {
             .reversed
             .toList()
             .indexWhere((element) => element.id == message.reply?.messageId) *
-        50.0; // Adjust the value as needed
+        100.0; // Adjust the value as needed
 
     // Scroll to the calculated position with animation
     scrollController.animateTo(
