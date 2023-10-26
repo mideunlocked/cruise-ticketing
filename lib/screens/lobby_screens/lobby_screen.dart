@@ -3,14 +3,14 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../models/event.dart';
-import '../models/lobby.dart';
-import '../models/message.dart';
-import '../providers/lobby_provider.dart';
-import '../widgets/lobby_widgets/lobby_messages_seperator.dart';
-import '../widgets/lobby_widgets/lobby_screen_actiona_widget.dart';
-import '../widgets/lobby_widgets/lobby_screen_app_bar.dart';
-import '../widgets/lobby_widgets/message_bubble.dart';
+import '../../models/event.dart';
+import '../../models/lobby.dart';
+import '../../models/message.dart';
+import '../../providers/lobby_provider.dart';
+import '../../widgets/lobby_widgets/lobby_messages_seperator.dart';
+import '../../widgets/lobby_widgets/lobby_screen_actions_widget.dart';
+import '../../widgets/lobby_widgets/lobby_screen_app_bar.dart';
+import '../../widgets/lobby_widgets/message_bubble.dart';
 
 class LobbyScreen extends StatefulWidget {
   const LobbyScreen({
@@ -32,14 +32,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   bool controllerHasInput = false;
 
-  List<Message> messages = [];
-
   @override
   void initState() {
     super.initState();
-
-    var lobbyProvider = Provider.of<LobbyProvider>(context, listen: false);
-    messages = lobbyProvider.getMessages(widget.lobby.id);
 
     // Add a listener to the TextEditingController
     _controller.addListener(controllerInputed);
@@ -73,31 +68,36 @@ class _LobbyScreenState extends State<LobbyScreen> {
         child: Column(
           children: [
             Expanded(
-              child: GroupedListView(
-                controller: _scrollController,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 3.w,
+              child: Consumer<LobbyProvider>(
+                builder: (context, value, child) => GroupedListView(
+                  controller: _scrollController,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 3.w,
+                  ),
+                  reverse: true,
+                  order: GroupedListOrder.DESC,
+                  elements: value.getMessages(widget.lobby.id),
+                  groupBy: (element) => DateTime(
+                    element.timestamp.year,
+                    element.timestamp.month,
+                    element.timestamp.day,
+                  ),
+                  groupSeparatorBuilder: (value) => LobbyMessagesSeparator(
+                    value: value,
+                  ),
+                  itemBuilder: (ctx, message) {
+                    return MessageBubble(
+                      adminId: widget.event.hostId,
+                      message: message,
+                      scrollController: _scrollController,
+                      lobbyId: widget.lobby.id,
+                    );
+                  },
                 ),
-                reverse: true,
-                order: GroupedListOrder.DESC,
-                elements: messages,
-                groupBy: (element) => DateTime(
-                  element.timestamp.year,
-                  element.timestamp.month,
-                  element.timestamp.day,
-                ),
-                groupSeparatorBuilder: (value) => LobbyMessagesSeparator(
-                  value: value,
-                ),
-                itemBuilder: (ctx, message) {
-                  return MessageBubble(
-                    message: message,
-                    scrollController: _scrollController,
-                  );
-                },
               ),
             ),
             LobbySendActionsWidget(
+              lobbyId: widget.lobby.id,
               controller: _controller,
               sendMessage: () => sendMessage(),
               controllerHasInput: controllerHasInput,
@@ -109,7 +109,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void sendMessage() {
+    var lobbyId = widget.lobby.id;
+
     var lobbyProvider = Provider.of<LobbyProvider>(context, listen: false);
+    bool checkIf = lobbyProvider.checkIfTheresReply(lobbyId);
 
     if (controllerHasInput == true) {
       lobbyProvider.addMessage(
@@ -118,24 +121,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
           id: "8",
           userId: "0",
           text: _controller.text.trim(),
-          reply: const Reply(
-            messageId: "4",
-            messageUserId: "4",
-            lobbyId: "0",
-            fileLink: "sj",
-            text: "",
-          ),
+          reply: checkIf ? lobbyProvider.getReplyData(lobbyId) : null,
           isSeen: [],
           fileLink: "",
           timestamp: DateTime.now(),
+          isDeleted: false,
+          deletedBy: "",
         ),
       );
 
       _controller.clear();
-
-      setState(() {
-        messages = lobbyProvider.getMessages(widget.lobby.id);
-      });
+      lobbyProvider.deleteReply(lobbyId);
     }
   }
 }

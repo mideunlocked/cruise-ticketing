@@ -1,20 +1,26 @@
+import 'reply.dart';
+
 class Message {
   final String id;
-  final String userId;
   final String text;
+  final Reply? reply;
+  final String userId;
+  final bool isDeleted;
   final String fileLink;
+  final String deletedBy;
   final DateTime timestamp;
   final List<dynamic> isSeen;
-  final Reply? reply;
 
   const Message({
     required this.id,
-    required this.userId,
     required this.text,
     required this.reply,
     required this.isSeen,
+    required this.userId,
     required this.fileLink,
+    required this.isDeleted,
     required this.timestamp,
+    required this.deletedBy,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
@@ -26,41 +32,24 @@ class Message {
       timestamp: json["timestamp"] as DateTime,
       fileLink: json["fileLink"] as String,
       reply: json["reply"] as Reply,
+      isDeleted: json["isDeleted"] as bool,
+      deletedBy: json["deletedBy"] ?? "",
     );
   }
 
-  bool checkIsMe() {
-    String uid = "0";
+  bool checkIsMe(String adminId) {
+    String uid = adminId;
     bool isMe = false;
 
     isMe = userId == uid;
 
     return isMe;
   }
-}
 
-class Reply {
-  final String text;
-  final String lobbyId;
-  final String fileLink;
-  final String messageId;
-  final String messageUserId;
-
-  const Reply({
-    required this.text,
-    required this.lobbyId,
-    required this.fileLink,
-    required this.messageId,
-    required this.messageUserId,
-  });
-
-  factory Reply.fromJson(Map<String, dynamic> json) {
-    return Reply(
-      text: json["text"] ?? "",
-      lobbyId: json["lobbyId"] ?? "",
-      fileLink: json["fileLink"] ?? "",
-      messageId: json["messageId"] ?? "",
-      messageUserId: json["messageUserId"] ?? "",
-    );
+  bool checkDeletedBy(String adminId) {
+    if (deletedBy == adminId) {
+      return true;
+    }
+    return false;
   }
 }

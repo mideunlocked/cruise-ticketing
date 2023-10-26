@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/message.dart';
 import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/user_profile_screen.dart';
 
 class Bubble extends StatelessWidget {
@@ -26,9 +28,12 @@ class Bubble extends StatelessWidget {
       right: checkIsMe ? 0 : 15.w,
       bottom: 2.h,
     );
+    bool checkAdminDeleted = message.checkDeletedBy("0");
+
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
     return Container(
-      margin: marginInsets.copyWith(top: 0, bottom: 0.5.h),
+      margin: marginInsets.copyWith(bottom: 0.5.h),
       padding: paddingInsets,
       decoration: BoxDecoration(
         color: checkIsMe
@@ -39,32 +44,49 @@ class Bubble extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Visibility(
-            visible: message.userId != "0",
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => UserProfileScreen(userId: user?.id ?? ""),
+          message.isDeleted
+              ? const SizedBox()
+              : Visibility(
+                  visible: message.userId != "0",
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) =>
+                              UserProfileScreen(userId: user?.id ?? ""),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      user?.username ?? "",
+                      style: TextStyle(
+                        color: Colors.red[900],
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.red[900],
+                      ),
+                    ),
                   ),
-                );
-              },
-              child: Text(
-                user?.username ?? "",
-                style: TextStyle(
-                  color: Colors.red[900],
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.red[900],
                 ),
-              ),
-            ),
-          ),
           Text(
-            message.text,
+            message.isDeleted
+                ? message.deletedBy == userProvider.userData.id
+                    ? "You deleted this message"
+                    : checkAdminDeleted
+                        ? "This message was deleted by admin"
+                        : "This message was deleted"
+                : message.text,
             style: TextStyle(
-              color: checkIsMe ? Colors.white : null,
+              color: checkIsMe
+                  ? message.isDeleted
+                      ? Colors.white38
+                      : Colors.white
+                  : message.isDeleted
+                      ? Colors.black26
+                      : null,
+              fontStyle:
+                  message.isDeleted ? FontStyle.italic : FontStyle.normal,
             ),
           ),
         ],

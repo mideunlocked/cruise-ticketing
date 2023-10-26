@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../models/message.dart';
+import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 
 class ViewImageSheet extends StatelessWidget {
   const ViewImageSheet({
     super.key,
+    required this.message,
   });
+
+  final Message message;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +37,13 @@ class ViewImageSheet extends StatelessWidget {
               SizedBox(
                 width: 5.w,
               ),
-              const Text(
-                "Photo sent by username",
+              Text(
+                "Photo sent by ${getUser(context).username}",
                 maxLines: 1,
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -49,5 +56,11 @@ class ViewImageSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Users getUser(BuildContext context) {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
+    return userProvider.getUser(message.userId);
   }
 }

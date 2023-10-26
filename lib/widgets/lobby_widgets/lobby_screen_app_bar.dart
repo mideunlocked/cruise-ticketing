@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
-import '../../screens/lobby_screen.dart';
+import '../../screens/lobby_screens/lobby_screen.dart';
 
 class LobbyScreenAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override

@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/message.dart';
+import '../../models/reply.dart';
 import '../../models/users.dart';
+import '../../providers/lobby_provider.dart';
 import '../../providers/users_provider.dart';
 import 'bubble.dart';
 import 'bubble_action_dialog.dart';
@@ -15,8 +17,12 @@ class MessageBubble extends StatefulWidget {
     super.key,
     required this.message,
     required this.scrollController,
+    required this.adminId,
+    required this.lobbyId,
   });
 
+  final String adminId;
+  final String lobbyId;
   final Message message;
   final ScrollController scrollController;
 
@@ -36,7 +42,7 @@ class _MessageBubbleState extends State<MessageBubble> {
 
   @override
   Widget build(BuildContext context) {
-    var checkIsMe = widget.message.checkIsMe();
+    var checkIsMe = widget.message.checkIsMe("0");
 
     var paddingInsets = EdgeInsets.symmetric(
       horizontal: 4.w,
@@ -62,11 +68,17 @@ class _MessageBubbleState extends State<MessageBubble> {
             ),
           ),
           InkWell(
-            onLongPress: () => bubbleActionDialog(),
-            onDoubleTap: () => bubbleActionDialog(),
+            onLongPress: () =>
+                widget.message.isDeleted ? {} : bubbleActionDialog(),
+            onDoubleTap: () =>
+                widget.message.isDeleted ? {} : passMessageForReply(),
             child: SizedBox(
               child: widget.message.fileLink.isNotEmpty
-                  ? ImageBubble(paddingInsets: paddingInsets, user: user)
+                  ? ImageBubble(
+                      paddingInsets: paddingInsets,
+                      message: widget.message,
+                      user: user,
+                    )
                   : Bubble(
                       paddingInsets: paddingInsets,
                       checkIsMe: checkIsMe,
@@ -91,6 +103,24 @@ class _MessageBubbleState extends State<MessageBubble> {
       context: context,
       builder: (ctx) => BubbleActionDialog(
         message: widget.message,
+        adminId: widget.adminId,
+        lobbyId: widget.lobbyId,
+      ),
+    );
+  }
+
+  void passMessageForReply() {
+    var lobbyProvider = Provider.of<LobbyProvider>(context, listen: false);
+
+    Message message = widget.message;
+
+    lobbyProvider.addReply(
+      Reply(
+        text: message.text,
+        lobbyId: widget.lobbyId,
+        fileLink: message.fileLink,
+        messageId: message.id,
+        messageUserId: message.userId,
       ),
     );
   }

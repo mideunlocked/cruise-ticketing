@@ -62,6 +62,7 @@ class ReplyBubble extends StatelessWidget {
                         ? "You"
                         : getUser(context).username,
                     style: TextStyle(
+                      fontSize: 8.sp,
                       color: Colors.red[200],
                       fontWeight: FontWeight.w500,
                       decoration: TextDecoration.underline,
@@ -70,10 +71,10 @@ class ReplyBubble extends StatelessWidget {
                   ),
                   Text(
                     message.reply?.text ?? "",
-                    maxLines: 2,
+                    maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.black54),
+                    style: TextStyle(color: Colors.black54, fontSize: 8.sp),
                   ),
                 ],
               ),

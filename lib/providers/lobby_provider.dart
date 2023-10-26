@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/lobby.dart';
 import '../models/message.dart';
+import '../models/reply.dart';
 
 class LobbyProvider with ChangeNotifier {
   final List<Lobby> _lobbies = [
@@ -24,6 +25,8 @@ class LobbyProvider with ChangeNotifier {
           ],
           fileLink: "",
           timestamp: DateTime(2023, 10, 18, 2, 23),
+          isDeleted: false,
+          deletedBy: "",
         ),
         Message(
           id: "1",
@@ -38,6 +41,8 @@ class LobbyProvider with ChangeNotifier {
           ],
           fileLink: "",
           timestamp: DateTime(2023, 10, 19, 2, 26),
+          isDeleted: false,
+          deletedBy: "",
         ),
         Message(
           id: "2",
@@ -52,6 +57,8 @@ class LobbyProvider with ChangeNotifier {
           ],
           fileLink: "",
           timestamp: DateTime(2023, 10, 19, 2, 30),
+          isDeleted: false,
+          deletedBy: "",
         ),
         Message(
           id: "3",
@@ -73,6 +80,8 @@ class LobbyProvider with ChangeNotifier {
           ],
           fileLink: "",
           timestamp: DateTime(2023, 10, 19, 2, 35),
+          isDeleted: false,
+          deletedBy: "",
         ),
         Message(
           id: "4",
@@ -86,13 +95,9 @@ class LobbyProvider with ChangeNotifier {
             "6",
           ],
           fileLink: "ks",
-          timestamp: DateTime(
-            2023,
-            10,
-            19,
-            2,
-            40,
-          ),
+          timestamp: DateTime(2023, 10, 19, 2, 40),
+          isDeleted: false,
+          deletedBy: "",
         ),
       ],
     ),
@@ -113,34 +118,52 @@ class LobbyProvider with ChangeNotifier {
 
   void addMessage(String lobbyId, Message message) {
     _lobbies.firstWhere((lobby) => lobby.id == lobbyId).messages.add(message);
+    notifyListeners();
   }
 
   void deleteMessage(String lobbyId, String messageId) {
     _lobbies
         .firstWhere((lobby) => lobby.id == lobbyId)
         .messages
-        .removeWhere((message) => message.id == messageId);
+        .removeWhere((element) => element.id == messageId);
+
+    notifyListeners();
+  }
+
+  Reply getReplyData(String lobbyId) {
+    return _replies.singleWhere((element) => element.lobbyId == lobbyId);
+  }
+
+  bool checkIfTheresReply(String lobbyId) {
+    bool checkIf;
+    checkIf = _replies.any((e) => e.lobbyId == lobbyId);
+
+    return checkIf;
   }
 
   void addReply(Reply reply) {
-    bool checkIf;
-    checkIf = _replies.any((e) => e.lobbyId == reply.lobbyId);
-
-    if (checkIf) {
+    if (checkIfTheresReply(reply.lobbyId)) {
       updateReply(reply);
     } else {
       _replies.add(reply);
     }
+
+    notifyListeners();
   }
 
   void updateReply(Reply reply) {
     int oldReply;
     oldReply = _replies.indexWhere((e) => e.lobbyId == reply.lobbyId);
 
+    _replies.removeAt(oldReply);
     _replies.insert(oldReply, reply);
+
+    notifyListeners();
   }
 
   void deleteReply(String lobbyId) {
     _replies.removeWhere((reply) => reply.lobbyId == lobbyId);
+
+    notifyListeners();
   }
 }

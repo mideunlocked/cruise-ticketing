@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../models/event.dart';
 import '../../models/lobby.dart';
 import '../../providers/event_provider.dart';
-import '../../screens/lobby_screen.dart';
+import '../../screens/lobby_screens/lobby_screen.dart';
 
 class LobbyTile extends StatefulWidget {
   const LobbyTile({
