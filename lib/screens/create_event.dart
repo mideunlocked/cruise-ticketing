@@ -1,24 +1,24 @@
 import 'dart:io';
 
-import 'package:cruise/helpers/location_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../models/event.dart';
-import '../../models/event_analysis.dart';
-import '../../models/pricing.dart';
-import '../../providers/event_provider.dart';
-import '../../widgets/create_event_widgets/step_control.dart';
-import '../../widgets/general_widgets/custom_app_bar.dart';
-import 'step1.dart';
-import 'step2.dart';
-import 'step3.dart';
-import 'step4.dart';
-import 'step5.dart';
-import 'step6.dart';
-import 'step7.dart';
+import '../helpers/location_helper.dart';
+import '../models/event.dart';
+import '../models/event_analysis.dart';
+import '../models/pricing.dart';
+import '../providers/event_provider.dart';
+import '../widgets/create_event_widgets/step_control.dart';
+import '../widgets/general_widgets/custom_app_bar.dart';
+import '../pages/create-event/step1.dart';
+import '../pages/create-event/step2.dart';
+import '../pages/create-event/step3.dart';
+import '../pages/create-event/step4.dart';
+import '../pages/create-event/step5.dart';
+import '../pages/create-event/step6.dart';
+import '../pages/create-event/step7.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const routeName = "/CreateEventScreen";

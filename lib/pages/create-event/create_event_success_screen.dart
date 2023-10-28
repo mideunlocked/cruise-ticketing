@@ -6,7 +6,7 @@ import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
 import '../../providers/event_provider.dart';
 import '../../widgets/general_widgets/custom_button.dart';
-import '../event_screens/event_screen.dart';
+import '../../screens/event_screens/event_screen.dart';
 
 class EventCreateSuccessScreen extends StatefulWidget {
   static const routeName = "/EventCreateSuccessScreen";

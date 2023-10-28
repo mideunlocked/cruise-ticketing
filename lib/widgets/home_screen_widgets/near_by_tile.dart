@@ -159,7 +159,7 @@ class _NearByTileState extends State<NearByTile> {
                       height: 8.sp,
                       width: 8.sp,
                       child: const CircularProgressIndicator(
-                        color: Colors.white30,
+                        color: Colors.black26,
                         strokeWidth: 1,
                       ),
                     )
