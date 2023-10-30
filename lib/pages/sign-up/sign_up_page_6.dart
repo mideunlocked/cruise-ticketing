@@ -16,16 +16,26 @@ class SignUpPage6 extends StatefulWidget {
     required this.function,
   });
 
-  final Function(String) getDateOfBirth;
+  final Function(DateTime) getDateOfBirth;
   final Function function;
   final PageController pageController;
-  final String dateOfBirth;
+  final DateTime dateOfBirth;
 
   @override
   State<SignUpPage6> createState() => _SignUpPage6State();
 }
 
 class _SignUpPage6State extends State<SignUpPage6> {
+  String dateOfBirth = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    dateOfBirth =
+        "${widget.dateOfBirth.day}/${widget.dateOfBirth.month}/${widget.dateOfBirth.year}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -44,7 +54,7 @@ class _SignUpPage6State extends State<SignUpPage6> {
           InkWell(
             onTap: () => showBirthdayPicker(),
             child: ProfileInputContainer(
-              child: Text(widget.dateOfBirth),
+              child: Text(dateOfBirth),
             ),
           ),
           SizedBox(height: 10.h),
@@ -79,8 +89,8 @@ class _SignUpPage6State extends State<SignUpPage6> {
 
     if (db != null) {
       setState(() {
-        final selectedDate = "${db.day}/${db.month}/${db.year}";
-        widget.getDateOfBirth(selectedDate);
+        dateOfBirth = "${db.day}/${db.month}/${db.year}";
+        widget.getDateOfBirth(db);
       });
     }
   }

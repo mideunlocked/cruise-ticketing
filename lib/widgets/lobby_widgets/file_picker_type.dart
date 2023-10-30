@@ -99,6 +99,10 @@ class _FilePickerTypeState extends State<FilePickerType> {
           ),
         );
       }
+    } else {
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 }

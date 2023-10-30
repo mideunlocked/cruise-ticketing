@@ -7,10 +7,12 @@ class SelectGenderWidget extends StatefulWidget {
     super.key,
     required this.gender,
     required this.userGender,
+    required this.getUserGender,
   });
 
   late String userGender;
   final List<String> gender;
+  final Function(String) getUserGender;
 
   @override
   State<SelectGenderWidget> createState() => _SelectGenderWidgetState();
@@ -41,6 +43,7 @@ class _SelectGenderWidgetState extends State<SelectGenderWidget> {
       onChanged: (value) {
         setState(() {
           widget.userGender = value!.trim().toString();
+          widget.getUserGender(value);
         });
       },
     );

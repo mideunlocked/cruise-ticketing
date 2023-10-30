@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -59,7 +60,15 @@ class ProfileBottomSheet extends StatelessWidget {
             MoreListTileAsset(
               title: "Sign out",
               iconUrl: "exit",
-              function: () {},
+              function: () {
+                FirebaseAuth.instance.signOut().then(
+                      (value) => Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        "/WelcomeScreen",
+                        (route) => false,
+                      ),
+                    );
+              },
             ),
           ],
         ),

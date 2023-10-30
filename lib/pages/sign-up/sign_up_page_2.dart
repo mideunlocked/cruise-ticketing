@@ -24,49 +24,51 @@ class SignUpPage2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w),
-      child: Column(
-        children: [
-          const SignUpSkipButton(),
-          const SignUpPageHeader(
-            title: "Profile picture",
-            subTitle:
-                "Kindly upload your profile picture or capture a new one using CRUISE.",
-          ),
-          SizedBox(height: 18.h),
-          InkWell(
-            onTap: () => showFilePicker(context),
-            borderRadius: BorderRadius.circular(50),
-            child: imageFile.existsSync()
-                ? CircleAvatar(
-                    radius: 70.sp,
-                    foregroundImage: FileImage(imageFile),
-                  )
-                : Container(
-                    height: 20.h,
-                    width: 50.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey.shade200,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SignUpSkipButton(),
+            const SignUpPageHeader(
+              title: "Profile picture",
+              subTitle:
+                  "Kindly upload your profile picture or capture a new one using CRUISE.",
+            ),
+            SizedBox(height: 18.h),
+            InkWell(
+              onTap: () => showFilePicker(context),
+              borderRadius: BorderRadius.circular(50),
+              child: imageFile.existsSync()
+                  ? CircleAvatar(
+                      radius: 70.sp,
+                      foregroundImage: FileImage(imageFile),
+                    )
+                  : Container(
+                      height: 20.h,
+                      width: 50.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey.shade200,
+                      ),
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        "assets/icons/camera.png",
+                        height: 15.h,
+                        width: 15.w,
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/icons/camera.png",
-                      height: 15.h,
-                      width: 15.w,
-                    ),
-                  ),
-          ),
-          SizedBox(height: 10.h),
-          SignUpContinueButton(
-            heroTag: "Sign up 2",
-            function: () {
-              pageController.nextPage(
-                duration: const Duration(seconds: 1),
-                curve: Curves.fastLinearToSlowEaseIn,
-              );
-            },
-          ),
-        ],
+            ),
+            SizedBox(height: 10.h),
+            SignUpContinueButton(
+              heroTag: "Sign up 2",
+              function: () {
+                pageController.nextPage(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

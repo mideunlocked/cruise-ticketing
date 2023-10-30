@@ -22,33 +22,35 @@ class SingUpPage3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w),
-      child: Column(
-        children: [
-          const SignUpSkipButton(),
-          const SignUpPageHeader(
-            title: "Bio",
-            subTitle:
-                "Share a few words that describe who you are and your interests.",
-          ),
-          SizedBox(height: 3.h),
-          CustomTextField(
-            controller: bioController,
-            focusNode: bioNode,
-            label: "Bio",
-            maxLines: 5,
-            maxText: 300,
-          ),
-          SizedBox(height: 10.h),
-          SignUpContinueButton(
-            heroTag: "Sign up 3",
-            function: () {
-              pageController.nextPage(
-                duration: const Duration(seconds: 1),
-                curve: Curves.fastLinearToSlowEaseIn,
-              );
-            },
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SignUpSkipButton(),
+            const SignUpPageHeader(
+              title: "Bio",
+              subTitle:
+                  "Share a few words that describe who you are and your interests.",
+            ),
+            SizedBox(height: 3.h),
+            CustomTextField(
+              controller: bioController,
+              focusNode: bioNode,
+              label: "Bio",
+              maxLines: 5,
+              maxText: 300,
+            ),
+            SizedBox(height: 10.h),
+            SignUpContinueButton(
+              heroTag: "Sign up 3",
+              function: () {
+                pageController.nextPage(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -70,7 +70,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.grey.shade200,
-                contentPadding: EdgeInsets.symmetric(horizontal: 2.w),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 2.w,
+                  vertical: 1.h,
+                ),
                 border: outlineInputBorder,
                 enabledBorder: outlineInputBorder,
                 focusedBorder: outlineInputBorder,
@@ -97,7 +100,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
             validator: (value) {
               if (widget.isRequired) {
                 if (value!.isEmpty) {
-                  return "This field can't be empty";
+                  return "${widget.label} is required";
+                }
+                if (widget.label == "Number" &&
+                    !RegExp(r'^[+]?[0-9]{10,13}$').hasMatch(value)) {
+                  return 'Please enter a valid mobile number.';
+                }
+                if (widget.label == "Email" &&
+                    value.contains(".com") == false) {
+                  return "Invalid email address";
                 }
               }
               return null;

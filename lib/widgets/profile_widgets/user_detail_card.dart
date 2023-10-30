@@ -1,4 +1,5 @@
 import 'package:cruise/screens/followers_following_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -52,7 +53,7 @@ class _UserDetailCardState extends State<UserDetailCard> {
             Padding(
               padding: EdgeInsets.only(bottom: 1.h),
               child: ProfileImage(
-                imageUrl: user?.imageUrl ?? "",
+                imageUrl: FirebaseAuth.instance.currentUser?.photoURL ?? "",
                 radius: 70.0,
                 isAuthUser: true,
                 userId: user?.id ?? "",

@@ -10,23 +10,23 @@ class SignUpSkipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var of = Theme.of(context);
-    var textTheme = of.textTheme;
-    var bodyMedium = textTheme.bodyMedium;
+    // var of = Theme.of(context);
+    // var textTheme = of.textTheme;
+    // var bodyMedium = textTheme.bodyMedium;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(height: 8.h),
-        TextButton(
-          onPressed: () => showCompletingDialog(context),
-          child: Text(
-            "Skip",
-            style: bodyMedium?.copyWith(
-              fontSize: 12.sp,
-            ),
-          ),
-        ),
+        // TextButton(
+        //   onPressed: () => showCompletingDialog(context),
+        //   child: Text(
+        //     "Skip",
+        //     style: bodyMedium?.copyWith(
+        //       fontSize: 12.sp,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

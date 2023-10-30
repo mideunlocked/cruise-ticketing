@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -93,7 +94,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Column(
                     children: [
                       ProfileImage(
-                        imageUrl: imageUrl,
+                        imageUrl:
+                            FirebaseAuth.instance.currentUser?.photoURL ?? "",
                         radius: 70.0,
                         userId: "",
                         isAuthUser: true,
@@ -142,7 +144,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: SelectGenderWidget(
                           gender: gender,
                           userGender: userGender,
+                          getUserGender: getNewUserGender,
                         ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
                       ),
                       InkWell(
                         onTap: () => showBirthdayPicker(),
@@ -167,6 +173,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
     );
+  }
+
+  void getNewUserGender(String newUserGender) {
+    setState(() {
+      userGender = newUserGender;
+    });
   }
 
   void showBirthdayPicker() async {

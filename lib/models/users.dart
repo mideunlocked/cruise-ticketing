@@ -10,6 +10,7 @@ class Users {
   final String videoUrl;
   final String username;
   final String imageUrl;
+  final String password;
   final DateTime dateOfBirth;
   final List<dynamic> hosted;
   final List<dynamic> attended;
@@ -28,6 +29,7 @@ class Users {
     required this.videoUrl,
     required this.username,
     required this.imageUrl,
+    required this.password,
     required this.attended,
     required this.followers,
     required this.following,

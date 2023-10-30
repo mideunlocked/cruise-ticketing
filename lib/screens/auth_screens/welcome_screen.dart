@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../models/welcome.dart';
 import '../../widgets/auth_widgets/welcome_widget.dart';
@@ -24,21 +25,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: PageView.builder(
-        controller: pageController,
-        itemCount: welcomeMessages.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (ctx, index) {
-          Welcome data = welcomeMessages[index];
+    return WillPopScope(
+      onWillPop: () async {
+        SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
 
-          return WelcomeWidget(
-            data: data,
-            currentIndex: index,
-            pageController: pageController,
-          );
-        },
+        throw 0;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: PageView.builder(
+          controller: pageController,
+          itemCount: welcomeMessages.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (ctx, index) {
+            Welcome data = welcomeMessages[index];
+
+            return WelcomeWidget(
+              data: data,
+              currentIndex: index,
+              pageController: pageController,
+            );
+          },
+        ),
       ),
     );
   }

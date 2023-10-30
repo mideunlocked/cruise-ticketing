@@ -50,6 +50,7 @@ class _SignUpPage5State extends State<SignUpPage5> {
             child: SelectGenderWidget(
               gender: gender,
               userGender: widget.userGender,
+              getUserGender: widget.getUserGender,
             ),
           ),
           SizedBox(height: 10.h),

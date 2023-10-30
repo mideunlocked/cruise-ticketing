@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../helpers/location_helper.dart';
+import '../helpers/snack_bar_widget.dart';
 import '../models/event.dart';
 import '../models/event_analysis.dart';
 import '../models/pricing.dart';
@@ -277,10 +278,9 @@ class _ListEventState extends State<CreateEventScreen> {
                                 // check if a image file as been passed
                                 if (bannerFile.existsSync() == false) {
                                   // show snack bar if no image file as been passed
-                                  showSnackBar(
-                                    scaffoldKey: _scaffoldKey,
-                                    errorMessage:
-                                        "Event image/banner is required",
+                                  CustomSnackBar.showCustomSnackBar(
+                                    _scaffoldKey,
+                                    "Event image/banner is required",
                                   );
                                 }
                                 // else proceed to next step
@@ -294,15 +294,17 @@ class _ListEventState extends State<CreateEventScreen> {
                                 // check is rules controller is empty
                                 if (rulesController.text.isEmpty) {
                                   // show snack bar if is empty
-                                  showSnackBar(scaffoldKey: _scaffoldKey);
+                                  CustomSnackBar.showCustomSnackBar(
+                                    _scaffoldKey,
+                                    "All fields are required",
+                                  );
                                 }
                                 // check if any feature as been selected
                                 else if (features.isEmpty) {
                                   // show snack bar if no feature as been selected
-                                  showSnackBar(
-                                      scaffoldKey: _scaffoldKey,
-                                      errorMessage:
-                                          'Please choose an event feature.');
+                                  CustomSnackBar.showCustomSnackBar(
+                                      _scaffoldKey,
+                                      'Please choose an event feature.');
                                 }
                                 // else proceed to next step
                                 else {
@@ -312,9 +314,9 @@ class _ListEventState extends State<CreateEventScreen> {
                               } else if (currentStep == 3) {
                                 if (dateTime.length != 3) {
                                   print(dateTime);
-                                  showSnackBar(
-                                    scaffoldKey: _scaffoldKey,
-                                    errorMessage: "Select date and time",
+                                  CustomSnackBar.showCustomSnackBar(
+                                    _scaffoldKey,
+                                    "Select date and time",
                                   );
                                 } else {
                                   print(dateTime);
@@ -399,28 +401,6 @@ class _ListEventState extends State<CreateEventScreen> {
     });
   }
 
-  // show custom snack bar widget method
-  void showSnackBar({
-    required GlobalKey<ScaffoldMessengerState> scaffoldKey,
-    String errorMessage = "All fields are required",
-  }) {
-    scaffoldKey.currentState?.showSnackBar(
-      SnackBar(
-        margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-        behavior: SnackBarBehavior.floating,
-        showCloseIcon: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        content: SizedBox(
-          width: 80,
-          child: Text(errorMessage),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-
   int calculateTotalQuantity() {
     int quantity = 0;
 
@@ -492,10 +472,9 @@ class _ListEventState extends State<CreateEventScreen> {
         );
       }
     } else {
-      showSnackBar(
-        scaffoldKey: _scaffoldKey,
-        errorMessage:
-            "Something went wrong can't create event, Try again later.",
+      CustomSnackBar.showCustomSnackBar(
+        _scaffoldKey,
+        "Something went wrong can't create event, Try again later.",
       );
     }
   }

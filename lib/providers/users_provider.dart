@@ -4,6 +4,7 @@ import '../models/users.dart';
 
 class UsersProvider with ChangeNotifier {
   final Users _userData = Users(
+    password: "",
     id: "0",
     bio:
         "Passionate event organizer dedicated to creating unforgettable experiences. Expert in coordinating logistics, engaging activities, and ensuring seamless execution. Committed to turning visions into remarkable events.",
@@ -81,6 +82,7 @@ class UsersProvider with ChangeNotifier {
 
   final List<Users> _users = [
     Users(
+      password: "",
       id: "0",
       bio:
           "Passionate event organizer dedicated to creating unforgettable experiences. Expert in coordinating logistics, engaging activities, and ensuring seamless execution. Committed to turning visions into remarkable events.",
@@ -155,6 +157,7 @@ class UsersProvider with ChangeNotifier {
       dateOfBirth: DateTime(2004, 10, 24),
     ),
     Users(
+      password: "",
       id: "1",
       bio:
           "Marcus Rashford MBE is an English professional footballer who plays as a forward for Premier League club Manchester United and the England national team. A product of the Manchester United youth system, he joined the club at the age of seven.",
@@ -174,6 +177,7 @@ class UsersProvider with ChangeNotifier {
       dateOfBirth: DateTime(1997, 10, 31),
     ),
     Users(
+      password: "",
       id: "2",
       bio:
           "Israel Mobolaji Temitayo Odunayo Oluwafemi Owolabi Adesanya is a New Zealand professional mixed martial artist, kickboxer and former boxer. As a mixed martial artist, he currently competes in the Middleweight division in the Ultimate Fighting Championship, where he is the former two-time UFC Middleweight Champion.",
@@ -193,6 +197,7 @@ class UsersProvider with ChangeNotifier {
       dateOfBirth: DateTime(1989, 7, 22),
     ),
     Users(
+      password: "",
       id: "3",
       bio:
           "Elon Reeve Musk is a business magnate and investor. Musk is the founder, chairman, CEO and chief technology officer of SpaceX; angel investor, CEO, product architect and former chairman of Tesla, Inc.;",
@@ -212,6 +217,7 @@ class UsersProvider with ChangeNotifier {
       dateOfBirth: DateTime(1971, 6, 28),
     ),
     Users(
+      password: "",
       id: "4",
       bio:
           "Cristiano Ronaldo dos Santos Aveiro GOIH ComM is a Portuguese professional footballer who plays as a forward for and captains both Saudi Pro League club Al Nassr and the Portugal national team.",
@@ -231,6 +237,7 @@ class UsersProvider with ChangeNotifier {
       dateOfBirth: DateTime(1985, 2, 5),
     ),
     Users(
+      password: "",
       id: "5",
       bio:
           "Temilade Openiyi, known professionally as Tems, is a Nigerian singer and songwriter. She rose to prominence after being featured on Wizkid's 2020 single \"Essence\", which peaked at number 9 on the Billboard Hot 100 chart following the release of the remix version with Justin Bieber.",
@@ -250,6 +257,7 @@ class UsersProvider with ChangeNotifier {
       dateOfBirth: DateTime(1995, 6, 11),
     ),
     Users(
+      password: "",
       id: "6",
       bio:
           "Darryl Dwayne Granberry Jr., known professionally as PontiacMadeDDG or simply DDG, is an American rapper, singer-songwriter, actor and YouTuber. He started making videos in 2014, expanding his content with YouTube vlogs after graduating high school in 2015 and attending Central Michigan University.",
