@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../helpers/encrypt_data.dart';
 import '../models/users.dart';
@@ -66,7 +68,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> createUserInDatabase(Users user) async {
+  Future<dynamic> createUserInDatabase(Users user,
+      {bool isSocialAuth = false}) async {
     String uid = authInstance.currentUser?.uid ?? "";
 
     try {
@@ -79,13 +82,14 @@ class AuthProvider with ChangeNotifier {
         "bio": user.bio,
         "gender": user.gender,
         "videoUrl": user.videoUrl,
+        "imageUrl": user.imageUrl,
         "dateOfBirth": user.dateOfBirth,
         "hosted": user.hosted,
         "attended": user.attended,
         "followers": user.followers,
         "following": user.following,
         "highlights": user.highlights,
-        "password": EncryptData.encrypted?.base64,
+        "password": isSocialAuth ? "" : EncryptData.encrypted?.base64,
       });
       authInstance.currentUser?.updateDisplayName(user.username);
 
@@ -240,6 +244,70 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       notifyListeners();
       print("Update user details error: $e");
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> googleSignIn(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      UserCredential userCred =
+          await authInstance.signInWithCredential(credential);
+
+      User? user = userCred.user;
+
+      createUserInDatabase(
+        Users(
+          id: user?.uid ?? "",
+          bio: "",
+          name: user?.displayName ?? "",
+          email: user?.email ?? "",
+          number: user?.phoneNumber ?? "",
+          gender: "Prefer not to say",
+          hosted: [],
+          videoUrl: "",
+          username: "${user?.displayName}${user?.uid.substring(0, 5)}",
+          imageUrl: user?.photoURL ?? "",
+          password: "",
+          attended: [],
+          followers: [],
+          following: [],
+          highlights: [],
+          dateOfBirth: Timestamp.now(),
+        ),
+        isSocialAuth: true,
+      ).then((value) =>
+          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false));
+
+      return true;
+    } catch (e) {
+      print("Google sign in error: $e");
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> facebookSignIn(BuildContext context) async {
+    try {
+      // Trigger the sign-in flow
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken?.token ?? "");
+
+      // Once signed in, return the UserCredential
+      return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    } catch (e) {
+      print("Google sign in error: $e");
       return e.toString();
     }
   }

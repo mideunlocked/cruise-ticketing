@@ -9,9 +9,8 @@
 				<string>Editor</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<!-- TODO Replace this value: -->
-					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 					<string>com.googleusercontent.apps.499467873123-mc5kk7u08ffmrob7jn0g16s3kasuthkd</string>
+					<string>fb315395167908157</string>
 				</array>
 			</dict>
 		</array>
@@ -67,6 +66,17 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIStatusBarHidden</key>
+		<key>FacebookAppID</key>
+		<string>315395167908157</string>
+		<key>FacebookClientToken</key>
+		<string>b5c0f541040440dc65a1cfc85fc67864</string>
+		<key>FacebookDisplayName</key>
+		<string>Cruise Ticketing</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
+		</array>
 		<false/>
 	</dict>
 </plist>

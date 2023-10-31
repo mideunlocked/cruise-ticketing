@@ -1,11 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../providers/auth_provider.dart';
 import '../../widgets/auth_widgets/auth_button.dart';
 import '../../widgets/auth_widgets/custom_divider.dart';
 import '../../widgets/auth_widgets/third_party_auth_button.dart';
+import '../../widgets/general_widgets/indisimissible_loading_indicator.dart';
 
 class LetYouInScreen extends StatefulWidget {
   static const routeName = "/LetYouInScreen";
@@ -22,6 +25,9 @@ class _LetYouInScreenState extends State<LetYouInScreen> {
     var of = Theme.of(context);
     var textTheme = of.textTheme;
     var bodyMedium = textTheme.bodyMedium;
+
+    var authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -54,22 +60,46 @@ class _LetYouInScreenState extends State<LetYouInScreen> {
                 ],
               ),
               SizedBox(height: 3.h),
-              const ThirdPartyAuthButton(
+              ThirdPartyAuthButton(
                 iconUrl: "google",
                 title: "Google",
+                function: () async {
+                  showLoadingIndicator();
+
+                  final result = await authProvider.googleSignIn(context);
+
+                  if (result == false) {
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  }
+                },
               ),
-              const ThirdPartyAuthButton(
+              ThirdPartyAuthButton(
                 iconUrl: "apple",
                 title: "Apple",
+                function: () {},
               ),
-              const ThirdPartyAuthButton(
+              ThirdPartyAuthButton(
                 iconUrl: "facebook",
                 color: Colors.blue,
                 title: "Facebook",
+                function: () async {
+                  showLoadingIndicator();
+
+                  final result = await authProvider.facebookSignIn(context);
+
+                  if (result == false) {
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  }
+                },
               ),
-              const ThirdPartyAuthButton(
+              ThirdPartyAuthButton(
                 iconUrl: "twitter",
                 title: "X",
+                function: () {},
               ),
               SizedBox(
                 height: 4.h,
@@ -124,6 +154,14 @@ class _LetYouInScreenState extends State<LetYouInScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void showLoadingIndicator() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const UndismissbleLoadingIndicator(),
     );
   }
 }

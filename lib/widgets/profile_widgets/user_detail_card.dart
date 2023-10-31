@@ -49,6 +49,18 @@ class _UserDetailCardState extends State<UserDetailCard> {
             .doc(FirebaseAuth.instance.currentUser?.uid)
             .get(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text("Something went wrong");
+          }
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const Text("Document does not exist");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading");
+          }
+
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
 

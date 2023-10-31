@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCI8mXdMTGwVsUsgpaIZJPVrZnM4SZariU',
-    appId: '1:499467873123:android:a5ef5496f47560519bc156',
+    appId: '1:499467873123:android:36129f4a09ffd3a19bc156',
     messagingSenderId: '499467873123',
     projectId: 'cruise-ticketing',
     storageBucket: 'cruise-ticketing.appspot.com',
@@ -59,10 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAcVITEfUMqAjB3rbY5W2r_vQKpJiLnRUo',
-    appId: '1:499467873123:ios:d482fb3279c9345a9bc156',
+    appId: '1:499467873123:ios:9ad86eeb32ce118a9bc156',
     messagingSenderId: '499467873123',
     projectId: 'cruise-ticketing',
     storageBucket: 'cruise-ticketing.appspot.com',
+    androidClientId: '499467873123-50btahkf0edhikgvbt47t7qb7cq54qcc.apps.googleusercontent.com',
+    iosClientId: '499467873123-mc5kk7u08ffmrob7jn0g16s3kasuthkd.apps.googleusercontent.com',
     iosBundleId: 'com.example.cruise',
   );
 }

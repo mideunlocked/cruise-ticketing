@@ -12,7 +12,7 @@ class Users {
   final String videoUrl;
   final String username;
   final String imageUrl;
-  final String password;
+  final String? password;
   final Timestamp dateOfBirth;
   final List<dynamic> hosted;
   final List<dynamic> attended;
@@ -51,7 +51,7 @@ class Users {
       videoUrl: json["videoUrl"] as String,
       username: json["username"] as String,
       imageUrl: json["imageUrl"] as String,
-      password: json["password"] as String,
+      password: json["password"] as String?,
       attended: json["attended"] as List<dynamic>,
       followers: json["followers"] as List<dynamic>,
       following: json["following"] as List<dynamic>,
