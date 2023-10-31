@@ -1,4 +1,6 @@
-import 'package:cruise/helpers/format_number.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../helpers/format_number.dart';
 
 class Users {
   final String id;
@@ -11,7 +13,7 @@ class Users {
   final String username;
   final String imageUrl;
   final String password;
-  final DateTime dateOfBirth;
+  final Timestamp dateOfBirth;
   final List<dynamic> hosted;
   final List<dynamic> attended;
   final List<dynamic> followers;
@@ -37,14 +39,35 @@ class Users {
     required this.dateOfBirth,
   });
 
+  factory Users.fromJson(Map<String, dynamic> json) {
+    return Users(
+      id: json["id"] as String,
+      bio: json["bio"] as String,
+      name: json["fullName"] as String,
+      email: json["email"] as String,
+      number: json["phoneNumber"] as String,
+      gender: json["gender"] as String,
+      hosted: json["hosted"] as List<dynamic>,
+      videoUrl: json["videoUrl"] as String,
+      username: json["username"] as String,
+      imageUrl: json["imageUrl"] as String,
+      password: json["password"] as String,
+      attended: json["attended"] as List<dynamic>,
+      followers: json["followers"] as List<dynamic>,
+      following: json["following"] as List<dynamic>,
+      highlights: json["highlights"] as List<dynamic>,
+      dateOfBirth: json["dateOfBirth"] as Timestamp,
+    );
+  }
+
   int calculateAge() {
     DateTime currentDate = DateTime.now();
-    int age = currentDate.year - dateOfBirth.year;
+    DateTime db = dateOfBirth.toDate();
+    int age = currentDate.year - db.year;
 
     // Adjust age if birthday hasn't occurred yet this year
-    if (currentDate.month < dateOfBirth.month ||
-        (currentDate.month == dateOfBirth.month &&
-            currentDate.day < dateOfBirth.day)) {
+    if (currentDate.month < db.month ||
+        (currentDate.month == db.month && currentDate.day < db.day)) {
       age--;
     }
 

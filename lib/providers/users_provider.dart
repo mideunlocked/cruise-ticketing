@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
 import '../models/users.dart';
@@ -77,7 +78,9 @@ class UsersProvider with ChangeNotifier {
       "6",
     ],
     highlights: [],
-    dateOfBirth: DateTime(2004, 10, 24),
+    dateOfBirth: Timestamp.fromDate(
+      DateTime(2004, 10, 24),
+    ),
   );
 
   final List<Users> _users = [
@@ -154,7 +157,9 @@ class UsersProvider with ChangeNotifier {
         "6",
       ],
       highlights: [],
-      dateOfBirth: DateTime(2004, 10, 24),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(2004, 10, 24),
+      ),
     ),
     Users(
       password: "",
@@ -174,7 +179,9 @@ class UsersProvider with ChangeNotifier {
       followers: [],
       following: [],
       highlights: [],
-      dateOfBirth: DateTime(1997, 10, 31),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(1997, 10, 31),
+      ),
     ),
     Users(
       password: "",
@@ -194,7 +201,9 @@ class UsersProvider with ChangeNotifier {
       followers: [],
       following: [],
       highlights: [],
-      dateOfBirth: DateTime(1989, 7, 22),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(1989, 7, 22),
+      ),
     ),
     Users(
       password: "",
@@ -214,7 +223,9 @@ class UsersProvider with ChangeNotifier {
       followers: [],
       following: [],
       highlights: [],
-      dateOfBirth: DateTime(1971, 6, 28),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(1971, 6, 28),
+      ),
     ),
     Users(
       password: "",
@@ -234,7 +245,9 @@ class UsersProvider with ChangeNotifier {
       followers: [],
       following: [],
       highlights: [],
-      dateOfBirth: DateTime(1985, 2, 5),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(1985, 2, 5),
+      ),
     ),
     Users(
       password: "",
@@ -254,7 +267,9 @@ class UsersProvider with ChangeNotifier {
       followers: [],
       following: [],
       highlights: [],
-      dateOfBirth: DateTime(1995, 6, 11),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(1995, 6, 11),
+      ),
     ),
     Users(
       password: "",
@@ -274,7 +289,9 @@ class UsersProvider with ChangeNotifier {
       followers: [],
       following: [],
       highlights: [],
-      dateOfBirth: DateTime(1997, 10, 10),
+      dateOfBirth: Timestamp.fromDate(
+        DateTime(1997, 10, 10),
+      ),
     ),
   ];
 

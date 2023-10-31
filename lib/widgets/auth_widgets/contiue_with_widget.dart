@@ -31,6 +31,14 @@ class ContinueWithWidget extends StatelessWidget {
               iconUrl: "google",
               function: () {},
             ),
+            PlatformWidget(
+              iconUrl: "apple",
+              function: () {},
+            ),
+            PlatformWidget(
+              iconUrl: "twitter",
+              function: () {},
+            ),
           ],
         ),
       ],

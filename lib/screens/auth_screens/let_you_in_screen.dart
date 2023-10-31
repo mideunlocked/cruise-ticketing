@@ -25,92 +25,103 @@ class _LetYouInScreenState extends State<LetYouInScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 7.h),
-            IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back_ios_new_rounded),
-            ),
-            SizedBox(height: 1.h),
-            Center(
-              child: LottieBuilder.asset(
-                "assets/lottie/partying.json",
-                height: 30.h,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 7.h),
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Let's you in",
-                  style: bodyMedium?.copyWith(
-                    fontSize: 30.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
+              SizedBox(height: 1.h),
+              Center(
+                child: LottieBuilder.asset(
+                  "assets/lottie/partying.json",
+                  height: 30.h,
                 ),
-              ],
-            ),
-            SizedBox(height: 3.h),
-            const ThirdPartyAuthButton(
-              iconUrl: "facebook",
-              color: Colors.blue,
-              title: "Facebook",
-            ),
-            const ThirdPartyAuthButton(
-              iconUrl: "google",
-              title: "Google",
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CustomDivider(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  child: const Text("or"),
-                ),
-                const CustomDivider(),
-              ],
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
-            AuthButton(
-              title: "Sign in with password",
-              function: () => Navigator.pushNamed(context, "/SignInScreen"),
-            ),
-            SizedBox(
-              height: 3.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: "Don't have an account? ",
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Let's you in",
                     style: bodyMedium?.copyWith(
-                      color: Colors.black45,
+                      fontSize: 30.sp,
+                      fontWeight: FontWeight.w500,
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: "Sign up",
-                          style: bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              Navigator.pushNamed(context, "/SignUpScreen");
-                            }),
-                    ],
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              SizedBox(height: 3.h),
+              const ThirdPartyAuthButton(
+                iconUrl: "google",
+                title: "Google",
+              ),
+              const ThirdPartyAuthButton(
+                iconUrl: "apple",
+                title: "Apple",
+              ),
+              const ThirdPartyAuthButton(
+                iconUrl: "facebook",
+                color: Colors.blue,
+                title: "Facebook",
+              ),
+              const ThirdPartyAuthButton(
+                iconUrl: "twitter",
+                title: "X",
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CustomDivider(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    child: const Text("or"),
+                  ),
+                  const CustomDivider(),
+                ],
+              ),
+              SizedBox(
+                height: 4.h,
+              ),
+              AuthButton(
+                title: "Sign in with password",
+                function: () => Navigator.pushNamed(context, "/SignInScreen"),
+              ),
+              SizedBox(
+                height: 3.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: "Don't have an account? ",
+                      style: bodyMedium?.copyWith(
+                        color: Colors.black45,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: "Sign up",
+                            style: bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                Navigator.pushNamed(context, "/SignUpScreen");
+                              }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+            ],
+          ),
         ),
       ),
     );

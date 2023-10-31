@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cruise/models/users.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -178,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         followers: [],
         following: [],
         highlights: [],
-        dateOfBirth: db,
+        dateOfBirth: Timestamp.now(),
       ),
     );
 

@@ -221,7 +221,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       imageUrl = user.imageUrl;
       userGender = user.gender;
-      dateOfBirth = DateTimeFormatting.formatDateTime(user.dateOfBirth);
+      dateOfBirth = DateTimeFormatting.formatDateTime(
+        user.dateOfBirth.toDate(),
+      );
     });
   }
 }

@@ -25,7 +25,7 @@ class AppImageProvider with ChangeNotifier {
 
       return await snapshot.ref.getDownloadURL().then((value) {
         authInstance.currentUser?.updatePhotoURL(value);
-        cloudInstance.collection("users").doc(uid).update({
+        cloudInstance.collection("users").doc(uid).set({
           "imageUrl": value,
         });
       });
