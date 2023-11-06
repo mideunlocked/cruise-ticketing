@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../helpers/pick_image_helper.dart';
 import '../../widgets/auth_widgets/sign-up-widgets/sign_up_continue.dart';
 import '../../widgets/auth_widgets/sign-up-widgets/sign_up_page_header.dart';
 import '../../widgets/auth_widgets/sign-up-widgets/sign_up_skip_button.dart';
-import '../../widgets/lobby_widgets/file_picker_widget.dart';
 
 class SignUpPage2 extends StatelessWidget {
   const SignUpPage2({
@@ -35,7 +35,10 @@ class SignUpPage2 extends StatelessWidget {
             ),
             SizedBox(height: 18.h),
             InkWell(
-              onTap: () => showFilePicker(context),
+              onTap: () => ShowFilePicker.showFilePicker(
+                context: context,
+                getFile: getImage,
+              ),
               borderRadius: BorderRadius.circular(50),
               child: imageFile.existsSync()
                   ? CircleAvatar(
@@ -69,17 +72,6 @@ class SignUpPage2 extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void showFilePicker(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => FilePickerWidget(
-        lobbyId: "",
-        getFile: getImage,
       ),
     );
   }

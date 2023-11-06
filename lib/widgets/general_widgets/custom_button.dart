@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import 'custom_loading_indicator.dart';
+
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.title,
     required this.function,
     this.isInactive = false,
+    this.isLoading = false,
     this.radius = 5,
   });
 
   final String title;
   final Function function;
   final bool isInactive;
+  final bool isLoading;
   final double radius;
 
   @override
@@ -36,16 +40,21 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius),
         ),
         alignment: Alignment.center,
-        child: Text(
-          title, // button title
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: isInactive
-                ? Colors.black
-                : Colors
-                    .white, // checks if device is in dark or light mode and changes ui dynamically
-          ),
-        ),
+        child: isLoading == true
+            ? CustomLoadingIndicator(
+                height: 20.h,
+                width: 50.w,
+              )
+            : Text(
+                title, // button title
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: isInactive
+                      ? Colors.black
+                      : Colors
+                          .white, // checks if device is in dark or light mode and changes ui dynamically
+                ),
+              ),
       ),
     );
   }

@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cruise/models/users.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/snack_bar_widget.dart';
+import '../../models/users.dart';
 import '../../pages/sign-up/sign_up_page_1.dart';
 import '../../pages/sign-up/sign_up_page_2.dart';
 import '../../pages/sign-up/sign_up_page_3.dart';
@@ -179,7 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         followers: [],
         following: [],
         highlights: [],
-        dateOfBirth: Timestamp.now(),
+        dateOfBirth: DateTime.now().toString(),
       ),
     );
 

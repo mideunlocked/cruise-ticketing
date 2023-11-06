@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../helpers/format_number.dart';
 
 class Users {
@@ -13,12 +11,12 @@ class Users {
   final String username;
   final String imageUrl;
   final String? password;
-  final Timestamp dateOfBirth;
-  final List<dynamic> hosted;
-  final List<dynamic> attended;
-  final List<dynamic> followers;
-  final List<dynamic> following;
-  final List<dynamic> highlights;
+  final String dateOfBirth;
+  final List<dynamic>? hosted;
+  final List<dynamic>? attended;
+  final List<dynamic>? followers;
+  final List<dynamic>? following;
+  final List<dynamic>? highlights;
 
   const Users({
     required this.id,
@@ -56,28 +54,14 @@ class Users {
       followers: json["followers"] as List<dynamic>,
       following: json["following"] as List<dynamic>,
       highlights: json["highlights"] as List<dynamic>,
-      dateOfBirth: json["dateOfBirth"] as Timestamp,
+      dateOfBirth: json["dateOfBirth"] as String,
     );
-  }
-
-  int calculateAge() {
-    DateTime currentDate = DateTime.now();
-    DateTime db = dateOfBirth.toDate();
-    int age = currentDate.year - db.year;
-
-    // Adjust age if birthday hasn't occurred yet this year
-    if (currentDate.month < db.month ||
-        (currentDate.month == db.month && currentDate.day < db.day)) {
-      age--;
-    }
-
-    return age;
   }
 
   int getFollowing() {
     int followingInt = 0;
 
-    followingInt = following.length;
+    followingInt = following?.length ?? 0;
 
     return followingInt;
   }
@@ -85,7 +69,7 @@ class Users {
   int getFollowers() {
     int followersInt = 0;
 
-    followersInt = followers.length;
+    followersInt = followers?.length ?? 0;
 
     return followersInt;
   }
@@ -93,7 +77,7 @@ class Users {
   int getHosted() {
     int hostedInt = 0;
 
-    hostedInt = hosted.length;
+    hostedInt = hosted?.length ?? 0;
 
     return hostedInt;
   }
@@ -101,7 +85,7 @@ class Users {
   int getAttended() {
     int attendedInt = 0;
 
-    attendedInt = attended.length;
+    attendedInt = attended?.length ?? 0;
 
     return attendedInt;
   }

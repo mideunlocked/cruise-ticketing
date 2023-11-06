@@ -74,7 +74,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   children: [
                     sizedBoxH1,
                     UserDetailCard(
-                        of: of, color: color, userId: user?.id ?? ""),
+                      of: of,
+                      color: color,
+                      user: user,
+                    ),
                     SizedBox(
                       height: 1.h,
                     ),
@@ -100,7 +103,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     SizedBox(
                       height: 80.h,
                       child: ProfileScreenPad(
-                        child: user!.hosted.isEmpty
+                        child: user!.hosted!.isEmpty
                             ? emptyEventsList
                             : isPast == true
                                 ? ListView(

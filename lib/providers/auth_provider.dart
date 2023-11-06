@@ -226,28 +226,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> updateUserDetails(Users user) async {
-    final uid = authInstance.currentUser?.uid;
-
-    try {
-      await cloudInstance.collection("users").doc(uid).update({
-        "fullName": user.name,
-        "email": user.email,
-        "phoneNumber": user.number,
-        "username": user.username,
-        "bio": user.bio,
-        "gender": user.gender,
-        "videoUrl": user.videoUrl,
-        "imageUrl": user.imageUrl,
-        "dateOfBirth": user.dateOfBirth,
-      });
-    } catch (e) {
-      notifyListeners();
-      print("Update user details error: $e");
-      return e.toString();
-    }
-  }
-
   Future<dynamic> googleSignIn(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -282,7 +260,7 @@ class AuthProvider with ChangeNotifier {
           followers: [],
           following: [],
           highlights: [],
-          dateOfBirth: Timestamp.now(),
+          dateOfBirth: DateTime.now().toString(),
         ),
         isSocialAuth: true,
       ).then((value) =>
