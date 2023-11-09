@@ -56,24 +56,6 @@ class UsersProvider with ChangeNotifier {
     }
   }
 
-  List<Users> searchUsers(String keyword) {
-    List<Users>? newUsers;
-
-    _users.retainWhere((e) {
-      if (e.name.toLowerCase() == keyword ||
-          e.username.toLowerCase() == keyword) {
-        return true;
-      }
-      return false;
-    });
-
-    newUsers = _users;
-
-    notifyListeners();
-
-    return newUsers;
-  }
-
   Future<dynamic> updateUserDetails(Users user) async {
     final uid = authInstance.currentUser?.uid;
 

@@ -1,12 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cruise/widgets/general_widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/event.dart';
 import '../../models/users.dart';
-import '../../providers/event_provider.dart';
-import '../../providers/users_provider.dart';
-import '../../widgets/general_widgets/empty_search_widget.dart';
 import '../../widgets/home_screen_widgets/event_today_tile.dart';
 import '../../widgets/search_widgets/search_header.dart';
 import '../../widgets/search_widgets/search_widget.dart';
@@ -24,6 +22,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   FocusNode node = FocusNode();
 
+  bool searchEmpty = true;
+
   @override
   void dispose() {
     super.dispose();
@@ -32,9 +32,6 @@ class _SearchScreenState extends State<SearchScreen> {
     node.dispose();
   }
 
-  Iterable<Event> searchEventResult = [];
-  Iterable<Users> searchUserResult = [];
-
   @override
   Widget build(BuildContext context) {
     var of = Theme.of(context);
@@ -42,6 +39,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
     var textTheme = of.textTheme;
     var bodyMedium = textTheme.bodyMedium;
+
+    final Stream<QuerySnapshot> eventsStream =
+        FirebaseFirestore.instance.collection('events').snapshots();
+    final Stream<QuerySnapshot> usersStream =
+        FirebaseFirestore.instance.collection('users').snapshots();
 
     return WillPopScope(
       onWillPop: () async {
@@ -75,60 +77,116 @@ class _SearchScreenState extends State<SearchScreen> {
                       fontSize: 10.sp,
                     ),
                   )
-                : searchEventResult.isEmpty && searchUserResult.isEmpty
-                    ? EmptySearchWidget(
-                        searchKeyWord: controller.text.trim(),
-                      )
-                    : Column(
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          searchUserResult.isEmpty
-                              ? const SizedBox()
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SearchHeader(
-                                      text: "People",
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                      width: 100.w,
-                                      child: ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        children: searchUserResult
-                                            .map(
-                                              (e) => UserTile(
-                                                user: e,
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 3.h,
-                                    ),
-                                  ],
-                                ),
-                          controller.text.isEmpty
-                              ? const SizedBox()
-                              : const SearchHeader(text: "Events"),
-                          searchEventResult.isEmpty
-                              ? const SizedBox()
-                              : Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 4.w),
-                                  child: Column(
-                                    children: searchEventResult
-                                        .map(
-                                          (e) => EventListTile(
-                                            event: e,
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                ),
+                          const SearchHeader(
+                            text: "People",
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                            width: 100.w,
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: usersStream,
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return const SizedBox();
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CustomLoadingIndicator(
+                                        height: 50.h, width: 50.w);
+                                  }
+
+                                  return ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children:
+                                        snapshot.data!.docs.where((element) {
+                                      if (element["fullName"]
+                                          .toString()
+                                          .toLowerCase()
+                                          .contains(
+                                            controller.text
+                                                .trim()
+                                                .toLowerCase(),
+                                          )) {
+                                        return true;
+                                      }
+
+                                      if (element["username"]
+                                          .toString()
+                                          .contains(
+                                            controller.text.trim(),
+                                          )) {
+                                        return true;
+                                      }
+                                      return false;
+                                    }).map((DocumentSnapshot docSnap) {
+                                      Map<String, dynamic> data = docSnap
+                                          .data()! as Map<String, dynamic>;
+                                      Users user = Users.fromJson(data);
+
+                                      return UserTile(
+                                        user: user,
+                                      );
+                                    }).toList(),
+                                  );
+                                }),
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
                         ],
                       ),
+                      controller.text.isEmpty
+                          ? const SizedBox()
+                          : const SearchHeader(text: "Events"),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.w),
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: eventsStream,
+                            builder: (context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return const SizedBox();
+                              }
+
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CustomLoadingIndicator(
+                                    height: 50.h, width: 50.w);
+                              }
+
+                              return Column(
+                                children: snapshot.data!.docs
+                                    .where(
+                                  (element) => element["name"]
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains(
+                                          controller.text.trim().toLowerCase()),
+                                )
+                                    .map(
+                                  (DocumentSnapshot docSnap) {
+                                    Map<String, dynamic> data =
+                                        docSnap.data()! as Map<String, dynamic>;
+                                    Event event = Event.fromJson(data);
+
+                                    return EventListTile(
+                                      event: event,
+                                    );
+                                  },
+                                ).toList(),
+                              );
+                            }),
+                      ),
+                    ],
+                  )
           ],
         ),
       ),
@@ -136,22 +194,8 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void searchKeyword() {
-    final eventProvider = Provider.of<EventProvider>(context, listen: false);
-    final userProvider = Provider.of<UsersProvider>(context, listen: false);
-
     setState(() {
-      searchEventResult = eventProvider.events
-          .where((e) => e.name.toLowerCase().contains(controller.text.trim()));
-      searchUserResult = userProvider.users.where((e) {
-        bool checkName = e.name.toLowerCase().contains(controller.text.trim());
-        bool checkUsername =
-            e.username.toLowerCase().contains(controller.text.trim());
-
-        if (checkName == true || checkUsername == true) {
-          return true;
-        }
-        return false;
-      });
+      controller.text.trim();
     });
   }
 }
