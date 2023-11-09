@@ -20,7 +20,7 @@ import 'screens/auth_screens/let_you_in_screen.dart';
 import 'screens/auth_screens/sign_in_screen.dart';
 import 'screens/auth_screens/sign_up_screen.dart';
 import 'screens/auth_screens/welcome_screen.dart';
-import 'pages/create-event/create_event_success_screen.dart';
+import 'screens/create_event_success_screen.dart';
 import 'screens/profile-screen/edit_profile_screen.dart';
 import 'screens/home.dart';
 import 'screens/create_event.dart';

@@ -78,9 +78,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   order: GroupedListOrder.DESC,
                   elements: value.getMessages(widget.lobby.id),
                   groupBy: (element) => DateTime(
-                    element.timestamp.year,
-                    element.timestamp.month,
-                    element.timestamp.day,
+                    element.dateTime.year,
+                    element.dateTime.month,
+                    element.dateTime.day,
                   ),
                   groupSeparatorBuilder: (value) => LobbyMessagesSeparator(
                     value: value,
@@ -124,7 +124,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           reply: checkIf ? lobbyProvider.getReplyData(lobbyId) : null,
           isSeen: [],
           fileLink: "",
-          timestamp: DateTime.now(),
+          dateTime: DateTime.now(),
           isDeleted: false,
           deletedBy: "",
         ),

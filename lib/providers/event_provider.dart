@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/event.dart';
+import 'image_provider.dart';
 
 class EventProvider with ChangeNotifier {
   FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
@@ -35,13 +38,23 @@ class EventProvider with ChangeNotifier {
   }
 
   Future<dynamic> addEvent(Event event) async {
+    var eventCollection = cloudInstance.collection("events");
+
     try {
-      _events.add(event);
+      await eventCollection.add(event.toJson()).then((value) async {
+        await eventCollection.doc(value.id).update({
+          "id": value.id,
+        });
+        await AppImageProvider().uploadImage(
+          File(event.imageUrl),
+          value.id,
+        );
+        await cloudInstance.collection("users").doc(event.hostId).update({
+          "hosted": FieldValue.arrayUnion([value.id]),
+        });
+      });
 
-      final response =
-          await cloudInstance.collection("events").add(event.toJson());
-
-      return response.id;
+      return true;
     } catch (e) {
       print("error creating event: $e");
       return false;
@@ -120,8 +133,11 @@ class EventProvider with ChangeNotifier {
   Future<dynamic> getRecommended() async {
     try {
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot;
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await cloudInstance.collection("events").limit(5).get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await cloudInstance
+          .collection("events")
+          .orderBy("timestamp")
+          .limit(5)
+          .get();
 
       _recommended.clear();
 
@@ -145,8 +161,11 @@ class EventProvider with ChangeNotifier {
   Future<dynamic> getNearBy() async {
     try {
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot;
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await cloudInstance.collection("events").limit(5).get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await cloudInstance
+          .collection("events")
+          .orderBy("timestamp")
+          .limit(5)
+          .get();
 
       _nearBy.clear();
 
@@ -170,8 +189,11 @@ class EventProvider with ChangeNotifier {
   Future<dynamic> getToday() async {
     try {
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot;
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await cloudInstance.collection("events").limit(5).get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await cloudInstance
+          .collection("events")
+          .orderBy("timestamp")
+          .limit(5)
+          .get();
 
       _today.clear();
 

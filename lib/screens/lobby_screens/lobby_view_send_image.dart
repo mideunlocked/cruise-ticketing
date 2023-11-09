@@ -70,7 +70,7 @@ class LobbyViewSendImageScreen extends StatelessWidget {
         userId: "0",
         fileLink: image.path,
         isDeleted: false,
-        timestamp: DateTime.now(),
+        dateTime: DateTime.now(),
         deletedBy: "",
       ),
     );

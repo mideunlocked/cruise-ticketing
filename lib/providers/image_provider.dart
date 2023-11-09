@@ -36,8 +36,8 @@ class AppImageProvider with ChangeNotifier {
     }
   }
 
-  Future<String> postImage(File imageFile, String postId) async {
-    final path = "post_images/$postId";
+  Future<dynamic> uploadImage(File imageFile, String eventId) async {
+    final path = "event/image/$eventId";
     UploadTask uploadTask;
 
     try {
@@ -47,11 +47,15 @@ class AppImageProvider with ChangeNotifier {
 
       final snapshot = await uploadTask.whenComplete(() {});
 
-      final imageUrl = await snapshot.ref.getDownloadURL();
+      await snapshot.ref.getDownloadURL().then((value) {
+        cloudInstance.collection("events").doc(eventId).update({
+          "imageUrl": value,
+        });
+      });
 
-      return imageUrl;
+      return true;
     } catch (e) {
-      print("Post image upload error: $e");
+      print("Upload image upload error: $e");
       notifyListeners();
       return "Error";
     }

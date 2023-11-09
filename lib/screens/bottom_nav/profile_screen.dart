@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ? CustomLoadingIndicator(
                                       height: 50.h, width: 50.w)
                                   : SizedBox(
-                                      height: 60.h,
+                                      height: 100.h,
                                       child: ProfileScreenPad(
                                         child: user.hosted!.isEmpty
                                             ? emptyEventsList

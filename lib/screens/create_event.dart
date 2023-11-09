@@ -21,6 +21,7 @@ import '../pages/create-event/step4.dart';
 import '../pages/create-event/step5.dart';
 import '../pages/create-event/step6.dart';
 import '../pages/create-event/step7.dart';
+import '../widgets/general_widgets/indisimissible_loading_indicator.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const routeName = "/CreateEventScreen";
@@ -355,6 +356,7 @@ class _ListEventState extends State<CreateEventScreen> {
                               }
                               // else proceed
                               else {
+                                showLoadingIndicator();
                                 createEvent();
                               }
                             },
@@ -416,52 +418,56 @@ class _ListEventState extends State<CreateEventScreen> {
   void createEvent() async {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
 
-    int demoId = eventProvider.events.length + 1;
-
     LatLng latlng = await LocationHelper.getLatLngFromAddress(
         addressController.text.trim());
 
-    print(latlng);
-
-    final response = eventProvider.addEvent(
-      Event(
-        id: demoId.toString(),
-        name: nameController.text.trim(),
-        date: dateTime["date"] as DateTime,
-        startTime: dateTime["start"] as TimeOfDay,
-        endTime: dateTime["end"] as TimeOfDay,
-        venue: venueController.text.trim(),
-        address: addressController.text.trim(),
-        rules: rulesController.text.trim(),
-        hostId: "0",
-        geoPoint: GeoPoint(
-          latlng.latitude,
-          latlng.longitude,
-        ),
-        isValid: true,
-        rating: 4.0,
-        pricing: pricing,
-        imageUrl: bannerFile.path,
-        videoUrl: "",
-        features: features,
-        attendees: [],
-        reviews: [],
-        isPrivate: privacy,
-        timestamp: Timestamp.now(),
-        description: descriptionController.text.trim(),
-        ticketQuantity: calculateTotalQuantity(),
-        analysis: EventAnalysis(
-          ages: [],
-          genders: [],
-          ticketSold: 0,
-          totalViews: 0,
-          attendance: 0,
-          deviceSales: [],
-          ticketQuantity: calculateTotalQuantity(),
-          attendeeLocations: [],
-          soldTicketBreakdown: [],
-        ),
+    Event event = Event(
+      id: "",
+      name: nameController.text.trim(),
+      date: dateTime["date"] as DateTime,
+      startTime: dateTime["start"] as TimeOfDay,
+      endTime: dateTime["end"] as TimeOfDay,
+      venue: venueController.text.trim(),
+      address: addressController.text.trim(),
+      rules: rulesController.text.trim(),
+      hostId: eventProvider.authInstance.currentUser?.uid ?? "",
+      geoPoint: GeoPoint(
+        latlng.latitude,
+        latlng.longitude,
       ),
+      isValid: true,
+      rating: 0,
+      pricing: pricing,
+      imageUrl: bannerFile.path,
+      videoUrl: "",
+      features: features,
+      attendees: [],
+      reviews: [],
+      isPrivate: privacy,
+      timestamp: Timestamp.now(),
+      description: descriptionController.text.trim(),
+      ticketQuantity: calculateTotalQuantity(),
+      analysis: EventAnalysis(
+        ages: [],
+        genders: [],
+        ticketSold: 0,
+        totalViews: 0,
+        attendance: 0,
+        deviceSales: [],
+        ticketQuantity: calculateTotalQuantity(),
+        attendeeLocations: [],
+        soldTicketBreakdown: pricing
+            .map((e) => {
+                  "id": e.id,
+                  "value": 0,
+                  "type": e.category,
+                })
+            .toList(),
+      ),
+    );
+
+    final response = await eventProvider.addEvent(
+      event,
     );
 
     if (response == true) {
@@ -470,13 +476,25 @@ class _ListEventState extends State<CreateEventScreen> {
           context,
           "/EventCreateSuccessScreen",
           (route) => false,
+          arguments: event,
         );
       }
     } else {
+      if (mounted) {
+        Navigator.pop(context);
+      }
       CustomSnackBar.showCustomSnackBar(
         _scaffoldKey,
         "Something went wrong can't create event, Try again later.",
       );
     }
+  }
+
+  void showLoadingIndicator() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const UndismissbleLoadingIndicator(),
+    );
   }
 }

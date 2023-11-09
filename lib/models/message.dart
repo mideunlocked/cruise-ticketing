@@ -8,7 +8,7 @@ class Message {
   final bool isDeleted;
   final String fileLink;
   final String deletedBy;
-  final DateTime timestamp;
+  final DateTime dateTime;
   final List<dynamic> isSeen;
 
   const Message({
@@ -19,7 +19,7 @@ class Message {
     required this.userId,
     required this.fileLink,
     required this.isDeleted,
-    required this.timestamp,
+    required this.dateTime,
     required this.deletedBy,
   });
 
@@ -29,12 +29,26 @@ class Message {
       userId: json["userId"] as String,
       text: json["text"] as String,
       isSeen: json["isSeen"] as List<dynamic>,
-      timestamp: json["timestamp"] as DateTime,
+      dateTime: DateTime.parse(json["date"].toString()),
       fileLink: json["fileLink"] as String,
-      reply: json["reply"] as Reply,
+      reply: Reply.fromJson(json["reply"] as Map<String, dynamic>),
       isDeleted: json["isDeleted"] as bool,
-      deletedBy: json["deletedBy"] ?? "",
+      deletedBy: json["deletedBy"] as String,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "userId": userId,
+      "text": text,
+      "isSeen": isSeen,
+      "dateTime": dateTime,
+      "fileLink": fileLink,
+      "reply": reply?.toJson() ?? {},
+      "isDeleted": isDeleted,
+      "deletedBy": deletedBy,
+    };
   }
 
   bool checkIsMe(String adminId) {

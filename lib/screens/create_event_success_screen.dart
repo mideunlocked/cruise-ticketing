@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../helpers/distance_duration_helper.dart';
-import '../../models/event.dart';
-import '../../providers/event_provider.dart';
-import '../../providers/users_provider.dart';
-import '../../widgets/general_widgets/custom_button.dart';
-import '../../screens/event_screens/event_screen.dart';
+import '../models/event.dart';
+import '../providers/users_provider.dart';
+import '../widgets/general_widgets/custom_button.dart';
+import 'event_screens/event_screen.dart';
 
 class EventCreateSuccessScreen extends StatefulWidget {
   static const routeName = "/EventCreateSuccessScreen";
@@ -19,9 +17,17 @@ class EventCreateSuccessScreen extends StatefulWidget {
 }
 
 class _EventCreateSuccessScreenState extends State<EventCreateSuccessScreen> {
+  Event? event;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    event = ModalRoute.of(context)!.settings.arguments as Event;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
     var userProvider = Provider.of<UsersProvider>(context);
 
     return WillPopScope(
@@ -59,26 +65,18 @@ class _EventCreateSuccessScreenState extends State<EventCreateSuccessScreen> {
               CustomButton(
                 title: "View event",
                 function: () async {
-                  Event newEvent = eventProvider.events.last;
-                  dynamic latLng = newEvent.geoPoint;
-
-                  final durationData =
-                      await DistanceAndDuration.getDistanceDuration(
-                    latLng["lat"],
-                    latLng["lng"],
-                  );
-
                   if (mounted) {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (ctx) => FutureBuilder(
-                            future: userProvider.getUser(newEvent.hostId),
+                            future: userProvider.getUser(event?.hostId ?? ""),
                             builder: (context, snapshot) {
                               return EventScreen(
-                                durationData: durationData,
-                                event: newEvent,
+                                durationData: {},
+                                event: event!,
                                 host: snapshot.data,
+                                isInitial: true,
                               );
                             },
                           ),

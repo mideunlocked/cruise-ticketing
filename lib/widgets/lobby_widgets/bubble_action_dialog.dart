@@ -52,8 +52,8 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
 
     bool isMe = user?.id == userProvider.userData.id;
 
-    String date = DateTimeFormatting.formatDateTime(widget.message.timestamp);
-    String time = DateTimeFormatting.formatedTime(widget.message.timestamp);
+    String date = DateTimeFormatting.formatDateTime(widget.message.dateTime);
+    String time = DateTimeFormatting.formatedTime(widget.message.dateTime);
 
     bool canDelete =
         widget.message.checkIsMe(user?.id ?? "") || user!.id == widget.adminId;

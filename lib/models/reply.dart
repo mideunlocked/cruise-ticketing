@@ -22,4 +22,14 @@ class Reply {
       messageUserId: json["messageUserId"] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "text": text,
+      "lobbyId": lobbyId,
+      "fileLink": fileLink,
+      "messagedId": messageId,
+      "messageUserId": messageUserId,
+    };
+  }
 }
