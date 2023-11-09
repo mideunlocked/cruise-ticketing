@@ -71,27 +71,32 @@ class AuthProvider with ChangeNotifier {
   Future<dynamic> createUserInDatabase(Users user,
       {bool isSocialAuth = false}) async {
     String uid = authInstance.currentUser?.uid ?? "";
+    final userCollection = cloudInstance.collection("users");
 
     try {
-      await cloudInstance.collection("users").doc(uid).set({
-        "id": uid,
-        "fullName": user.name,
-        "email": user.email,
-        "phoneNumber": user.number,
-        "username": user.username,
-        "bio": user.bio,
-        "gender": user.gender,
-        "videoUrl": user.videoUrl,
-        "imageUrl": user.imageUrl,
-        "dateOfBirth": user.dateOfBirth,
-        "hosted": user.hosted,
-        "attended": user.attended,
-        "followers": user.followers,
-        "following": user.following,
-        "highlights": user.highlights,
-        "password": isSocialAuth ? "" : EncryptData.encrypted?.base64,
-      });
-      authInstance.currentUser?.updateDisplayName(user.username);
+      final docCheck = await userCollection.doc(uid).get();
+
+      if (!docCheck.exists) {
+        await userCollection.doc(uid).set({
+          "id": uid,
+          "fullName": user.name,
+          "email": user.email,
+          "phoneNumber": user.number,
+          "username": user.username,
+          "bio": user.bio,
+          "gender": user.gender,
+          "videoUrl": user.videoUrl,
+          "imageUrl": user.imageUrl,
+          "dateOfBirth": user.dateOfBirth,
+          "hosted": user.hosted,
+          "attended": user.attended,
+          "followers": user.followers,
+          "following": user.following,
+          "highlights": user.highlights,
+          "password": isSocialAuth ? "" : EncryptData.encrypted?.base64,
+        });
+        authInstance.currentUser?.updateDisplayName(user.username);
+      }
 
       return true;
     } catch (e) {
