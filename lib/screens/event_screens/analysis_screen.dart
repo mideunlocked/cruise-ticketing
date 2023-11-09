@@ -38,7 +38,7 @@ class AnalysisScreen extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.w),
-              child: CustomAppBar(
+              child: const CustomAppBar(
                 title: "Analysis",
                 bottomPadding: 0,
               ),

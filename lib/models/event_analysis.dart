@@ -74,7 +74,7 @@ class EventAnalysis {
 
   List<dynamic> calculateTypeRevenue(List<Pricing> pricing) {
     Pricing price;
-    List<dynamic> breakDown = [];
+    List<Map<String, dynamic>> breakDown = [];
 
     for (price in pricing) {
       dynamic i;
@@ -115,8 +115,8 @@ class EventAnalysis {
     return "$approximateConversion%";
   }
 
-  dynamic getMostPopularTicketType() {
-    dynamic mostPopular = {};
+  Map<String, dynamic> getMostPopularTicketType() {
+    Map<String, dynamic> mostPopular = {};
     int quantity = 0;
     dynamic i;
 
@@ -124,7 +124,7 @@ class EventAnalysis {
       if (i["value"] > quantity) {
         quantity = i["value"];
         mostPopular = {
-          i["type"]: i["value"],
+          i["type"].toString(): i["value"],
         };
       }
     }
