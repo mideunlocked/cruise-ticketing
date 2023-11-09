@@ -38,7 +38,7 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
   void initState() {
     super.initState();
 
-    user = getUser();
+    getUser();
   }
 
   @override
@@ -156,10 +156,10 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
     );
   }
 
-  Users getUser() {
+  void getUser() async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    return userProvider.getUser(widget.message.userId);
+    user = await userProvider.getUser(widget.message.userId);
   }
 
   Future<void> copyToClipboard(String textToCopy) async {

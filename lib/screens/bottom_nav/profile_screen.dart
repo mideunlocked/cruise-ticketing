@@ -24,13 +24,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isPast = true;
   bool isUpcoming = false;
 
-  bool isLoading = false;
+  bool isFetchingUser = false;
+  bool isFectchingEvents = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     getCurrentUserData();
+    getCurrentUserEvents();
   }
 
   @override
@@ -61,23 +63,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
         throw 1;
       },
       child: RefreshIndicator(
-        onRefresh: () async => getCurrentUserData(),
+        onRefresh: () async {
+          getCurrentUserData();
+          getCurrentUserEvents();
+        },
         color: Theme.of(context).primaryColor,
         child: Consumer<UsersProvider>(builder: (context, userProvider, child) {
           Users user = userProvider.userData;
 
           return SafeArea(
-            child: isLoading && user.id.isEmpty
-                ? CustomLoadingIndicator(height: 50.h, width: 50.w)
-                : Column(
-                    children: [
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      ProfileScreenPad(
-                        child: ProfileAppBar(color: color),
-                      ),
-                      Expanded(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 1.h,
+                ),
+                ProfileScreenPad(
+                  child: ProfileAppBar(color: color),
+                ),
+                isFetchingUser && user.id.isEmpty
+                    ? CustomLoadingIndicator(height: 50.h, width: 50.w)
+                    : Expanded(
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -108,75 +113,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               SizedBox(
                                 height: 1.h,
                               ),
-                              SizedBox(
-                                height: 60.h,
-                                child: ProfileScreenPad(
-                                  child: user.hosted!.isEmpty
-                                      ? emptyEventsList
-                                      : isPast == true
-                                          ? ListView(
-                                              shrinkWrap: true,
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              children: eventProvider.events
-                                                      .where((e) {
-                                                if (e.hostId == user.id &&
-                                                    e.isValid == false) {
-                                                  return true;
-                                                }
+                              isFectchingEvents
+                                  ? CustomLoadingIndicator(
+                                      height: 50.h, width: 50.w)
+                                  : SizedBox(
+                                      height: 60.h,
+                                      child: ProfileScreenPad(
+                                        child: user.hosted!.isEmpty
+                                            ? emptyEventsList
+                                            : isPast == true
+                                                ? ListView(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    children: eventProvider
+                                                            .events
+                                                            .where((e) {
+                                                      if (e.hostId == user.id &&
+                                                          e.isValid == false) {
+                                                        return true;
+                                                      }
 
-                                                return false;
-                                              }).isEmpty
-                                                  ? [emptyPastEvents]
-                                                  : eventProvider.events
-                                                      .where((e) {
-                                                        if (e.hostId ==
-                                                                user.id &&
-                                                            e.isValid ==
-                                                                false) {
-                                                          return true;
-                                                        }
+                                                      return false;
+                                                    }).isEmpty
+                                                        ? [emptyPastEvents]
+                                                        : eventProvider.events
+                                                            .where((e) {
+                                                              if (e.hostId ==
+                                                                      user.id &&
+                                                                  e.isValid ==
+                                                                      false) {
+                                                                return true;
+                                                              }
 
-                                                        return false;
-                                                      })
-                                                      .map(
-                                                        (e) => EventListTile(
-                                                            event: e),
-                                                      )
-                                                      .toList(),
-                                            )
-                                          : ListView(
-                                              shrinkWrap: true,
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              children: eventProvider.events
-                                                      .where((e) {
-                                                if (e.hostId == user.id &&
-                                                    e.isValid == true) {
-                                                  return true;
-                                                }
+                                                              return false;
+                                                            })
+                                                            .map(
+                                                              (e) =>
+                                                                  EventListTile(
+                                                                      event: e),
+                                                            )
+                                                            .toList(),
+                                                  )
+                                                : ListView(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    children: eventProvider
+                                                            .events
+                                                            .where((e) {
+                                                      if (e.hostId == user.id &&
+                                                          e.isValid == true) {
+                                                        return true;
+                                                      }
 
-                                                return false;
-                                              }).isEmpty
-                                                  ? [emptyUpcomingEvents]
-                                                  : eventProvider.events
-                                                      .where((e) {
-                                                        if (e.hostId ==
-                                                                user.id &&
-                                                            e.isValid == true) {
-                                                          return true;
-                                                        }
+                                                      return false;
+                                                    }).isEmpty
+                                                        ? [emptyUpcomingEvents]
+                                                        : eventProvider.events
+                                                            .where((e) {
+                                                              if (e.hostId ==
+                                                                      user.id &&
+                                                                  e.isValid ==
+                                                                      true) {
+                                                                return true;
+                                                              }
 
-                                                        return false;
-                                                      })
-                                                      .map(
-                                                        (e) => EventListTile(
-                                                            event: e),
-                                                      )
-                                                      .toList(),
-                                            ),
-                                ),
-                              ),
+                                                              return false;
+                                                            })
+                                                            .map(
+                                                              (e) =>
+                                                                  EventListTile(
+                                                                      event: e),
+                                                            )
+                                                            .toList(),
+                                                  ),
+                                      ),
+                                    ),
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -184,8 +197,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+              ],
+            ),
           );
         }),
       ),
@@ -209,14 +222,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void getCurrentUserData() async {
     setState(() {
-      isLoading = true;
+      isFetchingUser = true;
     });
 
     final userProvider = Provider.of<UsersProvider>(context, listen: false);
     await userProvider.getCurrentUser();
 
     setState(() {
-      isLoading = false;
+      isFetchingUser = false;
+    });
+  }
+
+  void getCurrentUserEvents() async {
+    setState(() {
+      isFectchingEvents = true;
+    });
+
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
+    await eventProvider.getUserEvents();
+
+    setState(() {
+      isFectchingEvents = false;
     });
   }
 }

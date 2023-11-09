@@ -7,7 +7,7 @@ import '../../models/users.dart';
 import '../../providers/lobby_provider.dart';
 import '../../providers/users_provider.dart';
 
-class ReplyBubble extends StatelessWidget {
+class ReplyBubble extends StatefulWidget {
   const ReplyBubble({
     super.key,
     required this.paddingInsets,
@@ -22,16 +22,30 @@ class ReplyBubble extends StatelessWidget {
   final bool checkIsMe;
 
   @override
+  State<ReplyBubble> createState() => _ReplyBubbleState();
+}
+
+class _ReplyBubbleState extends State<ReplyBubble> {
+  Users? user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var marginInsets = EdgeInsets.only(
-      left: checkIsMe ? 25.w : 0,
-      right: checkIsMe ? 0 : 25.w,
+      left: widget.checkIsMe ? 25.w : 0,
+      right: widget.checkIsMe ? 0 : 25.w,
       bottom: 0.5,
     );
 
     return InkWell(
       onTap: () => scrollToMessage(context),
-      child: message.reply!.fileLink.toString().isNotEmpty
+      child: widget.message.reply!.fileLink.toString().isNotEmpty
           ? ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: ColorFiltered(
@@ -49,7 +63,7 @@ class ReplyBubble extends StatelessWidget {
             )
           : Container(
               margin: marginInsets,
-              padding: paddingInsets,
+              padding: widget.paddingInsets,
               decoration: BoxDecoration(
                 color: Colors.black12,
                 borderRadius: BorderRadius.circular(20),
@@ -58,9 +72,9 @@ class ReplyBubble extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    message.reply!.messageUserId == "0"
+                    widget.message.reply!.messageUserId == "0"
                         ? "You"
-                        : getUser(context).username,
+                        : user?.username ?? "",
                     style: TextStyle(
                       fontSize: 8.sp,
                       color: Colors.red[200],
@@ -70,7 +84,7 @@ class ReplyBubble extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    message.reply?.text ?? "",
+                    widget.message.reply?.text ?? "",
                     maxLines: 1,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
@@ -82,10 +96,10 @@ class ReplyBubble extends StatelessWidget {
     );
   }
 
-  Users getUser(BuildContext context) {
+  void getUser() async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    return userProvider.getUser(message.reply?.messageUserId ?? "");
+    user = await userProvider.getUser(widget.message.userId);
   }
 
   void scrollToMessage(BuildContext context) {
@@ -93,14 +107,15 @@ class ReplyBubble extends StatelessWidget {
 
     // Calculate the position of the item based on its index
     double itemPosition = lobbyProvider
-            .getMessages(message.reply?.lobbyId ?? "")
+            .getMessages(widget.message.reply?.lobbyId ?? "")
             .reversed
             .toList()
-            .indexWhere((element) => element.id == message.reply?.messageId) *
+            .indexWhere(
+                (element) => element.id == widget.message.reply?.messageId) *
         100.0; // Adjust the value as needed
 
     // Scroll to the calculated position with animation
-    scrollController.animateTo(
+    widget.scrollController.animateTo(
       itemPosition,
       duration: const Duration(seconds: 1), // Adjust the duration as needed
       curve: Curves.easeInOut, // Adjust the curve as needed

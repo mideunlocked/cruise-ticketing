@@ -1,9 +1,11 @@
 import 'package:cruise/screens/event_screens/event_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/lobby_screens/lobby_screen.dart';
 
 class LobbyScreenAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -36,16 +38,18 @@ class _LobbyScreenAppBarState extends State<LobbyScreenAppBar> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    final eventLatLng = event?.latlng ?? {};
+    final eventLatLng = event?.geoPoint;
 
     durationData = await DistanceAndDuration.getDistanceDuration(
-      eventLatLng["lat"] ?? "",
-      eventLatLng["lng"] ?? "",
+      eventLatLng?.latitude ?? 0.0,
+      eventLatLng?.longitude ?? 0.0,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UsersProvider>(context);
+
     return AppBar(
       centerTitle: false,
       leading: IconButton(
@@ -60,11 +64,16 @@ class _LobbyScreenAppBarState extends State<LobbyScreenAppBar> {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (ctx) => EventScreen(
-                durationData: durationData,
-                event: widget.widget.event,
-              ),
-            ),
+                builder: (ctx) => FutureBuilder(
+                      future: userProvider.getUser(widget.widget.event.hostId),
+                      builder: (context, snapshot) {
+                        return EventScreen(
+                          durationData: durationData,
+                          event: widget.widget.event,
+                          host: snapshot.data,
+                        );
+                      },
+                    )),
           ),
           child: CircleAvatar(
             radius: 13.sp,

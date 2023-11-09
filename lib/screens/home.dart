@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/users_provider.dart';
 import '../widgets/custom_nav/bottom_nav_bar.dart';
 import 'bottom_nav/home_screen.dart';
 import 'bottom_nav/lobbies_screen.dart';
@@ -34,6 +36,13 @@ class _HomeState extends State<Home> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    getCurrentUserData();
+  }
+
+  @override
   void dispose() {
     super.dispose();
 
@@ -66,5 +75,11 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  void getCurrentUserData() async {
+    final userProvider = Provider.of<UsersProvider>(context, listen: false);
+    await userProvider.getCurrentUser();
+    ;
   }
 }

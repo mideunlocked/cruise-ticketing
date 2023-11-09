@@ -25,4 +25,26 @@ class DateTimeFormatting {
 
     return dateTimeAgo;
   }
+
+  static TimeOfDay stringToTimeOfDay(String timeString) {
+    // Split the timeString into hours and minutes
+    final List<String> parts = timeString.split(':');
+    final List<String> firstPart = parts.first.split("(");
+    final List<String> secondPart = parts.last.split(")");
+
+    if (parts.length == 2) {
+      final int hours = int.tryParse(firstPart[1]) ?? 0;
+      final int minutes = int.tryParse(secondPart[0]) ?? 0;
+
+      // print(
+      //     "$timeString to time of day is ${TimeOfDay(hour: hours, minute: minutes)}");
+
+      return TimeOfDay(hour: hours, minute: minutes);
+    } else {
+      // Handle the case where the string is not in the expected format.
+      // You can throw an exception, return a default time, or handle it in another way.
+      // For example, return TimeOfDay.now() to provide a default value.
+      return TimeOfDay.now();
+    }
+  }
 }

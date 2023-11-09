@@ -34,8 +34,8 @@ class _EventTodayTileState extends State<EventListTile> {
 
     // var holding passed data from parent
     final passedData = widget.event;
-    final lat = passedData.latlng["lat"];
-    final lng = passedData.latlng["lng"];
+    final lat = passedData.geoPoint.latitude;
+    final lng = passedData.geoPoint.longitude;
 
     // calling function to get distance and duration
     durationData = await DistanceAndDuration.getDistanceDuration(lat, lng);
@@ -62,6 +62,7 @@ class _EventTodayTileState extends State<EventListTile> {
           builder: (ctx) => EventScreen(
             durationData: durationData ?? {},
             event: widget.event,
+            host: user,
           ),
         ),
       ),
@@ -183,10 +184,10 @@ class _EventTodayTileState extends State<EventListTile> {
     );
   }
 
-  void getUser() {
+  void getUser() async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    user = userProvider.getUser(widget.event.hostId);
+    user = await userProvider.getUser(widget.event.hostId);
   }
 
   // custom sized box widget method

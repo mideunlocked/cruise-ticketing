@@ -7,7 +7,7 @@ import '../../models/users.dart';
 import '../../providers/lobby_provider.dart';
 import '../../providers/users_provider.dart';
 
-class ReplyDisplayWidget extends StatelessWidget {
+class ReplyDisplayWidget extends StatefulWidget {
   const ReplyDisplayWidget({
     super.key,
     required this.lobbyId,
@@ -16,15 +16,23 @@ class ReplyDisplayWidget extends StatelessWidget {
   final String lobbyId;
 
   @override
+  State<ReplyDisplayWidget> createState() => _ReplyDisplayWidgetState();
+}
+
+class _ReplyDisplayWidgetState extends State<ReplyDisplayWidget> {
+  Users? user;
+
+  @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
     return Consumer<LobbyProvider>(
       builder: (context, value, child) {
-        Reply reply = value.getReplyData(lobbyId);
-        Users user = getUser(context, reply.messageUserId, userProvider);
-        String displayName =
-            user.id == userProvider.userData.id ? "yourself" : user.username;
+        Reply reply = value.getReplyData(widget.lobbyId);
+        getUser(context, reply.messageUserId, userProvider);
+        String displayName = user?.id == userProvider.userData.id
+            ? "yourself"
+            : user?.username ?? "";
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +77,7 @@ class ReplyDisplayWidget extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                value.deleteReply(lobbyId);
+                value.deleteReply(widget.lobbyId);
               },
               icon: Image.asset(
                 "assets/icons/close.png",
@@ -83,8 +91,8 @@ class ReplyDisplayWidget extends StatelessWidget {
     );
   }
 
-  Users getUser(
-      BuildContext context, String userId, UsersProvider userProvider) {
-    return userProvider.getUser(userId);
+  void getUser(
+      BuildContext context, String userId, UsersProvider userProvider) async {
+    user = await userProvider.getUser(userId);
   }
 }

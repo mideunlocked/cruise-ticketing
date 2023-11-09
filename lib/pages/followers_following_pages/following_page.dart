@@ -49,7 +49,7 @@ class _FollowingPageState extends State<FollowingPage> {
             children: widget.data.where((element) {
               Users user;
 
-              user = userProvider.getUser(element);
+              user = userProvider.getUser(element) as Users;
 
               if (user.name.toLowerCase().contains(searchQuery)) {
                 return true;
@@ -61,7 +61,7 @@ class _FollowingPageState extends State<FollowingPage> {
             }).map((e) {
               Users user;
 
-              user = userProvider.getUser(e);
+              user = userProvider.getUser(e) as Users;
 
               return FollowersFollowingTile(user: user);
             }).toList(),

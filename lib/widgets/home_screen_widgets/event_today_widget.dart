@@ -10,18 +10,18 @@ class EventTodayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
-
     return HomeScreenPadding(
-      child: ListView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: eventProvider.events // list of events
-            .map(
-              (e) => EventListTile(event: e), // event today tile
-            )
-            .toList(),
-      ),
+      child: Consumer<EventProvider>(builder: (context, eventProvider, child) {
+        return ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: eventProvider.today // list of events
+              .map(
+                (e) => EventListTile(event: e), // event today tile
+              )
+              .toList(),
+        );
+      }),
     );
   }
 }

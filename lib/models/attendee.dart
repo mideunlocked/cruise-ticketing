@@ -17,14 +17,14 @@ class Attendee {
     required this.scannedTime,
   });
 
-  factory Attendee.fromJson(Map<String, dynamic> json) {
+  factory Attendee.fromJson(Map<String, dynamic>? json) {
     return Attendee(
-      price: json["price"] as String,
-      userId: json["userId"] as String,
-      ticketId: json["ticketId"] as String,
-      category: json["category"] as String,
-      isValidated: json["isValidated"] as bool,
-      scannedTime: json["scannedTime"] as DateTime,
+      price: json?["price"] ?? "",
+      userId: json?["userId"] ?? "",
+      ticketId: json?["ticketId"] ?? "",
+      category: json?["category"] ?? "",
+      isValidated: json?["isValidated"] ?? false,
+      scannedTime: json?["scannedTime"] ?? DateTime.now(),
     );
   }
 

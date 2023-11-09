@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
 import '../../providers/event_provider.dart';
+import '../../providers/users_provider.dart';
 import '../../widgets/general_widgets/custom_button.dart';
 import '../../screens/event_screens/event_screen.dart';
 
@@ -21,6 +22,7 @@ class _EventCreateSuccessScreenState extends State<EventCreateSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
+    var userProvider = Provider.of<UsersProvider>(context);
 
     return WillPopScope(
       onWillPop: () async {
@@ -58,7 +60,7 @@ class _EventCreateSuccessScreenState extends State<EventCreateSuccessScreen> {
                 title: "View event",
                 function: () async {
                   Event newEvent = eventProvider.events.last;
-                  dynamic latLng = newEvent.latlng;
+                  dynamic latLng = newEvent.geoPoint;
 
                   final durationData =
                       await DistanceAndDuration.getDistanceDuration(
@@ -70,10 +72,15 @@ class _EventCreateSuccessScreenState extends State<EventCreateSuccessScreen> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (ctx) => EventScreen(
-                            durationData: durationData,
-                            event: newEvent,
-                            isInitial: true,
+                          builder: (ctx) => FutureBuilder(
+                            future: userProvider.getUser(newEvent.hostId),
+                            builder: (context, snapshot) {
+                              return EventScreen(
+                                durationData: durationData,
+                                event: newEvent,
+                                host: snapshot.data,
+                              );
+                            },
                           ),
                         ),
                         (route) => false);

@@ -62,7 +62,7 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
               changeFilter: changeFilter,
             ),
             Expanded(
-              child: widget.event.attendees.isEmpty
+              child: widget.event.attendees!.isEmpty
                   ? Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
                       child: const EmptyListWidget(
@@ -77,7 +77,7 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
                           : searchAttendees().map((e) {
                               Users user;
 
-                              user = userProvider.getUser(e.userId);
+                              user = userProvider.getUser(e.userId) as Users;
 
                               return AttendeeTile(
                                 attendee: e,
@@ -112,28 +112,27 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
   }
 
   Iterable<Attendee> searchAttendees() {
-    var userProvider = Provider.of<UsersProvider>(context);
+    searchAttendeeResult = widget.event.attendees?.where((element) {
+          Users user;
 
-    searchAttendeeResult = widget.event.attendees.where((element) {
-      Users user;
+          user = getUser(element.userId) as Users;
 
-      user = userProvider.getUser(element.userId);
+          if (user.name.toLowerCase().contains(searchQuery) == true ||
+              user.username.toLowerCase().contains(searchQuery) == true ||
+              element.category.toLowerCase().contains(searchQuery) == true) {
+            return true;
+          }
 
-      if (user.name.toLowerCase().contains(searchQuery) == true ||
-          user.username.toLowerCase().contains(searchQuery) == true ||
-          element.category.toLowerCase().contains(searchQuery) == true) {
-        return true;
-      }
-
-      return false;
-    }).where((element) {
-      if (filterIndex == 1) {
-        return element.isValidated == true;
-      } else if (filterIndex == 2) {
-        return element.isValidated == false;
-      }
-      return true;
-    });
+          return false;
+        }).where((element) {
+          if (filterIndex == 1) {
+            return element.isValidated == true;
+          } else if (filterIndex == 2) {
+            return element.isValidated == false;
+          }
+          return true;
+        }) ??
+        {};
 
     return searchAttendeeResult;
   }
@@ -142,8 +141,6 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
     String scanResult;
     Attendee? attendee;
     Users? user;
-
-    var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
@@ -154,9 +151,9 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
       );
 
       attendee =
-          widget.event.attendees.singleWhere((e) => e.ticketId == scanResult);
+          widget.event.attendees?.singleWhere((e) => e.ticketId == scanResult);
 
-      user = userProvider.getUser(attendee.userId);
+      user = await getUser(attendee?.userId ?? "");
 
       debugPrint(scanResult);
     } on PlatformException {
@@ -178,5 +175,11 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
               attendee: attendee,
             ),
     );
+  }
+
+  Future<Users> getUser(String uid) async {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
+    return await userProvider.getUser(uid);
   }
 }

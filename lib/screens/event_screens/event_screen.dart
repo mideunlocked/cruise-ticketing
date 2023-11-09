@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../models/event.dart';
 import '../../models/ticket.dart';
+import '../../models/users.dart';
 import '../../providers/event_provider.dart';
 import '../../providers/ticket_provider.dart';
 import '../../providers/users_provider.dart';
@@ -23,10 +24,12 @@ class EventScreen extends StatefulWidget {
     required this.durationData,
     required this.event,
     this.isInitial = false,
+    required this.host,
   });
 
   final Map<String, dynamic> durationData;
   final Event event;
+  final Users? host;
   final bool
       isInitial; // check if event is being view by the host after creation
 
@@ -122,6 +125,7 @@ class _EventScreenState extends State<EventScreen> {
               isAbout == true // checks if about tab is currently selected
                   ?
                   // then displays is
+
                   About(
                       sizedBox: sizedBox,
                       widget: widget,

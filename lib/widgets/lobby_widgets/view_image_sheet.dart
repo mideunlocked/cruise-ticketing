@@ -16,6 +16,8 @@ class ViewImageSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
     return Container(
       height: 100.h,
       width: 100.w,
@@ -37,15 +39,24 @@ class ViewImageSheet extends StatelessWidget {
               SizedBox(
                 width: 5.w,
               ),
-              Text(
-                "Photo sent by ${getUser(context).username}",
-                maxLines: 1,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+              FutureBuilder(
+                  future: userProvider.getUser(message.userId),
+                  builder: (context, snapshot) {
+                    Map<String, dynamic> data =
+                        snapshot.data as Map<String, dynamic>;
+
+                    Users user = Users.fromJson(data);
+
+                    return Text(
+                      "Photo sent by ${user.username}",
+                      maxLines: 1,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    );
+                  }),
             ],
           ),
           Expanded(
@@ -56,11 +67,5 @@ class ViewImageSheet extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Users getUser(BuildContext context) {
-    var userProvider = Provider.of<UsersProvider>(context, listen: false);
-
-    return userProvider.getUser(message.userId);
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
 import '../general_widgets/custom_loading_indicator.dart';
@@ -21,6 +23,9 @@ class NearByTile extends StatefulWidget {
 }
 
 class _NearByTileState extends State<NearByTile> {
+  double lat = 0;
+  double lng = 0;
+
   Map<String, dynamic>? durationData; // should hold duration data
 
   @override
@@ -29,11 +34,8 @@ class _NearByTileState extends State<NearByTile> {
 
     // var holding passed data from parent
     final passedData = widget.event;
-    final lat = passedData.latlng["lat"];
-    final lng = passedData.latlng["lng"];
-
-    // calling function to get distance and duration
-    durationData = await DistanceAndDuration.getDistanceDuration(lat, lng);
+    lat = passedData.geoPoint.latitude;
+    lng = passedData.geoPoint.longitude;
   }
 
   @override
@@ -47,6 +49,8 @@ class _NearByTileState extends State<NearByTile> {
 
     double imageHeight = 12.h;
 
+    var userProvider = Provider.of<UsersProvider>(context);
+
     return Stack(
       alignment: Alignment.bottomLeft,
       children: [
@@ -55,10 +59,15 @@ class _NearByTileState extends State<NearByTile> {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (ctx) => EventScreen(
-                durationData: durationData ?? {},
-                event: widget.event,
-              ),
+              builder: (ctx) => FutureBuilder(
+                  future: userProvider.getUser(widget.event.hostId),
+                  builder: (context, snapshot) {
+                    return EventScreen(
+                      durationData: durationData ?? {},
+                      event: widget.event,
+                      host: snapshot.data,
+                    );
+                  }),
             ),
           ),
           child: Container(
@@ -152,25 +161,37 @@ class _NearByTileState extends State<NearByTile> {
               // walk duration text widget
 
               // check if duration data passed is empty
-              durationData == {}
-                  ?
-                  // if true its probably loading displaying a progress indicator
-                  SizedBox(
-                      height: 8.sp,
-                      width: 8.sp,
+              FutureBuilder(
+                  future: DistanceAndDuration.getDistanceDuration(lat, lng),
+                  builder: (context, snapshot) {
+                    var circularProgressIndicator = SizedBox(
+                      height: 2.h,
+                      width: 4.w,
                       child: const CircularProgressIndicator(
-                        color: Colors.black26,
+                        color: Colors.black54,
+                        backgroundColor: Colors.grey,
                         strokeWidth: 1,
                       ),
-                    )
-                  : Text(
-                      // else it has data display duration text
-                      durationData?["duration"] ?? "",
-                      style: TextStyle(
-                        fontSize: 8.sp,
-                        color: Colors.black,
-                      ),
-                    ),
+                    );
+
+                    if (snapshot.hasError) {
+                      return circularProgressIndicator;
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      var data = snapshot.data;
+
+                      return Text(
+                        // else it has data display duration text
+                        data?["duration"] ?? "",
+                        style: TextStyle(
+                          fontSize: 8.sp,
+                          color: Colors.black,
+                        ),
+                      );
+                    }
+                    return circularProgressIndicator;
+                  }),
             ],
           ),
         ),

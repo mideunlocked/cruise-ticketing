@@ -10,22 +10,22 @@ class RecomndedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
-
     return SizedBox(
       height: 30.h,
       width: 100.w,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        // event demo data iteration to retrieve data
-        children: eventProvider.events.map((e) {
-          // rectangular shaped even tile
-          return RecEventTile(
-            event: e,
-          );
-        }).toList(),
-      ),
+      child: Consumer<EventProvider>(builder: (context, eventProvider, child) {
+        return ListView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          // event demo data iteration to retrieve data
+          children: eventProvider.recommended.map((e) {
+            // rectangular shaped even tile
+            return RecEventTile(
+              event: e,
+            );
+          }).toList(),
+        );
+      }),
     );
   }
 }

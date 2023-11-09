@@ -37,7 +37,7 @@ class _MessageBubbleState extends State<MessageBubble> {
   void initState() {
     super.initState();
 
-    user = getUser();
+    getUser();
   }
 
   @override
@@ -92,10 +92,10 @@ class _MessageBubbleState extends State<MessageBubble> {
     );
   }
 
-  Users getUser() {
+  void getUser() async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    return userProvider.getUser(widget.message.userId);
+    user = await userProvider.getUser(widget.message.userId);
   }
 
   void bubbleActionDialog() {

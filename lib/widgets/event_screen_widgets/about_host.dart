@@ -12,24 +12,25 @@ import 'padded_widget_event_screen.dart';
 class AboutHost extends StatefulWidget {
   const AboutHost({
     super.key,
-    required this.hostId,
+    required this.host,
   });
 
-  final String hostId;
+  final Users? host;
 
   @override
   State<AboutHost> createState() => _AboutHostState();
 }
 
 class _AboutHostState extends State<AboutHost> {
-  Users? host;
   Users? currentUser;
 
   @override
   void initState() {
     super.initState();
 
-    getHost(context);
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
+
+    currentUser = userProvider.userData;
   }
 
   @override
@@ -37,7 +38,7 @@ class _AboutHostState extends State<AboutHost> {
     var of = Theme.of(context);
     var primaryColor = of.primaryColor;
 
-    bool isHost = host?.id == currentUser?.id;
+    bool isHost = widget.host?.id == currentUser?.id;
 
     return PaddedWidgetEventScreen(
       child: Column(
@@ -56,9 +57,9 @@ class _AboutHostState extends State<AboutHost> {
             children: [
               // host profile image
               ProfileImage(
-                imageUrl: host?.imageUrl ?? "",
+                imageUrl: widget.host?.imageUrl ?? "",
                 radius: 17.sp,
-                userId: host?.id ?? "",
+                userId: widget.host?.id ?? "",
               ),
 
               // some space
@@ -70,7 +71,7 @@ class _AboutHostState extends State<AboutHost> {
                 children: [
                   // host full name
                   Text(
-                    host?.name ?? "",
+                    widget.host?.name ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14.sp,
@@ -79,7 +80,7 @@ class _AboutHostState extends State<AboutHost> {
 
                   // host username
                   Text(
-                    "@${host?.username}",
+                    "@${widget.host?.username ?? ""}",
                     style: TextStyle(
                       // changes UI acccording to device theme mode
                       color: MediaQuery.platformBrightnessOf(context) ==
@@ -108,12 +109,5 @@ class _AboutHostState extends State<AboutHost> {
         ],
       ),
     );
-  }
-
-  void getHost(BuildContext context) {
-    var userProvider = Provider.of<UsersProvider>(context, listen: false);
-
-    host = userProvider.getUser(widget.hostId);
-    currentUser = userProvider.userData;
   }
 }

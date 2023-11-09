@@ -34,7 +34,7 @@ class About extends StatelessWidget {
       children: [
         // widget contains some info about the host
         AboutHost(
-          hostId: widget.event.hostId,
+          host: widget.host,
         ),
 
         // some space
@@ -68,7 +68,7 @@ class About extends StatelessWidget {
         LocationVenueWidget(
           venue: widget.event.venue,
           location: widget.event.address,
-          latlng: widget.event.latlng,
+          geoPoint: widget.event.geoPoint,
         ),
 
         // some space
@@ -85,9 +85,19 @@ class About extends StatelessWidget {
         ),
 
         // staggered profile image of people going
-        WhosGoing(
-          attendees: widget.event.attendees,
-        ),
+        widget.event.attendees!.isEmpty
+            ? const PaddedWidgetEventScreen(
+                child: Text(
+                  "Be one of the first to get a ticket for this event",
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              )
+            : WhosGoing(
+                attendees: widget.event.attendees ?? [],
+              ),
       ],
     );
   }

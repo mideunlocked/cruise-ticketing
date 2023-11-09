@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
 import '../../providers/event_provider.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
 import '../general_widgets/custom_loading_indicator.dart';
@@ -34,8 +35,8 @@ class _RecEventTileState extends State<RecEventTile> {
 
 // var holding passed data from parent
     final passedData = widget.event;
-    final lat = passedData.latlng["lat"];
-    final lng = passedData.latlng["lng"];
+    final lat = passedData.geoPoint.latitude;
+    final lng = passedData.geoPoint.longitude;
 
     // calling function to get distance and duration
     durationData = await DistanceAndDuration.getDistanceDuration(lat, lng);
@@ -46,6 +47,7 @@ class _RecEventTileState extends State<RecEventTile> {
     double imageHeight = 28.h;
 
     final eventProvider = Provider.of<EventProvider>(context);
+    var userProvider = Provider.of<UsersProvider>(context);
 
     return Padding(
       padding: EdgeInsets.only(
@@ -88,11 +90,16 @@ class _RecEventTileState extends State<RecEventTile> {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (ctx) => EventScreen(
-                      durationData: durationData ?? {},
-                      event: widget.event,
-                    ),
-                  ),
+                      builder: (ctx) => FutureBuilder(
+                            future: userProvider.getUser(widget.event.hostId),
+                            builder: (context, snapshot) {
+                              return EventScreen(
+                                durationData: durationData ?? {},
+                                event: widget.event,
+                                host: snapshot.data,
+                              );
+                            },
+                          )),
                 ),
                 child: RecEventTileOverlay(
                   event: widget.event,

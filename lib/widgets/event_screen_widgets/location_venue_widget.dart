@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -9,12 +10,12 @@ class LocationVenueWidget extends StatelessWidget {
     super.key,
     required this.venue,
     required this.location,
-    required this.latlng,
+    required this.geoPoint,
   });
 
   final String venue;
   final String location;
-  final Map<String, dynamic> latlng;
+  final GeoPoint geoPoint;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +103,7 @@ class LocationVenueWidget extends StatelessWidget {
 
           // directs users to google map for further info on getting to the venue
           GoToGoogleMapIcon(
-            latlng: latlng,
+            geoPoint: geoPoint,
           ),
         ],
       ),

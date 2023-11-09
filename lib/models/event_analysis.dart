@@ -5,11 +5,11 @@ class EventAnalysis {
   final int totalViews;
   final int attendance;
   final int ticketQuantity;
-  final List<Map<String, dynamic>> ages;
-  final List<Map<String, dynamic>> genders;
-  final List<Map<String, dynamic>> deviceSales;
-  final List<Map<String, dynamic>> attendeeLocations;
-  final List<Map<String, dynamic>> soldTicketBreakdown;
+  final List<dynamic> ages;
+  final List<dynamic> genders;
+  final List<dynamic> deviceSales;
+  final List<dynamic> attendeeLocations;
+  final List<dynamic> soldTicketBreakdown;
 
   const EventAnalysis({
     required this.ages,
@@ -22,6 +22,20 @@ class EventAnalysis {
     required this.attendeeLocations,
     required this.soldTicketBreakdown,
   });
+
+  factory EventAnalysis.fromJson(Map<String, dynamic> json) {
+    return EventAnalysis(
+      ages: json["ages"] as List<dynamic>,
+      genders: json["genders"] as List<dynamic>,
+      ticketSold: json["ticketSold"] as int,
+      totalViews: json["totalViews"] as int,
+      attendance: json["attendance"] as int,
+      deviceSales: json["deviceSales"] as List<dynamic>,
+      ticketQuantity: json["ticketQuantity"] as int,
+      attendeeLocations: json["attendeeLocations"] as List<dynamic>,
+      soldTicketBreakdown: json["soldTicketBreakdown"] as List<dynamic>,
+    );
+  }
 
   bool checkSoldOut() {
     if (ticketQuantity == ticketSold) {
@@ -46,7 +60,7 @@ class EventAnalysis {
 
   List<dynamic> calculateTypeRevenue(List<Pricing> pricing) {
     Pricing price;
-    List<Map<String, dynamic>> breakDown = [];
+    List<dynamic> breakDown = [];
 
     for (price in pricing) {
       dynamic i;
@@ -65,7 +79,7 @@ class EventAnalysis {
     return breakDown;
   }
 
-  double getCurrentRevenue(List<Map<String, dynamic>> ticketTypesRevenue) {
+  double getCurrentRevenue(List<dynamic> ticketTypesRevenue) {
     double currentRevenue = 0;
     dynamic i = {};
 
@@ -87,8 +101,8 @@ class EventAnalysis {
     return "$approximateConversion%";
   }
 
-  Map<String, dynamic> getMostPopularTicketType() {
-    Map<String, dynamic> mostPopular = {};
+  dynamic getMostPopularTicketType() {
+    dynamic mostPopular = {};
     int quantity = 0;
     dynamic i;
 

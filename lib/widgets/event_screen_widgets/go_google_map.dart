@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -5,15 +6,15 @@ import 'package:url_launcher/url_launcher.dart';
 class GoToGoogleMapIcon extends StatelessWidget {
   const GoToGoogleMapIcon({
     super.key,
-    required this.latlng,
+    required this.geoPoint,
   });
 
-  final Map<String, dynamic> latlng;
+  final GeoPoint geoPoint;
 
   @override
   Widget build(BuildContext context) {
-    double lat = latlng["lat"];
-    double lng = latlng["lng"];
+    double lat = geoPoint.latitude;
+    double lng = geoPoint.longitude;
 
     return InkWell(
       onTap: () async {

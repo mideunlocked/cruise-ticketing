@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -433,10 +434,10 @@ class _ListEventState extends State<CreateEventScreen> {
         address: addressController.text.trim(),
         rules: rulesController.text.trim(),
         hostId: "0",
-        latlng: {
-          "lat": latlng.latitude,
-          "lng": latlng.longitude,
-        },
+        geoPoint: GeoPoint(
+          latlng.latitude,
+          latlng.longitude,
+        ),
         isValid: true,
         rating: 4.0,
         pricing: pricing,
@@ -446,7 +447,7 @@ class _ListEventState extends State<CreateEventScreen> {
         attendees: [],
         reviews: [],
         isPrivate: privacy,
-        timestamp: DateTime.now(),
+        timestamp: Timestamp.now(),
         description: descriptionController.text.trim(),
         ticketQuantity: calculateTotalQuantity(),
         analysis: EventAnalysis(

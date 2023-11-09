@@ -7,6 +7,7 @@ import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
 import '../../models/ticket.dart';
 import '../../providers/event_provider.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import 'event_price_container.dart';
 import 'status_tile.dart';
@@ -40,10 +41,12 @@ class _EventDetailBoxState extends State<EventDetailBox> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    final eventLatLng = event?.latlng ?? {};
+    final eventLatLng = event?.geoPoint;
 
     durationData = await DistanceAndDuration.getDistanceDuration(
-        eventLatLng["lat"] ?? "", eventLatLng["lng"] ?? "");
+      eventLatLng?.latitude ?? 0.0,
+      eventLatLng?.longitude ?? 0.0,
+    );
   }
 
   @override
@@ -61,6 +64,8 @@ class _EventDetailBoxState extends State<EventDetailBox> {
       event?.date ?? DateTime.now(),
     );
 
+    var userProvider = Provider.of<UsersProvider>(context);
+
     return SizedBox(
       height: 32.h,
       child: Column(
@@ -75,11 +80,16 @@ class _EventDetailBoxState extends State<EventDetailBox> {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (ctx) => EventScreen(
-                      durationData: durationData,
-                      event: event!,
-                    ),
-                  ),
+                      builder: (ctx) => FutureBuilder(
+                            future: userProvider.getUser(event?.hostId ?? ""),
+                            builder: (context, snapshot) {
+                              return EventScreen(
+                                durationData: durationData,
+                                event: event!,
+                                host: snapshot.data,
+                              );
+                            },
+                          )),
                 ),
                 // event name text widget
                 child: Text(

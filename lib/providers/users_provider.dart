@@ -42,11 +42,18 @@ class UsersProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Users getUser(String userId) {
-    Users? user;
-    user = _users.firstWhere((e) => e.id == userId);
+  Future<Users> getUser(String userId) async {
+    try {
+      DocumentSnapshot snapshot =
+          await cloudInstance.collection("users").doc(userId).get();
 
-    return user;
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+      return Users.fromJson(data);
+    } catch (e) {
+      print("Get user error: $e");
+      return Future.error(e);
+    }
   }
 
   List<Users> searchUsers(String keyword) {

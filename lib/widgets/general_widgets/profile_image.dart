@@ -58,9 +58,9 @@ class _ProfileImageState extends State<ProfileImage> {
     );
   }
 
-  void getHost(BuildContext context) {
+  void getHost(BuildContext context) async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    user = userProvider.getUser(widget.userId);
+    user = await userProvider.getUser(widget.userId);
   }
 }

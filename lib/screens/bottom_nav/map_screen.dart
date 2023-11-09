@@ -166,8 +166,8 @@ class _MapPageState extends State<MapScreen> {
                   event: eventDetail.first,
                   duration: infoDuration,
                   getDirection: () {
-                    double lat = eventDetail.first.latlng["lat"] ?? 0.0;
-                    double lng = eventDetail.first.latlng["lng"] ?? 0.0;
+                    double lat = eventDetail.first.geoPoint.latitude;
+                    double lng = eventDetail.first.geoPoint.longitude;
 
                     getDirections(
                       LatLng(
@@ -214,8 +214,8 @@ class _MapPageState extends State<MapScreen> {
 
   // add marker function
   Marker addMarkers({required Event event}) {
-    double lat = event.latlng["lat"] ?? 0.0;
-    double lng = event.latlng["lng"] ?? 0.0;
+    double lat = event.geoPoint.latitude;
+    double lng = event.geoPoint.latitude;
 
     LatLng pos = LatLng(lat, lng);
     String id = event.id;

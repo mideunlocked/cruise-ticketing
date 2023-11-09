@@ -117,9 +117,9 @@ class _EventDetailColumnState extends State<EventDetailColumn> {
     );
   }
 
-  void getUser() {
+  void getUser() async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
-    user = userProvider.getUser(widget.widget.event.hostId);
+    user = await userProvider.getUser(widget.widget.event.hostId);
   }
 }

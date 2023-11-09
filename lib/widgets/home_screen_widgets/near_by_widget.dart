@@ -12,21 +12,21 @@ class NearByWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
-
     return SizedBox(
       height: 28.h,
       width: 100.w,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        // event data iterate through with map
-        children: eventProvider.events.map((e) {
-          return NearByTile(
-            event: e,
-          );
-        }).toList(),
-      ),
+      child: Consumer<EventProvider>(builder: (context, eventProvider, child) {
+        return ListView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          // event data iterate through with map
+          children: eventProvider.nearBy.map((e) {
+            return NearByTile(
+              event: e,
+            );
+          }).toList(),
+        );
+      }),
     );
   }
 }
