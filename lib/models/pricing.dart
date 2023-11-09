@@ -23,6 +23,16 @@ class Pricing {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "price": price,
+      "category": category,
+      "quantity": quantity,
+      "quantityLeft": quantityLeft,
+    };
+  }
+
   bool isSoldOut() {
     if (quantityLeft == 0) {
       return true;

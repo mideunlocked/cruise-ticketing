@@ -1,14 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../helpers/directions_repo.dart';
 import '../../models/directions.dart';
 import '../../models/event.dart';
-import '../../providers/event_provider.dart';
 import '../../widgets/map/center_focus_widget.dart';
 import '../../widgets/map/locator_event_detail.dart';
 import '../../widgets/map/text_bar.dart';
@@ -42,15 +41,8 @@ class _MapPageState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-
-    final eventProvider = Provider.of<EventProvider>(context, listen: false);
-
     // get marker from event details
-    markers = eventProvider.events.map((e) {
-      return addMarkers(
-        event: e,
-      );
-    }).toList();
+    getEventMarkers();
 
     // // convert dark_map_style file to string
     // rootBundle.loadString('assets/map/map_style.txt').then((string) {
@@ -110,7 +102,7 @@ class _MapPageState extends State<MapScreen> {
           GoogleMap(
             zoomControlsEnabled: false,
             myLocationButtonEnabled: false,
-            myLocationEnabled: false,
+            myLocationEnabled: true,
             initialCameraPosition: CameraPosition(
               target: LatLng(
                 current.latitude,
@@ -202,20 +194,12 @@ class _MapPageState extends State<MapScreen> {
     setState(() {
       current = latlng!;
     });
-
-    origin = Marker(
-      markerId: const MarkerId("origin"),
-      position: current,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
-    );
-
-    markers.add(origin!);
   }
 
   // add marker function
   Marker addMarkers({required Event event}) {
     double lat = event.geoPoint.latitude;
-    double lng = event.geoPoint.latitude;
+    double lng = event.geoPoint.longitude;
 
     LatLng pos = LatLng(lat, lng);
     String id = event.id;
@@ -265,5 +249,21 @@ class _MapPageState extends State<MapScreen> {
           sheetPosition == 0 ? 32.h : 0; // Adjust the height as needed
       eventDetail = [event];
     });
+  }
+
+  void getEventMarkers() async {
+    FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await cloudInstance.collection("events").get();
+
+    markers = querySnapshot.docs.map((snapshot) {
+      Map<String, dynamic> data = snapshot.data();
+      Event event = Event.fromJson(data);
+
+      return addMarkers(
+        event: event,
+      );
+    }).toList();
   }
 }

@@ -34,13 +34,17 @@ class EventProvider with ChangeNotifier {
     return [..._savedEvents];
   }
 
-  dynamic addEvent(Event event) {
+  Future<dynamic> addEvent(Event event) async {
     try {
       _events.add(event);
 
-      return true;
+      final response =
+          await cloudInstance.collection("events").add(event.toJson());
+
+      return response.id;
     } catch (e) {
       print("error creating event: $e");
+      return false;
     }
   }
 

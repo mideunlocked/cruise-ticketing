@@ -37,6 +37,20 @@ class EventAnalysis {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "ages": ages,
+      "genders": genders,
+      "ticketSold": ticketSold,
+      "totalViews": totalViews,
+      "attendance": attendance,
+      "deviceSales": deviceSales,
+      "ticketQuantity": ticketQuantity,
+      "attendeeLocations": attendeeLocations,
+      "soldTicketBreakdown": soldTicketBreakdown,
+    };
+  }
+
   bool checkSoldOut() {
     if (ticketQuantity == ticketSold) {
       return true;

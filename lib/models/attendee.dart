@@ -28,6 +28,17 @@ class Attendee {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "price": price,
+      "userId": userId,
+      "ticketId": ticketId,
+      "category": category,
+      "isValidated": isValidated,
+      "scannedTime": scannedTime.toString(),
+    };
+  }
+
   String getTimeAgo() {
     String timeAgo;
 

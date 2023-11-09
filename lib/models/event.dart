@@ -38,13 +38,13 @@ class Event {
     required this.venue,
     required this.rules,
     required this.hostId,
-    required this.geoPoint,
     required this.rating,
     required this.isValid,
     required this.reviews,
     required this.address,
     required this.pricing,
     required this.endTime,
+    required this.geoPoint,
     required this.imageUrl,
     required this.videoUrl,
     required this.analysis,
@@ -97,5 +97,37 @@ class Event {
       description: json["description"] as String,
       ticketQuantity: json["ticketQuantity"] as int,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    final List<dynamic> parsedPricing = pricing.map((e) => e.toJson()).toList();
+    final List<dynamic> parsedAttendees =
+        attendees?.map((e) => e.toJson()).toList() ?? [];
+
+    return {
+      "id": id,
+      "name": name,
+      "date": date.toString(),
+      "venue": venue,
+      "rules": rules,
+      "hostId": hostId,
+      "rating": rating,
+      "isValid": isValid,
+      "reviews": reviews,
+      "address": address,
+      "pricing": parsedPricing,
+      "endTime": endTime.toString(),
+      "geoPoint": geoPoint,
+      "imageUrl": imageUrl,
+      "videoUrl": videoUrl,
+      "eventAnalysis": analysis.toJson(),
+      "features": features,
+      "attendees": parsedAttendees,
+      "isPrivate": isPrivate,
+      "timestamp": Timestamp.now(),
+      "startTime": startTime.toString(),
+      "description": description,
+      "ticketQuantity": ticketQuantity,
+    };
   }
 }

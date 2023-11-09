@@ -39,8 +39,6 @@ class _EventTodayTileState extends State<EventListTile> {
 
     // calling function to get distance and duration
     durationData = await DistanceAndDuration.getDistanceDuration(lat, lng);
-
-    getUser();
   }
 
   @override
@@ -53,6 +51,8 @@ class _EventTodayTileState extends State<EventListTile> {
     //     MediaQuery.platformBrightnessOf(context) == Brightness.light;
 
     double imageWidth = 35.w;
+
+    var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
     return InkWell(
       // move to event screen
@@ -137,43 +137,49 @@ class _EventTodayTileState extends State<EventListTile> {
 
                   // event host data
                   sizedBoxHolder(
-                    Row(
-                      children: [
-                        // host profile image
-                        ProfileImage(
-                          imageUrl: user?.imageUrl ?? "",
-                          radius: 8.sp,
-                          userId: widget.event.hostId,
-                        ),
+                    FutureBuilder(
+                        future: userProvider.getUser(widget.event.hostId),
+                        builder: (context, AsyncSnapshot<Users> snapshot) {
+                          user = snapshot.data;
 
-                        // some space
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        // host full name
-                        SizedBox(
-                          width: 35.w,
-                          child: Text(
-                            user?.name ?? "",
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 8.sp),
-                          ),
-                        ),
+                          return Row(
+                            children: [
+                              // host profile image
+                              ProfileImage(
+                                imageUrl: user?.imageUrl ?? "",
+                                radius: 8.sp,
+                                userId: widget.event.hostId,
+                              ),
 
-                        // some spacing to push next widget to the extreme
-                        const Spacer(),
+                              // some space
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              // host full name
+                              SizedBox(
+                                width: 35.w,
+                                child: Text(
+                                  user?.name ?? "",
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 8.sp),
+                                ),
+                              ),
 
-                        // shows the event holds today
-                        Text(
-                          "Today",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 6.sp,
-                          ),
-                        ),
-                      ],
-                    ),
+                              // some spacing to push next widget to the extreme
+                              const Spacer(),
+
+                              // shows the event holds today
+                              Text(
+                                "Today",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 6.sp,
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
                   ),
                 ],
               ),
@@ -182,12 +188,6 @@ class _EventTodayTileState extends State<EventListTile> {
         ),
       ),
     );
-  }
-
-  void getUser() async {
-    var userProvider = Provider.of<UsersProvider>(context, listen: false);
-
-    user = await userProvider.getUser(widget.event.hostId);
   }
 
   // custom sized box widget method
