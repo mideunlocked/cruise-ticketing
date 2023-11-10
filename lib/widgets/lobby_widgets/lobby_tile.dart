@@ -31,9 +31,44 @@ class _LobbyTileState extends State<LobbyTile> {
     var eventProvider = Provider.of<EventProvider>(context, listen: false);
     var lobbyProvider = Provider.of<LobbyProvider>(context, listen: false);
 
+    const loadingText = Text(
+      "Loading...",
+      style: TextStyle(
+        fontStyle: FontStyle.italic,
+        color: Colors.black38,
+      ),
+    );
+    Color secondaryColor = Colors.black38;
+
     return FutureBuilder(
         future: eventProvider.getEvent(widget.lobby.eventId),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          const textStyle = TextStyle(
+            fontStyle: FontStyle.italic,
+            color: Colors.black38,
+          );
+
+          if (snapshot.hasError) {
+            return const Text(
+              "Something went wrong",
+              style: textStyle,
+            );
+          }
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const Text(
+              "Document does not exist",
+              style: textStyle,
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text(
+              "Loading lobby",
+              style: textStyle,
+            );
+          }
+
           Map<String, dynamic> data =
               snapshot.data?.data() as Map<String, dynamic>;
 
@@ -74,11 +109,11 @@ class _LobbyTileState extends State<LobbyTile> {
                 stream: lobbyProvider.getLastMessage(widget.lobby.id),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return const Text('Something went wrong');
+                    return loadingText;
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading");
+                    return loadingText;
                   }
 
                   String uid =
@@ -96,30 +131,44 @@ class _LobbyTileState extends State<LobbyTile> {
                         isSeen
                             ? Icons.rocket_outlined
                             : Icons.rocket_launch_rounded,
-                        color: isSeen ? Colors.black45 : Colors.black,
+                        color: isSeen ? secondaryColor : Colors.black,
                         size: 10.sp,
                       ),
                       SizedBox(
                         width: 3.w,
                       ),
                       Text(
-                        isSeen ? "Opened" : "Delivered",
+                        isSeen ? "Opened" : "Delivered ",
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          color: isSeen ? Colors.black45 : null,
+                          fontSize: 9.sp,
+                          color: secondaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 1.w,
+                      ),
+                      Icon(
+                        Icons.circle,
+                        color: secondaryColor,
+                        size: 3.sp,
+                      ),
+                      SizedBox(
+                        width: 1.w,
+                      ),
+                      Text(
+                        DateTimeFormatting.timeAgo(
+                          message?.dateTime ?? DateTime.now(),
+                        ),
+                        style: TextStyle(
+                          color: secondaryColor,
+                          fontSize: 9.sp,
+                          fontFamily: "Poppins",
                         ),
                       ),
                     ],
                   );
                 }),
-            trailing: Text(
-              DateTimeFormatting.timeAgo(message?.dateTime ?? DateTime.now()),
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 10.sp,
-                fontFamily: "Poppins",
-              ),
-            ),
           );
         });
   }
