@@ -28,7 +28,7 @@ class Reply {
       "text": text,
       "lobbyId": lobbyId,
       "fileLink": fileLink,
-      "messagedId": messageId,
+      "messageId": messageId,
       "messageUserId": messageUserId,
     };
   }

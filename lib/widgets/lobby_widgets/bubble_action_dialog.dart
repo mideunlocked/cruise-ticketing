@@ -21,11 +21,13 @@ class BubbleActionDialog extends StatefulWidget {
     required this.message,
     required this.adminId,
     required this.lobbyId,
+    required this.isMe,
   });
 
   final Message message;
   final String adminId;
   final String lobbyId;
+  final bool isMe;
 
   @override
   State<BubbleActionDialog> createState() => _BubbleActionDIalogState();
@@ -34,11 +36,13 @@ class BubbleActionDialog extends StatefulWidget {
 class _BubbleActionDIalogState extends State<BubbleActionDialog> {
   Users? user;
 
-  @override
-  void initState() {
-    super.initState();
+  bool canDelete = false;
 
-    getUser();
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+
+    await getUser();
   }
 
   @override
@@ -48,15 +52,8 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
       vertical: 1.h,
     );
 
-    var userProvider = Provider.of<UsersProvider>(context, listen: false);
-
-    bool isMe = user?.id == userProvider.userData.id;
-
     String date = DateTimeFormatting.formatDateTime(widget.message.dateTime);
     String time = DateTimeFormatting.formatedTime(widget.message.dateTime);
-
-    bool canDelete =
-        widget.message.checkIsMe(user?.id ?? "") || user!.id == widget.adminId;
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -69,8 +66,9 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment:
-                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: widget.isMe
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 widget.message.fileLink.isNotEmpty
                     ? ClipRRect(
@@ -84,7 +82,7 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
                       )
                     : Bubble(
                         paddingInsets: paddingInsets,
-                        checkIsMe: isMe,
+                        checkIsMe: widget.isMe,
                         message: widget.message,
                         user: user,
                       ),
@@ -94,8 +92,8 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   margin: EdgeInsets.only(
-                    left: isMe ? 60.w : 0,
-                    right: isMe ? 0 : 60.w,
+                    left: widget.isMe ? 60.w : 0,
+                    right: widget.isMe ? 0 : 60.w,
                     bottom: 2.h,
                     top: 1.h,
                   ),
@@ -119,14 +117,6 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
                           passMessageForReply();
                         },
                       ),
-                      // Visibility(
-                      //   visible: isMe,
-                      //   child: BubbleActionTile(
-                      //     title: "Info",
-                      //     icon: Icons.info_rounded,
-                      //     function: () {},
-                      //   ),
-                      // ),
                       BubbleActionTile(
                         title: "Copy",
                         icon: Icons.copy_rounded,
@@ -156,10 +146,15 @@ class _BubbleActionDIalogState extends State<BubbleActionDialog> {
     );
   }
 
-  void getUser() async {
+  Future getUser() async {
     var userProvider = Provider.of<UsersProvider>(context, listen: false);
 
     user = await userProvider.getUser(widget.message.userId);
+
+    setState(() {
+      canDelete = widget.message.checkIsMe(user?.id ?? "") ||
+          user?.id == widget.adminId;
+    });
   }
 
   Future<void> copyToClipboard(String textToCopy) async {

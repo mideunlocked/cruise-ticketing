@@ -1,4 +1,5 @@
 import 'package:cruise/widgets/lobby_widgets/bubble.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -21,7 +22,8 @@ class ImageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var checkIsMe = message.checkIsMe("0");
+    String? uid = FirebaseAuth.instance.currentUser?.uid ?? "";
+    var checkIsMe = message.checkIsMe(uid);
 
     return message.isDeleted
         ? Bubble(
@@ -44,10 +46,27 @@ class ImageBubble extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      "https://images.pexels.com/photos/2147029/pexels-photo-2147029.jpeg?auto=compress&cs=tinysrgb&w=600",
+                      message.fileLink,
                       width: 35.w,
                       height: 25.h,
                       fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Image.asset(
+                          "assets/icons/image.png",
+                          width: 35.w,
+                          height: 25.h,
+                        );
+                      },
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return Image.asset(
+                          "assets/icons/image.png",
+                          width: 35.w,
+                          height: 25.h,
+                        );
+                      },
                     ),
                   ),
                 ),

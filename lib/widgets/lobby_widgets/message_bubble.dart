@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -42,7 +43,8 @@ class _MessageBubbleState extends State<MessageBubble> {
 
   @override
   Widget build(BuildContext context) {
-    var checkIsMe = widget.message.checkIsMe("0");
+    String uid = FirebaseAuth.instance.currentUser?.uid ?? "";
+    var checkIsMe = widget.message.checkIsMe(uid);
 
     var paddingInsets = EdgeInsets.symmetric(
       horizontal: 4.w,
@@ -59,7 +61,8 @@ class _MessageBubbleState extends State<MessageBubble> {
             checkIsMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Visibility(
-            visible: widget.message.reply?.messageId.isNotEmpty ?? false,
+            visible: widget.message.reply!.messageId != "" &&
+                !widget.message.isDeleted,
             child: ReplyBubble(
               paddingInsets: paddingInsets,
               message: widget.message,
@@ -69,7 +72,7 @@ class _MessageBubbleState extends State<MessageBubble> {
           ),
           InkWell(
             onLongPress: () =>
-                widget.message.isDeleted ? {} : bubbleActionDialog(),
+                widget.message.isDeleted ? {} : bubbleActionDialog(checkIsMe),
             onDoubleTap: () =>
                 widget.message.isDeleted ? {} : passMessageForReply(),
             child: SizedBox(
@@ -98,13 +101,14 @@ class _MessageBubbleState extends State<MessageBubble> {
     user = await userProvider.getUser(widget.message.userId);
   }
 
-  void bubbleActionDialog() {
+  void bubbleActionDialog(bool isMe) {
     showDialog(
       context: context,
       builder: (ctx) => BubbleActionDialog(
         message: widget.message,
         adminId: widget.adminId,
         lobbyId: widget.lobbyId,
+        isMe: isMe,
       ),
     );
   }

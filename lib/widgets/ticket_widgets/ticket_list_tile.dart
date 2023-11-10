@@ -25,11 +25,11 @@ class _TicketListTileState extends State<TicketListTile> {
   Event? event;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
 
     var eventProvider = Provider.of<EventProvider>(context, listen: false);
-    event = eventProvider.getEvent(widget.ticket.eventId);
+    event = await eventProvider.getEvent(widget.ticket.eventId);
   }
 
   @override

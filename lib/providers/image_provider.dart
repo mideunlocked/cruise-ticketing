@@ -36,8 +36,8 @@ class AppImageProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> uploadImage(File imageFile, String eventId) async {
-    final path = "event/image/$eventId";
+  Future<dynamic> uploadEventImage(File imageFile, String eventId) async {
+    final path = "events/images/$eventId";
     UploadTask uploadTask;
 
     try {
@@ -58,6 +58,35 @@ class AppImageProvider with ChangeNotifier {
       print("Upload image upload error: $e");
       notifyListeners();
       return "Error";
+    }
+  }
+
+  Future<dynamic> uploadLobbyFile(
+      File imageFile, String lobbyId, String messageId) async {
+    final path = "lobbies/$lobbyId$messageId";
+    UploadTask uploadTask;
+
+    try {
+      final storagePath = storageInstance.ref().child(path);
+
+      uploadTask = storagePath.putFile(imageFile);
+
+      final snapshot = await uploadTask.whenComplete(() {});
+
+      await snapshot.ref.getDownloadURL().then((value) {
+        cloudInstance
+            .collection("lobbies/$lobbyId/messages")
+            .doc(messageId)
+            .update({
+          "fileLink": value,
+        });
+      });
+
+      return true;
+    } catch (e) {
+      print("Lobby image upload error: $e");
+      notifyListeners();
+      return Future.error(e);
     }
   }
 

@@ -9,11 +9,11 @@ class FilePickerWidget extends StatelessWidget {
   const FilePickerWidget({
     super.key,
     required this.lobbyId,
-    this.getFile,
+    required this.getFile,
   });
 
   final String lobbyId;
-  final Function(File)? getFile;
+  final Function(File) getFile;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,13 @@ class FilePickerWidget extends StatelessWidget {
             title: "Camera",
             iconUrl: "camera",
             lobbyId: lobbyId,
-            getFile: lobbyId.isEmpty ? getFile : null,
+            getFile: getFile,
           ),
           FilePickerType(
             title: "Gallery",
             iconUrl: "image",
             lobbyId: lobbyId,
-            getFile: lobbyId.isEmpty ? getFile : null,
+            getFile: getFile,
           ),
         ],
       ),

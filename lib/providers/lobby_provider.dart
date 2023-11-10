@@ -1,107 +1,19 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/lobby.dart';
 import '../models/message.dart';
 import '../models/reply.dart';
+import 'image_provider.dart';
 
 class LobbyProvider with ChangeNotifier {
-  final List<Lobby> _lobbies = [
-    Lobby(
-      id: "0",
-      eventId: "0",
-      nickName: "Firemonester",
-      messages: [
-        Message(
-          id: "0",
-          userId: "0",
-          text:
-              "Welcome to the lobby attendees hope we have a great time at the event, I'm John your host for the event nice to meet you all",
-          reply: null,
-          isSeen: [
-            "1",
-            "3",
-            "4"
-                "6",
-          ],
-          fileLink: "",
-          dateTime: DateTime(2023, 10, 18, 2, 23),
-          isDeleted: false,
-          deletedBy: "",
-        ),
-        Message(
-          id: "1",
-          userId: "1",
-          text: "Hoping to have a good time",
-          reply: null,
-          isSeen: [
-            "0",
-            "3",
-            "4"
-                "6",
-          ],
-          fileLink: "",
-          dateTime: DateTime(2023, 10, 19, 2, 26),
-          isDeleted: false,
-          deletedBy: "",
-        ),
-        Message(
-          id: "2",
-          userId: "2",
-          text: "First time attending something like this excited",
-          reply: null,
-          isSeen: [
-            "0",
-            "3",
-            "4"
-                "6",
-          ],
-          fileLink: "",
-          dateTime: DateTime(2023, 10, 19, 2, 30),
-          isDeleted: false,
-          deletedBy: "",
-        ),
-        Message(
-          id: "3",
-          userId: "3",
-          text: "Hello John, I'm going to have a good time for sure",
-          reply: const Reply(
-            messageId: "0",
-            messageUserId: "0",
-            lobbyId: "0",
-            fileLink: "",
-            text:
-                "Welcome to the lobby attendees hope we have a great time at the event, I'm John your host for the event nice to meet you all",
-          ),
-          isSeen: [
-            "0",
-            "3",
-            "4"
-                "6",
-          ],
-          fileLink: "",
-          dateTime: DateTime(2023, 10, 19, 2, 35),
-          isDeleted: false,
-          deletedBy: "",
-        ),
-        Message(
-          id: "4",
-          userId: "4",
-          text: "",
-          reply: null,
-          isSeen: [
-            "0",
-            "1",
-            "3",
-            "6",
-          ],
-          fileLink: "ks",
-          dateTime: DateTime(2023, 10, 19, 2, 40),
-          isDeleted: false,
-          deletedBy: "",
-        ),
-      ],
-    ),
-  ];
+  FirebaseFirestore cloudInstance = FirebaseFirestore.instance;
+  FirebaseAuth authInstance = FirebaseAuth.instance;
+
+  final List<Lobby> _lobbies = [];
   final List<Reply> _replies = [];
 
   List<Lobby> get lobbies {
@@ -112,22 +24,101 @@ class LobbyProvider with ChangeNotifier {
     return [..._replies];
   }
 
-  List<Message> getMessages(String lobbyId) {
-    return _lobbies.firstWhere((lobby) => lobby.id == lobbyId).messages;
+  Stream<QuerySnapshot> getLobbies() {
+    String uid = authInstance.currentUser?.uid ?? "";
+    try {
+      var lobbyCollection = cloudInstance.collection("lobbies");
+
+      Stream<QuerySnapshot<Map<String, dynamic>>> snapshot = lobbyCollection
+          .where(
+            "attendees",
+            arrayContains: uid,
+          )
+          .snapshots();
+
+      return snapshot;
+    } catch (e) {
+      print("Get lobbies error: $e");
+      notifyListeners();
+      return Stream.error(e);
+    }
   }
 
-  void addMessage(String lobbyId, Message message) {
-    _lobbies.firstWhere((lobby) => lobby.id == lobbyId).messages.add(message);
-    notifyListeners();
+  Stream<QuerySnapshot> getLastMessage(String lobbyId) {
+    try {
+      Stream<QuerySnapshot<Map<String, dynamic>>> snapshot = cloudInstance
+          .collection("lobbies/$lobbyId/messages")
+          .orderBy("dateTime", descending: true)
+          .limit(1)
+          .snapshots();
+
+      return snapshot;
+    } catch (e) {
+      print("Get lobby last message error: $e");
+      notifyListeners();
+      return Stream.error(e);
+    }
   }
 
-  void deleteMessage(String lobbyId, String messageId) {
-    _lobbies
-        .firstWhere((lobby) => lobby.id == lobbyId)
-        .messages
-        .removeWhere((element) => element.id == messageId);
+  Stream<QuerySnapshot> getMessages(String lobbyId) {
+    try {
+      Stream<QuerySnapshot<Map<String, dynamic>>> snapshot = cloudInstance
+          .collection("lobbies/$lobbyId/messages")
+          .orderBy("dateTime")
+          .snapshots();
 
-    notifyListeners();
+      return snapshot;
+    } catch (e) {
+      print("Get lobby messages error: $e");
+      notifyListeners();
+      return Stream.error(e);
+    }
+  }
+
+  Future<dynamic> addMessage(String lobbyId, Message message) async {
+    try {
+      var lobbyCollection =
+          cloudInstance.collection("lobbies/$lobbyId/messages");
+      await lobbyCollection
+          .add(
+        message.toJson(),
+      )
+          .then((value) async {
+        await lobbyCollection.doc(value.id).update({
+          "id": value.id,
+        });
+
+        if (message.fileLink.isNotEmpty) {
+          await AppImageProvider()
+              .uploadLobbyFile(File(message.fileLink), lobbyId, value.id);
+        }
+      });
+
+      return true;
+    } catch (e) {
+      print("Send lobby messages error: $e");
+      notifyListeners();
+      return Future.error(e);
+    }
+  }
+
+  Future<dynamic> deleteMessage(String lobbyId, String messageId) async {
+    String uid = authInstance.currentUser?.uid ?? "";
+
+    try {
+      await cloudInstance
+          .collection("lobbies/$lobbyId/messages")
+          .doc(messageId)
+          .update(
+        {
+          "isDeleted": true,
+          "deletedBy": uid,
+        },
+      );
+    } catch (e) {
+      print("delete message error: $e");
+      return Future.error(e);
+    }
   }
 
   Reply getReplyData(String lobbyId) {

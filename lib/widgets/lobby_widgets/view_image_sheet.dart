@@ -41,11 +41,8 @@ class ViewImageSheet extends StatelessWidget {
               ),
               FutureBuilder(
                   future: userProvider.getUser(message.userId),
-                  builder: (context, snapshot) {
-                    Map<String, dynamic> data =
-                        snapshot.data as Map<String, dynamic>;
-
-                    Users user = Users.fromJson(data);
+                  builder: (context, AsyncSnapshot<Users> snapshot) {
+                    Users user = snapshot.data as Users;
 
                     return Text(
                       "Photo sent by ${user.username}",
@@ -61,7 +58,7 @@ class ViewImageSheet extends StatelessWidget {
           ),
           Expanded(
             child: Image.network(
-              "https://images.pexels.com/photos/2147029/pexels-photo-2147029.jpeg?auto=compress&cs=tinysrgb&w=600",
+              message.fileLink,
             ),
           ),
         ],

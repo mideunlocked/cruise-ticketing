@@ -43,13 +43,18 @@ class LobbyViewSendImageScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.white,
         onPressed: () => sendMessage(context),
         label: Row(
           children: [
-            const Text("Send"),
+            const Text(
+              "Send",
+              style: TextStyle(color: Colors.black),
+            ),
             SizedBox(width: 3.w),
             const Icon(
               Icons.send_rounded,
+              color: Colors.black,
             ),
           ],
         ),
@@ -60,14 +65,16 @@ class LobbyViewSendImageScreen extends StatelessWidget {
   void sendMessage(BuildContext context) {
     var lobbyProvider = Provider.of<LobbyProvider>(context, listen: false);
 
+    String? uid = lobbyProvider.authInstance.currentUser?.uid ?? "";
+
     lobbyProvider.addMessage(
       lobbyId,
       Message(
-        id: "8",
+        id: "",
         text: "",
         reply: null,
-        isSeen: [],
-        userId: "0",
+        isSeen: [uid],
+        userId: uid,
         fileLink: image.path,
         isDeleted: false,
         dateTime: DateTime.now(),

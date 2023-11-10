@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../models/message.dart';
 import '../../models/users.dart';
-import '../../providers/lobby_provider.dart';
 import '../../providers/users_provider.dart';
 
 class ReplyBubble extends StatefulWidget {
@@ -103,22 +102,15 @@ class _ReplyBubbleState extends State<ReplyBubble> {
   }
 
   void scrollToMessage(BuildContext context) {
-    var lobbyProvider = Provider.of<LobbyProvider>(context, listen: false);
-
     // Calculate the position of the item based on its index
-    double itemPosition = lobbyProvider
-            .getMessages(widget.message.reply?.lobbyId ?? "")
-            .reversed
-            .toList()
-            .indexWhere(
-                (element) => element.id == widget.message.reply?.messageId) *
-        100.0; // Adjust the value as needed
+    // double itemPosition =
+    //     widget.messageIndex * 100.0; // Adjust the value as needed
 
-    // Scroll to the calculated position with animation
-    widget.scrollController.animateTo(
-      itemPosition,
-      duration: const Duration(seconds: 1), // Adjust the duration as needed
-      curve: Curves.easeInOut, // Adjust the curve as needed
-    );
+    // // Scroll to the calculated position with animation
+    // widget.scrollController.animateTo(
+    //   itemPosition,
+    //   duration: const Duration(seconds: 1), // Adjust the duration as needed
+    //   curve: Curves.easeInOut, // Adjust the curve as needed
+    // );
   }
 }

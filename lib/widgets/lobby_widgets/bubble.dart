@@ -47,7 +47,7 @@ class Bubble extends StatelessWidget {
           message.isDeleted
               ? const SizedBox()
               : Visibility(
-                  visible: message.userId != "0",
+                  visible: !checkIsMe,
                   child: InkWell(
                     onTap: () {
                       Navigator.push(

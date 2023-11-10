@@ -85,6 +85,7 @@ class _LobbySendActionsWidgetState extends State<LobbySendActionsWidget> {
       backgroundColor: Colors.transparent,
       builder: (ctx) => FilePickerWidget(
         lobbyId: widget.lobbyId,
+        getFile: (_) {},
       ),
     );
   }

@@ -15,7 +15,7 @@ class FilePickerType extends StatefulWidget {
     required this.getFile,
   });
 
-  final Function(File)? getFile;
+  final Function(File) getFile;
   final String lobbyId;
   final String iconUrl;
   final String title;
@@ -79,7 +79,7 @@ class _FilePickerTypeState extends State<FilePickerType> {
     }
 
     setState(() {
-      widget.getFile!(
+      widget.getFile(
         File(
           pickedImage?.path ?? XFile("").path,
         ),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'reply.dart';
 
 class Message {
@@ -24,12 +26,14 @@ class Message {
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
+    Timestamp timestamp = json["dateTime"] as Timestamp;
+
     return Message(
       id: json["id"] as String,
       userId: json["userId"] as String,
       text: json["text"] as String,
       isSeen: json["isSeen"] as List<dynamic>,
-      dateTime: DateTime.parse(json["date"].toString()),
+      dateTime: timestamp.toDate(),
       fileLink: json["fileLink"] as String,
       reply: Reply.fromJson(json["reply"] as Map<String, dynamic>),
       isDeleted: json["isDeleted"] as bool,
@@ -51,8 +55,7 @@ class Message {
     };
   }
 
-  bool checkIsMe(String adminId) {
-    String uid = adminId;
+  bool checkIsMe(String uid) {
     bool isMe = false;
 
     isMe = userId == uid;

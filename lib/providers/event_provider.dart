@@ -45,7 +45,7 @@ class EventProvider with ChangeNotifier {
         await eventCollection.doc(value.id).update({
           "id": value.id,
         });
-        await AppImageProvider().uploadImage(
+        await AppImageProvider().uploadEventImage(
           File(event.imageUrl),
           value.id,
         );
@@ -75,10 +75,21 @@ class EventProvider with ChangeNotifier {
     _events.removeWhere((event) => event.id == id);
   }
 
-  Event getEvent(String eventId) {
-    final event = _events.firstWhere((e) => e.id == eventId);
+  Future<Event> getEvent(String eventId) async {
+    try {
+      DocumentSnapshot documentSnap =
+          await cloudInstance.collection("events").doc(eventId).get();
 
-    return event;
+      Map<String, dynamic> data = documentSnap.data() as Map<String, dynamic>;
+
+      Event event = Event.fromJson(data);
+
+      return event;
+    } catch (e) {
+      print("Get event error: $e");
+      notifyListeners();
+      return Future.error(e);
+    }
   }
 
   void saveEvent(String id) {
