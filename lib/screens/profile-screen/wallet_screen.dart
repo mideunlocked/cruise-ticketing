@@ -37,57 +37,43 @@ class _WalletScreenState extends State<WalletScreen> {
     List<Transaction> transactions = wallet.transactions;
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: CustomAppBar(
-                title: "Wallet",
-                bottomPadding: 2.h,
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    BalanceAndWithdrawWidget(
-                      isVisible: isVisible,
-                      walletBalance: wallet.balanceString(),
-                      getFunction: getVisibilty,
+      appBar: const CustomAppBar(title: "Wallet"),
+      body: Column(
+        children: [
+          BalanceAndWithdrawWidget(
+            isVisible: isVisible,
+            walletBalance: wallet.balanceString(),
+            getFunction: getVisibilty,
+          ),
+          const Divider(thickness: 1),
+          Expanded(
+            child: transactions.isEmpty
+                ? const EmptyTransaction()
+                : GroupedListView(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    elements: transactions,
+                    order: GroupedListOrder.DESC,
+                    groupBy: (element) => DateTime(
+                      element.timestamp.year,
+                      element.timestamp.month,
+                      element.timestamp.day,
                     ),
-                    const Divider(thickness: 1),
-                    transactions.isEmpty
-                        ? const EmptyTransaction()
-                        : GroupedListView(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            elements: transactions,
-                            order: GroupedListOrder.DESC,
-                            groupBy: (element) => DateTime(
-                              element.timestamp.year,
-                              element.timestamp.month,
-                              element.timestamp.day,
-                            ),
-                            groupSeparatorBuilder: (value) =>
-                                TransactionListSeperator(dateTime: value),
-                            itemBuilder: (ctx, transaction) {
-                              bool isInput = transaction.inputOutput == 1;
+                    groupSeparatorBuilder: (value) =>
+                        TransactionListSeperator(dateTime: value),
+                    itemBuilder: (ctx, transaction) {
+                      bool isInput = transaction.inputOutput == 1;
 
-                              return TransactionsTile(
-                                isDeposit: isInput,
-                                isVisible: isVisible,
-                                amount: transaction.amountString(),
-                                timestamp: transaction.timestamp,
-                              );
-                            },
-                          ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                      return TransactionsTile(
+                        isDeposit: isInput,
+                        isVisible: isVisible,
+                        amount: transaction.amountString(),
+                        timestamp: transaction.timestamp,
+                      );
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }

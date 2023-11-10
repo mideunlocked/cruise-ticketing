@@ -97,105 +97,100 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            child: Column(
-              children: [
-                CustomAppBar(
-                  title: "Edit profile",
-                  bottomPadding: 2.h,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ProfileImage(
-                          imageUrl:
-                              FirebaseAuth.instance.currentUser?.photoURL ?? "",
-                          radius: 70.0,
-                          userId: "",
-                          isAuthUser: true,
-                        ),
-                        sizedBox,
-                        isUploading
-                            ? CustomLoadingIndicator(
-                                height: 10.h,
-                                width: 30.w,
-                              )
-                            : TextButton(
-                                onPressed: () => ShowFilePicker.showFilePicker(
-                                  context: context,
-                                  getFile: getProfileImage,
-                                ),
-                                child: Text(
-                                  "Edit profile picture",
-                                  style: bodyMedium?.copyWith(
-                                    color: Colors.blue,
-                                  ),
+        appBar: const CustomAppBar(title: "Edit profile"),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.w),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ProfileImage(
+                        imageUrl:
+                            FirebaseAuth.instance.currentUser?.photoURL ?? "",
+                        radius: 70.0,
+                        userId: "",
+                        isAuthUser: true,
+                      ),
+                      sizedBox,
+                      isUploading
+                          ? CustomLoadingIndicator(
+                              height: 10.h,
+                              width: 30.w,
+                            )
+                          : TextButton(
+                              onPressed: () => ShowFilePicker.showFilePicker(
+                                context: context,
+                                getFile: getProfileImage,
+                              ),
+                              child: Text(
+                                "Edit profile picture",
+                                style: bodyMedium?.copyWith(
+                                  color: Colors.blue,
                                 ),
                               ),
-                        sizedBox,
-                        CustomTextField(
-                          label: "Name",
-                          controller: nameController,
-                          focusNode: nameNode,
+                            ),
+                      sizedBox,
+                      CustomTextField(
+                        label: "Name",
+                        controller: nameController,
+                        focusNode: nameNode,
+                      ),
+                      CustomTextField(
+                        label: "Username",
+                        controller: usernameController,
+                        focusNode: usernameNode,
+                      ),
+                      CustomTextField(
+                        label: "Email",
+                        controller: emailController,
+                        focusNode: emailNode,
+                        inputType: TextInputType.emailAddress,
+                      ),
+                      CustomTextField(
+                        label: "Bio",
+                        controller: bioController,
+                        focusNode: bioNode,
+                        maxLines: 5,
+                        maxText: 300,
+                      ),
+                      CustomTextField(
+                        label: "Number",
+                        controller: numberController,
+                        focusNode: numberNode,
+                        inputType: TextInputType.number,
+                      ),
+                      ProfileInputContainer(
+                        child: SelectGenderWidget(
+                          gender: gender,
+                          userGender: userGender,
+                          getUserGender: getNewUserGender,
                         ),
-                        CustomTextField(
-                          label: "Username",
-                          controller: usernameController,
-                          focusNode: usernameNode,
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      InkWell(
+                        onTap: () => showBirthdayPicker(),
+                        child: ProfileInputContainer(
+                          child: Text(dbString),
                         ),
-                        CustomTextField(
-                          label: "Email",
-                          controller: emailController,
-                          focusNode: emailNode,
-                          inputType: TextInputType.emailAddress,
-                        ),
-                        CustomTextField(
-                          label: "Bio",
-                          controller: bioController,
-                          focusNode: bioNode,
-                          maxLines: 5,
-                          maxText: 300,
-                        ),
-                        CustomTextField(
-                          label: "Number",
-                          controller: numberController,
-                          focusNode: numberNode,
-                          inputType: TextInputType.number,
-                        ),
-                        ProfileInputContainer(
-                          child: SelectGenderWidget(
-                            gender: gender,
-                            userGender: userGender,
-                            getUserGender: getNewUserGender,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        InkWell(
-                          onTap: () => showBirthdayPicker(),
-                          child: ProfileInputContainer(
-                            child: Text(dbString),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        CustomButton(
-                          function: () => updateUserData(),
-                          title: "Save",
-                          isLoading: isLoading,
-                        ),
-                        SizedBox(height: 20.h),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      CustomButton(
+                        function: () => updateUserData(),
+                        title: "Save",
+                        isLoading: isLoading,
+                      ),
+                      SizedBox(height: 20.h),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

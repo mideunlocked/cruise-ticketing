@@ -69,124 +69,120 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
 
     return Scaffold(
+      appBar: CustomAppBar(title: user?.username ?? ""),
       body: RefreshIndicator(
         onRefresh: () async {
           getUser();
           getCurrentUserEvents();
         },
         color: Colors.black,
-        child: SafeArea(
-          child: Column(
-            children: [
-              CustomAppBar(title: user?.username ?? "", bottomPadding: 0),
-              isInitial == true
-                  ? CustomLoadingIndicator(height: 50.h, width: 50.w)
-                  : Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            sizedBoxH1,
-                            UserDetailCard(
-                              of: of,
-                              color: color,
-                              user: user,
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              children: [
-                                ProfileTabContainer(
-                                  title: "Past",
-                                  isActive: isPast,
-                                  borderColor: color ?? Colors.transparent,
-                                  toggleTab: () => toggleTab(),
-                                ),
-                                ProfileTabContainer(
-                                  title: "Upcoming",
-                                  isActive: isUpcoming,
-                                  borderColor: color ?? Colors.transparent,
-                                  toggleTab: () => toggleTab(),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            SizedBox(
-                              height: 80.h,
-                              child: ProfileScreenPad(
-                                child: user?.hosted?.isEmpty == true
-                                    ? emptyEventsList
-                                    : isPast == true
-                                        ? ListView(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            children: eventProvider.events
-                                                    .where((e) {
-                                              if (e.hostId == user!.id &&
-                                                  e.isValid == false) {
-                                                return true;
-                                              }
-
-                                              return false;
-                                            }).isEmpty
-                                                ? [emptyPastEvents]
-                                                : eventProvider.events
-                                                    .where((e) {
-                                                      if (e.hostId ==
-                                                              user!.id &&
-                                                          e.isValid == false) {
-                                                        return true;
-                                                      }
-
-                                                      return false;
-                                                    })
-                                                    .map(
-                                                      (e) => EventListTile(
-                                                          event: e),
-                                                    )
-                                                    .toList(),
-                                          )
-                                        : ListView(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            children: eventProvider.events
-                                                    .where((e) {
-                                              if (e.hostId == user!.id &&
-                                                  e.isValid == true) {
-                                                return true;
-                                              }
-
-                                              return false;
-                                            }).isEmpty
-                                                ? [emptyUpcomingEvents]
-                                                : eventProvider.events
-                                                    .where((e) {
-                                                      if (e.hostId ==
-                                                              user!.id &&
-                                                          e.isValid == true) {
-                                                        return true;
-                                                      }
-
-                                                      return false;
-                                                    })
-                                                    .map(
-                                                      (e) => EventListTile(
-                                                          event: e),
-                                                    )
-                                                    .toList(),
-                                          ),
+        child: Column(
+          children: [
+            isInitial == true
+                ? CustomLoadingIndicator(height: 50.h, width: 50.w)
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          sizedBoxH1,
+                          UserDetailCard(
+                            of: of,
+                            color: color,
+                            user: user,
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          Row(
+                            children: [
+                              ProfileTabContainer(
+                                title: "Past",
+                                isActive: isPast,
+                                borderColor: color ?? Colors.transparent,
+                                toggleTab: () => toggleTab(),
                               ),
+                              ProfileTabContainer(
+                                title: "Upcoming",
+                                isActive: isUpcoming,
+                                borderColor: color ?? Colors.transparent,
+                                toggleTab: () => toggleTab(),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          SizedBox(
+                            height: 80.h,
+                            child: ProfileScreenPad(
+                              child: user?.hosted?.isEmpty == true
+                                  ? emptyEventsList
+                                  : isPast == true
+                                      ? ListView(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          children: eventProvider.events
+                                                  .where((e) {
+                                            if (e.hostId == user!.id &&
+                                                e.isValid == false) {
+                                              return true;
+                                            }
+
+                                            return false;
+                                          }).isEmpty
+                                              ? [emptyPastEvents]
+                                              : eventProvider.events
+                                                  .where((e) {
+                                                    if (e.hostId == user!.id &&
+                                                        e.isValid == false) {
+                                                      return true;
+                                                    }
+
+                                                    return false;
+                                                  })
+                                                  .map(
+                                                    (e) =>
+                                                        EventListTile(event: e),
+                                                  )
+                                                  .toList(),
+                                        )
+                                      : ListView(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          children: eventProvider.events
+                                                  .where((e) {
+                                            if (e.hostId == user!.id &&
+                                                e.isValid == true) {
+                                              return true;
+                                            }
+
+                                            return false;
+                                          }).isEmpty
+                                              ? [emptyUpcomingEvents]
+                                              : eventProvider.events
+                                                  .where((e) {
+                                                    if (e.hostId == user!.id &&
+                                                        e.isValid == true) {
+                                                      return true;
+                                                    }
+
+                                                    return false;
+                                                  })
+                                                  .map(
+                                                    (e) =>
+                                                        EventListTile(event: e),
+                                                  )
+                                                  .toList(),
+                                        ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-            ],
-          ),
+                  ),
+          ],
         ),
       ),
     );

@@ -43,58 +43,50 @@ class _ScanEventScreenState extends State<ControlCenterScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: CustomAppBar(
-                title: "Control center",
-                bottomPadding: 1.h,
-              ),
-            ),
-            SecondarySearchWidget(
-              passSearchQuery: getSearchQuery,
-              hint: "Search attendee by name, username or category",
-            ),
-            ControlCenterFilter(
-              filterIndex: filterIndex,
-              changeFilter: changeFilter,
-            ),
-            Expanded(
-              child: widget.event.attendees!.isEmpty
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w),
-                      child: const EmptyListWidget(
-                        title: "No attendees yet",
-                        subTitle:
-                            "Currently, no attendees have been registered for this event. We appreciate your anticipation and look forward to welcoming participants soon.",
-                      ),
-                    )
-                  : ListView(
-                      children: searchAttendees().isEmpty
-                          ? [EmptySearchWidget(searchKeyWord: searchQuery)]
-                          : searchAttendees().map((e) {
-                              Users user;
-
-                              user = userProvider.getUser(e.userId) as Users;
-
-                              return AttendeeTile(
-                                attendee: e,
-                                user: user,
-                              );
-                            }).toList(),
+      appBar: const CustomAppBar(title: "Control center"),
+      body: Column(
+        children: [
+          SecondarySearchWidget(
+            passSearchQuery: getSearchQuery,
+            hint: "Search attendee by name, username or category",
+          ),
+          ControlCenterFilter(
+            filterIndex: filterIndex,
+            changeFilter: changeFilter,
+          ),
+          Expanded(
+            child: widget.event.attendees!.isEmpty
+                ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w),
+                    child: const EmptyListWidget(
+                      title: "No attendees yet",
+                      subTitle:
+                          "Currently, no attendees have been registered for this event. We appreciate your anticipation and look forward to welcoming participants soon.",
                     ),
+                  )
+                : ListView(
+                    children: searchAttendees().isEmpty
+                        ? [EmptySearchWidget(searchKeyWord: searchQuery)]
+                        : searchAttendees().map((e) {
+                            Users user;
+
+                            user = userProvider.getUser(e.userId) as Users;
+
+                            return AttendeeTile(
+                              attendee: e,
+                              user: user,
+                            );
+                          }).toList(),
+                  ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: CustomButton(
+              title: "Scan ticket",
+              function: scanTicket,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: CustomButton(
-                title: "Scan ticket",
-                function: scanTicket,
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

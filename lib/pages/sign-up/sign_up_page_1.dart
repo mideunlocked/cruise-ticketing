@@ -57,8 +57,7 @@ class _SignUpPage1State extends State<SignUpPage1> {
         child: Column(
           children: [
             SizedBox(height: 2.h),
-            CustomAppBar(
-              bottomPadding: 1.h,
+            const CustomAppBar(
               title: "",
             ),
             Padding(

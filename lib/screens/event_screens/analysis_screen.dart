@@ -33,63 +33,50 @@ class AnalysisScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      body: SafeArea(
+      appBar: const CustomAppBar(title: "Analysis"),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.w),
-              child: const CustomAppBar(
-                title: "Analysis",
-                bottomPadding: 0,
+            SizedBox(height: 2.h),
+            TicketsAnalysisCard(
+              remainingTicket: remainingTicket,
+              ticketSold: ticketSold,
+              totalTickets: totalTickets,
+            ),
+            sizedBoxH4,
+            RevenueAnalysis(
+              data: data,
+              pricing: pricing,
+            ),
+            sizedBoxH4,
+            TicketSalesCard(
+              data: data,
+              pricing: pricing,
+            ),
+            sizedBoxH4,
+            ConversionCard(data: data),
+            sizedBoxH4,
+            AgeDistribution(data: data),
+            sizedBoxH4,
+            GenderDistribution(data: data),
+            sizedBoxH4,
+            LocationAnalysisCard(data: data),
+            sizedBoxH4,
+            DeviceDistribution(data: data),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              "Analysis provided by Stact Platforms Inc.",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black38,
+                fontSize: 10.sp,
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    TicketsAnalysisCard(
-                      remainingTicket: remainingTicket,
-                      ticketSold: ticketSold,
-                      totalTickets: totalTickets,
-                    ),
-                    sizedBoxH4,
-                    RevenueAnalysis(
-                      data: data,
-                      pricing: pricing,
-                    ),
-                    sizedBoxH4,
-                    TicketSalesCard(
-                      data: data,
-                      pricing: pricing,
-                    ),
-                    sizedBoxH4,
-                    ConversionCard(data: data),
-                    sizedBoxH4,
-                    AgeDistribution(data: data),
-                    sizedBoxH4,
-                    GenderDistribution(data: data),
-                    sizedBoxH4,
-                    LocationAnalysisCard(data: data),
-                    sizedBoxH4,
-                    DeviceDistribution(data: data),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Text(
-                      "Analysis provided by Stact Platforms Inc.",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black38,
-                        fontSize: 10.sp,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                  ],
-                ),
-              ),
+            SizedBox(
+              height: 2.h,
             ),
           ],
         ),

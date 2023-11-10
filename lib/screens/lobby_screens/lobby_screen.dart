@@ -69,56 +69,54 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
     return Scaffold(
       appBar: LobbyScreenAppBar(widget: widget),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: StreamBuilder(
-                stream: lobbyProvider.getMessages(widget.lobby.id),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  messages = snapshot.data?.docs.map((e) {
-                        Map<String, dynamic> data =
-                            e.data() as Map<String, dynamic>;
-                        return Message.fromJson(data);
-                      }).toList() ??
-                      [];
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder(
+              stream: lobbyProvider.getMessages(widget.lobby.id),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                messages = snapshot.data?.docs.map((e) {
+                      Map<String, dynamic> data =
+                          e.data() as Map<String, dynamic>;
+                      return Message.fromJson(data);
+                    }).toList() ??
+                    [];
 
-                  return GroupedListView(
-                    controller: _scrollController,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 3.w,
-                    ),
-                    reverse: true,
-                    order: GroupedListOrder.DESC,
-                    elements: messages,
-                    groupBy: (element) => DateTime(
-                      element.dateTime.year,
-                      element.dateTime.month,
-                      element.dateTime.day,
-                    ),
-                    groupSeparatorBuilder: (value) => LobbyMessagesSeparator(
-                      value: value,
-                    ),
-                    itemBuilder: (ctx, message) {
-                      return MessageBubble(
-                        adminId: widget.event.hostId,
-                        message: message,
-                        scrollController: _scrollController,
-                        lobbyId: widget.lobby.id,
-                      );
-                    },
-                  );
-                },
-              ),
+                return GroupedListView(
+                  controller: _scrollController,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 3.w,
+                  ),
+                  reverse: true,
+                  order: GroupedListOrder.DESC,
+                  elements: messages,
+                  groupBy: (element) => DateTime(
+                    element.dateTime.year,
+                    element.dateTime.month,
+                    element.dateTime.day,
+                  ),
+                  groupSeparatorBuilder: (value) => LobbyMessagesSeparator(
+                    value: value,
+                  ),
+                  itemBuilder: (ctx, message) {
+                    return MessageBubble(
+                      adminId: widget.event.hostId,
+                      message: message,
+                      scrollController: _scrollController,
+                      lobbyId: widget.lobby.id,
+                    );
+                  },
+                );
+              },
             ),
-            LobbySendActionsWidget(
-              lobbyId: widget.lobby.id,
-              controller: _controller,
-              sendMessage: () => sendMessage(),
-              controllerHasInput: controllerHasInput,
-            ),
-          ],
-        ),
+          ),
+          LobbySendActionsWidget(
+            lobbyId: widget.lobby.id,
+            controller: _controller,
+            sendMessage: () => sendMessage(),
+            controllerHasInput: controllerHasInput,
+          ),
+        ],
       ),
     );
   }

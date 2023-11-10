@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import '../models/users.dart';
 import '../pages/followers_following_pages/followers_page.dart';
@@ -43,30 +42,25 @@ class _FollowersFollowingScreenState extends State<FollowersFollowingScreen> {
     ];
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            CustomAppBar(
-              title: widget.user?.username ?? "",
-              bottomPadding: 1.h,
-            ),
-            FollowersFollowingTabBar(
-              currentIndex: currentIndex,
+      appBar: CustomAppBar(title: widget.user?.username ?? ""),
+      body: Column(
+        children: [
+          FollowersFollowingTabBar(
+            currentIndex: currentIndex,
+            controller: controller,
+          ),
+          Expanded(
+            child: PageView(
               controller: controller,
+              children: pages,
+              onPageChanged: (value) {
+                setState(() {
+                  currentIndex = value;
+                });
+              },
             ),
-            Expanded(
-              child: PageView(
-                controller: controller,
-                children: pages,
-                onPageChanged: (value) {
-                  setState(() {
-                    currentIndex = value;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

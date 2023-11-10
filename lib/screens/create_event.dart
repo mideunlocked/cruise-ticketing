@@ -105,269 +105,245 @@ class _ListEventState extends State<CreateEventScreen> {
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              // app bar
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: const CustomAppBar(
-                  title: "Create Event",
-                  bottomPadding: 0,
+        appBar: const CustomAppBar(title: "Create event"),
+        body: Theme(
+          data: ThemeData(
+            primaryColor: primaryColor,
+            canvasColor: scaffoldBackgroundColor,
+            textTheme: of.textTheme.copyWith(
+              titleMedium: const TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            colorScheme: ColorScheme.light(
+              primary: primaryColor,
+              onSurface: Colors.black12,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              fillColor: Colors.black12,
+              border: outlineInputBorder,
+              enabledBorder: outlineInputBorder,
+              focusedBorder: outlineInputBorder,
+              hintStyle: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 8.sp,
+                letterSpacing: 0,
+              ),
+            ),
+          ),
+          child: Stepper(
+            currentStep: currentStep,
+            steps: [
+              // first step (basic info)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 0,
+                content: Step1(
+                  nameController: nameController,
+                  descriptionController: descriptionController,
+                  nameNode: nameNode,
+                  descriptionNode: descriptionNode,
+                  currentStep: currentStep,
+                  formKey: _step1FormKey,
                 ),
               ),
 
-              // stepper body
-              Expanded(
-                // in other to be able to design the stepper to fit app design
-                //it has to be passed as a child to a newly declared theme
-                //widget where we can then change all the necessary themes
-                child: Theme(
-                  data: ThemeData(
-                    primaryColor: primaryColor,
-                    canvasColor: scaffoldBackgroundColor,
-                    textTheme: of.textTheme.copyWith(
-                      titleMedium: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    colorScheme: ColorScheme.light(
-                      primary: primaryColor,
-                      onSurface: Colors.black12,
-                    ),
-                    inputDecorationTheme: InputDecorationTheme(
-                      filled: true,
-                      fillColor: Colors.black12,
-                      border: outlineInputBorder,
-                      enabledBorder: outlineInputBorder,
-                      focusedBorder: outlineInputBorder,
-                      hintStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 8.sp,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                  ),
-                  child: Stepper(
-                    currentStep: currentStep,
-                    steps: [
-                      // first step (basic info)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 0,
-                        content: Step1(
-                          nameController: nameController,
-                          descriptionController: descriptionController,
-                          nameNode: nameNode,
-                          descriptionNode: descriptionNode,
-                          currentStep: currentStep,
-                          formKey: _step1FormKey,
-                        ),
-                      ),
+              // Second step (Event Image/Banner)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 1,
+                content: Step2(
+                  getFunction: getImage,
+                ),
+              ),
 
-                      // Second step (Event Image/Banner)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 1,
-                        content: Step2(
-                          getFunction: getImage,
-                        ),
-                      ),
+              // third step (Event details)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 2,
+                content: Step3(
+                  rulesController: rulesController,
+                  rulesNode: rulesNode,
+                  getFunction: getFeatures,
+                ),
+              ),
 
-                      // third step (Event details)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 2,
-                        content: Step3(
-                          rulesController: rulesController,
-                          rulesNode: rulesNode,
-                          getFunction: getFeatures,
-                        ),
-                      ),
+              // fourth step (Event date and time)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 3,
+                content: Step4(
+                  getFunction: getDateTime,
+                ),
+              ),
 
-                      // fourth step (Event date and time)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 3,
-                        content: Step4(
-                          getFunction: getDateTime,
-                        ),
-                      ),
+              // fifth step (Ticket pricings)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 4,
+                content: Step5(
+                  // pricings: pricing,
+                  formKey: _step5FormKey,
+                  getFunction: getPricings,
+                ),
+              ),
 
-                      // fifth step (Ticket pricings)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 4,
-                        content: Step5(
-                          // pricings: pricing,
-                          formKey: _step5FormKey,
-                          getFunction: getPricings,
-                        ),
-                      ),
+              // sixth step (event privacy and visibilty)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 5,
+                content: Step6(
+                  venueController: venueController,
+                  addressController: addressController,
+                  formKey: _step6FormKey,
+                ),
+              ),
 
-                      // sixth step (event privacy and visibilty)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 5,
-                        content: Step6(
-                          venueController: venueController,
-                          addressController: addressController,
-                          formKey: _step6FormKey,
-                        ),
-                      ),
-
-                      // 7 step (event privacy and visibilty)
-                      Step(
-                        title: const Text(""),
-                        isActive: currentStep >= 6,
-                        content: Step7(
-                          getFunction: getPrivacy,
-                        ),
-                      ),
-                    ],
-                    elevation: 0,
-                    type: StepperType.horizontal,
-
-                    // custom control builder and widget
-                    controlsBuilder: (context, details) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // check is the current step is the first step
-                          currentStep == 0
-                              ?
-                              // then displays an empty widget
-                              const SizedBox()
-                              :
-                              // else display the back button
-                              StepControl(
-                                  title: "Back",
-                                  function: () {
-                                    currentStep != 0
-                                        ? setState(() => currentStep--)
-                                        : null;
-                                  },
-                                ),
-
-                          // proceed button
-                          StepControl(
-                            // check if the current step if the last then
-                            //displays finish else next
-                            title: currentStep == 6 ? "Finish" : "Next",
-                            function: () {
-                              // function variable to proceed step
-                              proceed() => setState(() => currentStep++);
-
-                              // check is function is called from first step
-                              if (currentStep == 0) {
-                                // validate ticket pricing text form fields
-                                final isValid =
-                                    _step1FormKey.currentState?.validate();
-
-                                // check if the validation was not successful
-                                if (isValid == false) {
-                                  // throw errors
-                                  return;
-                                }
-                                // else is successful so proceed else {
-                                // else proceed the stepper
-                                proceed();
-                              }
-
-                              // check is function is called from second step
-                              else if (currentStep == 1) {
-                                // check if a image file as been passed
-                                if (bannerFile.existsSync() == false) {
-                                  // show snack bar if no image file as been passed
-                                  CustomSnackBar.showCustomSnackBar(
-                                    _scaffoldKey,
-                                    "Event image/banner is required",
-                                  );
-                                }
-                                // else proceed to next step
-                                else {
-                                  print(bannerFile.path.toString());
-                                  proceed();
-                                }
-                              }
-                              // check is function is called from third step
-                              else if (currentStep == 2) {
-                                // check is rules controller is empty
-                                if (rulesController.text.isEmpty) {
-                                  // show snack bar if is empty
-                                  CustomSnackBar.showCustomSnackBar(
-                                    _scaffoldKey,
-                                    "All fields are required",
-                                  );
-                                }
-                                // check if any feature as been selected
-                                else if (features.isEmpty) {
-                                  // show snack bar if no feature as been selected
-                                  CustomSnackBar.showCustomSnackBar(
-                                      _scaffoldKey,
-                                      'Please choose an event feature.');
-                                }
-                                // else proceed to next step
-                                else {
-                                  print(features);
-                                  proceed();
-                                }
-                              } else if (currentStep == 3) {
-                                if (dateTime.length != 3) {
-                                  print(dateTime);
-                                  CustomSnackBar.showCustomSnackBar(
-                                    _scaffoldKey,
-                                    "Select date and time",
-                                  );
-                                } else {
-                                  print(dateTime);
-                                  proceed();
-                                }
-                              }
-                              // check is function is called from fourth step
-                              else if (currentStep == 4) {
-                                // validate ticket pricing text form fields
-                                final isValid =
-                                    _step5FormKey.currentState?.validate();
-
-                                // check if the validation was not successful
-                                if (isValid == false) {
-                                  // throw errors
-                                  return;
-                                }
-                                // else is successful so proceed
-                                else {
-                                  calculateTotalQuantity();
-                                  proceed();
-                                }
-                              } else if (currentStep == 5) {
-                                // validate venue and address text form fields
-                                final isValid =
-                                    _step6FormKey.currentState?.validate();
-
-                                // check if the validation was not successful
-                                if (isValid == false) {
-                                  // throw errors
-                                  return;
-                                } else {
-                                  proceed();
-                                }
-                              }
-                              // else proceed
-                              else {
-                                showLoadingIndicator();
-                                createEvent();
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+              // 7 step (event privacy and visibilty)
+              Step(
+                title: const Text(""),
+                isActive: currentStep >= 6,
+                content: Step7(
+                  getFunction: getPrivacy,
                 ),
               ),
             ],
+            elevation: 0,
+            type: StepperType.horizontal,
+
+            // custom control builder and widget
+            controlsBuilder: (context, details) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 5.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // check is the current step is the first step
+                  currentStep == 0
+                      ?
+                      // then displays an empty widget
+                      const SizedBox()
+                      :
+                      // else display the back button
+                      StepControl(
+                          title: "Back",
+                          function: () {
+                            currentStep != 0
+                                ? setState(() => currentStep--)
+                                : null;
+                          },
+                        ),
+
+                  // proceed button
+                  StepControl(
+                    // check if the current step if the last then
+                    //displays finish else next
+                    title: currentStep == 6 ? "Finish" : "Next",
+                    function: () {
+                      // function variable to proceed step
+                      proceed() => setState(() => currentStep++);
+
+                      // check is function is called from first step
+                      if (currentStep == 0) {
+                        // validate ticket pricing text form fields
+                        final isValid = _step1FormKey.currentState?.validate();
+
+                        // check if the validation was not successful
+                        if (isValid == false) {
+                          // throw errors
+                          return;
+                        }
+                        // else is successful so proceed else {
+                        // else proceed the stepper
+                        proceed();
+                      }
+
+                      // check is function is called from second step
+                      else if (currentStep == 1) {
+                        // check if a image file as been passed
+                        if (bannerFile.existsSync() == false) {
+                          // show snack bar if no image file as been passed
+                          CustomSnackBar.showCustomSnackBar(
+                            _scaffoldKey,
+                            "Event image/banner is required",
+                          );
+                        }
+                        // else proceed to next step
+                        else {
+                          print(bannerFile.path.toString());
+                          proceed();
+                        }
+                      }
+                      // check is function is called from third step
+                      else if (currentStep == 2) {
+                        // check is rules controller is empty
+                        if (rulesController.text.isEmpty) {
+                          // show snack bar if is empty
+                          CustomSnackBar.showCustomSnackBar(
+                            _scaffoldKey,
+                            "All fields are required",
+                          );
+                        }
+                        // check if any feature as been selected
+                        else if (features.isEmpty) {
+                          // show snack bar if no feature as been selected
+                          CustomSnackBar.showCustomSnackBar(
+                              _scaffoldKey, 'Please choose an event feature.');
+                        }
+                        // else proceed to next step
+                        else {
+                          print(features);
+                          proceed();
+                        }
+                      } else if (currentStep == 3) {
+                        if (dateTime.length != 3) {
+                          print(dateTime);
+                          CustomSnackBar.showCustomSnackBar(
+                            _scaffoldKey,
+                            "Select date and time",
+                          );
+                        } else {
+                          print(dateTime);
+                          proceed();
+                        }
+                      }
+                      // check is function is called from fourth step
+                      else if (currentStep == 4) {
+                        // validate ticket pricing text form fields
+                        final isValid = _step5FormKey.currentState?.validate();
+
+                        // check if the validation was not successful
+                        if (isValid == false) {
+                          // throw errors
+                          return;
+                        }
+                        // else is successful so proceed
+                        else {
+                          calculateTotalQuantity();
+                          proceed();
+                        }
+                      } else if (currentStep == 5) {
+                        // validate venue and address text form fields
+                        final isValid = _step6FormKey.currentState?.validate();
+
+                        // check if the validation was not successful
+                        if (isValid == false) {
+                          // throw errors
+                          return;
+                        } else {
+                          proceed();
+                        }
+                      }
+                      // else proceed
+                      else {
+                        showLoadingIndicator();
+                        createEvent();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

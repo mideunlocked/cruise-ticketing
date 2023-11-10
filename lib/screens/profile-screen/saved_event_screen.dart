@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../providers/event_provider.dart';
 import '../../widgets/general_widgets/custom_app_bar.dart';
@@ -17,44 +16,25 @@ class SavedEventScreen extends StatelessWidget {
     final eventProvider = Provider.of<EventProvider>(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 4.w,
-              ),
-              child: const CustomAppBar(
-                title: "Saved",
-                bottomPadding: 0,
-              ),
-            ),
-            const Divider(
-              color: Colors.black12,
-            ),
-            Expanded(
-              child: eventProvider.savedEvents.isEmpty
-                  ? const EmptyListWidget(
-                      title: "No saved events yet",
-                      subTitle: 'Explore events and save your favorites!',
-                    )
-                  : ListView(
-                      children: eventProvider.events
-                          .where(
-                            (e) => eventProvider.savedEvents.contains(e.id),
-                          )
-                          .map(
-                            (e) => RecEventTile(
-                              fromSave: true,
-                              event: eventProvider.events.first,
-                            ),
-                          )
-                          .toList(),
+      appBar: const CustomAppBar(title: "Saved"),
+      body: eventProvider.savedEvents.isEmpty
+          ? const EmptyListWidget(
+              title: "No saved events yet",
+              subTitle: 'Explore events and save your favorites!',
+            )
+          : ListView(
+              children: eventProvider.events
+                  .where(
+                    (e) => eventProvider.savedEvents.contains(e.id),
+                  )
+                  .map(
+                    (e) => RecEventTile(
+                      fromSave: true,
+                      event: eventProvider.events.first,
                     ),
+                  )
+                  .toList(),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
