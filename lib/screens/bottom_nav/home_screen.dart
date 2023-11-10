@@ -1,15 +1,15 @@
-import 'package:cruise/screens/see_all_screen.dart';
-import 'package:cruise/widgets/general_widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../providers/event_provider.dart';
+import '../../widgets/general_widgets/custom_loading_indicator.dart';
 import '../../widgets/home_screen_widgets/event_today_widget.dart';
 import '../../widgets/home_screen_widgets/home_screen_app_bar.dart';
 import '../../widgets/home_screen_widgets/home_screen_header.dart';
 import '../../widgets/home_screen_widgets/near_by_widget.dart';
 import '../../widgets/home_screen_widgets/recommend_widget.dart';
+import '../see_all_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
