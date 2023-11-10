@@ -17,8 +17,8 @@ class SeeAllScreen extends StatelessWidget {
     var insetSymmetric = EdgeInsets.symmetric(horizontal: 3.w);
 
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: "Recommended",
+      appBar: CustomAppBar(
+        title: title,
       ),
       body: SafeArea(
         child: Column(
