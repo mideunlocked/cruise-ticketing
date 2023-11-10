@@ -75,16 +75,12 @@ class EventProvider with ChangeNotifier {
     _events.removeWhere((event) => event.id == id);
   }
 
-  Future<Event> getEvent(String eventId) async {
+  Future<DocumentSnapshot> getEvent(String eventId) async {
     try {
       DocumentSnapshot documentSnap =
           await cloudInstance.collection("events").doc(eventId).get();
 
-      Map<String, dynamic> data = documentSnap.data() as Map<String, dynamic>;
-
-      Event event = Event.fromJson(data);
-
-      return event;
+      return documentSnap;
     } catch (e) {
       print("Get event error: $e");
       notifyListeners();

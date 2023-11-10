@@ -76,7 +76,7 @@ class AuthProvider with ChangeNotifier {
     try {
       final docCheck = await userCollection.doc(uid).get();
 
-      if (!docCheck.exists) {
+      if (!docCheck.exists || isSocialAuth == false) {
         await userCollection.doc(uid).set({
           "id": uid,
           "fullName": user.name,

@@ -33,8 +33,11 @@ class _LobbyTileState extends State<LobbyTile> {
 
     return FutureBuilder(
         future: eventProvider.getEvent(widget.lobby.eventId),
-        builder: (context, AsyncSnapshot<Event> snapshot) {
-          Event event = snapshot.data as Event;
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          Map<String, dynamic> data =
+              snapshot.data?.data() as Map<String, dynamic>;
+
+          Event event = Event.fromJson(data);
 
           return ListTile(
             onTap: () {

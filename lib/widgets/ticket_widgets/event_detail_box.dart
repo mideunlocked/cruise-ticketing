@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -33,15 +34,7 @@ class _EventDetailBoxState extends State<EventDetailBox> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    var eventProvider = Provider.of<EventProvider>(context, listen: false);
-    event = await eventProvider.getEvent(widget.ticket.eventId);
-
-    final eventLatLng = event?.geoPoint;
-
-    durationData = await DistanceAndDuration.getDistanceDuration(
-      eventLatLng?.latitude ?? 0.0,
-      eventLatLng?.longitude ?? 0.0,
-    );
+    await getEvent();
   }
 
   @override
@@ -138,6 +131,22 @@ class _EventDetailBoxState extends State<EventDetailBox> {
           ),
         ],
       ),
+    );
+  }
+
+  Future getEvent() async {
+    var eventProvider = Provider.of<EventProvider>(context, listen: false);
+    DocumentSnapshot snapshot =
+        await eventProvider.getEvent(widget.ticket.eventId);
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+    event = Event.fromJson(data);
+
+    final eventLatLng = event?.geoPoint;
+
+    durationData = await DistanceAndDuration.getDistanceDuration(
+      eventLatLng?.latitude ?? 0.0,
+      eventLatLng?.longitude ?? 0.0,
     );
   }
 }

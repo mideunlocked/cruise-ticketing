@@ -1,4 +1,4 @@
-import 'package:cruise/screens/ticket_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../models/event.dart';
 import '../../models/ticket.dart';
 import '../../providers/event_provider.dart';
+import '../../screens/ticket_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
 import '../general_widgets/custom_loading_indicator.dart';
 
@@ -28,8 +29,7 @@ class _TicketListTileState extends State<TicketListTile> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-    var eventProvider = Provider.of<EventProvider>(context, listen: false);
-    event = await eventProvider.getEvent(widget.ticket.eventId);
+    await getEvent();
   }
 
   @override
@@ -132,5 +132,14 @@ class _TicketListTileState extends State<TicketListTile> {
         ),
       ),
     );
+  }
+
+  Future getEvent() async {
+    var eventProvider = Provider.of<EventProvider>(context, listen: false);
+    DocumentSnapshot snapshot =
+        await eventProvider.getEvent(widget.ticket.eventId);
+    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+    event = Event.fromJson(data);
   }
 }
