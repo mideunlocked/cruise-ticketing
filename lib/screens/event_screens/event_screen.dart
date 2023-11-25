@@ -5,7 +5,6 @@ import 'package:sizer/sizer.dart';
 import '../../models/event.dart';
 import '../../models/ticket.dart';
 import '../../models/users.dart';
-import '../../providers/event_provider.dart';
 import '../../providers/ticket_provider.dart';
 import '../../providers/users_provider.dart';
 import '../../widgets/event_screen_widgets/about_widget.dart';
@@ -63,7 +62,6 @@ class _EventScreenState extends State<EventScreen> {
   Widget build(BuildContext context) {
     var sizedBox = SizedBox(height: 3.h);
 
-    var eventProvider = Provider.of<EventProvider>(context);
     var userProvider = Provider.of<UsersProvider>(context);
     var userData = userProvider.userData;
 
@@ -82,7 +80,7 @@ class _EventScreenState extends State<EventScreen> {
             children: [
               EventImageWidget(
                 imageUrl: widget.event.imageUrl,
-                isSaved: eventProvider.savedEvents.contains(widget.event.id),
+                isSaved: userProvider.saved.contains(widget.event.id),
                 isInitial: widget.isInitial,
                 eventId: widget.event.id,
                 isSoldOut: isSoldOut,

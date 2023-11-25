@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../helpers/distance_duration_helper.dart';
 import '../../models/event.dart';
-import '../../providers/event_provider.dart';
 import '../../providers/users_provider.dart';
 import '../../screens/event_screens/event_screen.dart';
 import '../general_widgets/custom_image_error_widget.dart';
@@ -46,7 +45,6 @@ class _RecEventTileState extends State<RecEventTile> {
   Widget build(BuildContext context) {
     double imageHeight = 28.h;
 
-    final eventProvider = Provider.of<EventProvider>(context);
     var userProvider = Provider.of<UsersProvider>(context);
 
     return Padding(
@@ -109,9 +107,7 @@ class _RecEventTileState extends State<RecEventTile> {
               // save event button
               SaveEventButton(
                 eventId: widget.event.id,
-                isSaved: eventProvider.savedEvents.contains(
-                  widget.event.id,
-                ),
+                isSaved: userProvider.saved.contains(widget.event.id),
                 top: 1.h,
                 left: widget.fromSave == true ? 78.w : 70.w,
               ),

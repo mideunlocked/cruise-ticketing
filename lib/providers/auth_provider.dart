@@ -258,7 +258,8 @@ class AuthProvider with ChangeNotifier {
           gender: "Prefer not to say",
           hosted: [],
           videoUrl: "",
-          username: "${user?.displayName}${user?.uid.substring(0, 5)}",
+          username:
+              "${user?.displayName?.split(" ").first}${user?.uid.substring(0, 5)}",
           imageUrl: user?.photoURL ?? "",
           password: "",
           attended: [],
@@ -266,6 +267,7 @@ class AuthProvider with ChangeNotifier {
           following: [],
           highlights: [],
           dateOfBirth: DateTime.now().toString(),
+          saved: [],
         ),
         isSocialAuth: true,
       ).then((value) =>

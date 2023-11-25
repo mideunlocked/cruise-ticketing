@@ -15,7 +15,6 @@ class EventProvider with ChangeNotifier {
   final List<Event> _recommended = [];
   final List<Event> _nearBy = [];
   final List<Event> _today = [];
-  final List<dynamic> _savedEvents = [];
 
   List<Event> get events {
     return [..._events];
@@ -31,10 +30,6 @@ class EventProvider with ChangeNotifier {
 
   List<Event> get today {
     return [..._today];
-  }
-
-  List<dynamic> get savedEvents {
-    return [..._savedEvents];
   }
 
   Future<dynamic> addEvent(Event event) async {
@@ -88,19 +83,32 @@ class EventProvider with ChangeNotifier {
     }
   }
 
-  void saveEvent(String id) {
-    if (_savedEvents.contains(id)) {
-      return;
-    }
-    _savedEvents.add(id);
+  Future<dynamic> saveEvent(String eventId) async {
+    String? uid = authInstance.currentUser?.uid ?? "";
+    try {
+      await cloudInstance.collection("events").doc(eventId).update({
+        "saved": FieldValue.arrayUnion([uid]),
+      });
 
-    print(_savedEvents);
+      return true;
+    } catch (e) {
+      print("Save event error: $e");
+      return e.toString();
+    }
   }
 
-  void unsaveEvent(String id) {
-    _savedEvents.remove(id);
+  Future<dynamic> unsaveEvent(String eventId) async {
+    String? uid = authInstance.currentUser?.uid ?? "";
+    try {
+      await cloudInstance.collection("events").doc(eventId).update({
+        "saved": FieldValue.arrayRemove([uid]),
+      });
 
-    print(_savedEvents);
+      return true;
+    } catch (e) {
+      print("Unsave event error: $e");
+      return e.toString();
+    }
   }
 
   Future<dynamic> getUserEvents({String userId = ""}) async {

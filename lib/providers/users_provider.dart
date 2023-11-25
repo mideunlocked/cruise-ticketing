@@ -25,9 +25,14 @@ class UsersProvider with ChangeNotifier {
     following: [],
     highlights: [],
     dateOfBirth: DateTime.now().toString(),
+    saved: [],
   );
 
   final List<Users> _users = [];
+
+  List<dynamic> _saved = [];
+  List<dynamic> _following = [];
+  List<dynamic> _followers = [];
 
   Users get userData {
     return _userData;
@@ -35,6 +40,18 @@ class UsersProvider with ChangeNotifier {
 
   List<Users> get users {
     return [..._users];
+  }
+
+  List<dynamic> get saved {
+    return [..._saved];
+  }
+
+  List<dynamic> get following {
+    return [..._following];
+  }
+
+  List<dynamic> get followers {
+    return [..._followers];
   }
 
   void addUser(Users user) {
@@ -89,10 +106,101 @@ class UsersProvider with ChangeNotifier {
 
       _userData = Users.fromJson(data);
 
+      _followers = _userData.followers ?? [];
+      _following = _userData.following ?? [];
+      _saved = userData.saved;
+
       notifyListeners();
     } catch (e) {
       notifyListeners();
       print("Get current user details error: $e");
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> saveEvent(String eventId) async {
+    String? uid = authInstance.currentUser?.uid ?? "";
+    try {
+      await cloudInstance.collection("users").doc(uid).update({
+        "saved": FieldValue.arrayUnion([eventId]),
+      }).then((_) => _saved.add(eventId));
+
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      notifyListeners();
+      print("User save event error: $e");
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> unsaveEvent(String eventId) async {
+    String? uid = authInstance.currentUser?.uid ?? "";
+
+    try {
+      await cloudInstance.collection("users").doc(uid).update({
+        "saved": FieldValue.arrayRemove([eventId]),
+      }).then((_) => _saved.remove(eventId));
+
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      notifyListeners();
+      print("User unsave event error: $e");
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> followUser(String userId) async {
+    String? uid = authInstance.currentUser?.uid ?? "";
+
+    try {
+      await cloudInstance
+          .collection("users")
+          .doc(uid)
+          .update({
+            "following": FieldValue.arrayUnion([userId]),
+          })
+          .then((_) async =>
+              await cloudInstance.collection("users").doc(userId).update({
+                "followers": FieldValue.arrayUnion([userId]),
+              }))
+          .then((_) => _following.add(userId));
+
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      notifyListeners();
+      print("Follow user error: $e");
+      return e.toString();
+    }
+  }
+
+  Future<dynamic> unfollowUser(String userId) async {
+    String? uid = authInstance.currentUser?.uid ?? "";
+
+    try {
+      await cloudInstance
+          .collection("users")
+          .doc(uid)
+          .update({
+            "following": FieldValue.arrayRemove([userId]),
+          })
+          .then((_) async =>
+              await cloudInstance.collection("users").doc(userId).update({
+                "followers": FieldValue.arrayRemove([userId]),
+              }))
+          .then((_) => _following.remove(userId));
+
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      notifyListeners();
+      print("Unfollow user error: $e");
       return e.toString();
     }
   }

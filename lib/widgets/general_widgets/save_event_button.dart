@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../providers/event_provider.dart';
+import '../../providers/users_provider.dart';
 
 class SaveEventButton extends StatefulWidget {
   const SaveEventButton({
@@ -66,15 +67,22 @@ class _SaveEventButtonState extends State<SaveEventButton> {
     );
   }
 
-  void toggleSave() {
+  void toggleSave() async {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
+    final userProvider = Provider.of<UsersProvider>(context, listen: false);
 
     setState(() {
       isSaved = !isSaved;
     });
 
-    !isSaved
-        ? eventProvider.unsaveEvent(widget.eventId)
-        : eventProvider.saveEvent(widget.eventId);
+    if (!isSaved) {
+      userProvider.unsaveEvent(widget.eventId).then((_) async {
+        await eventProvider.unsaveEvent(widget.eventId);
+      });
+    } else {
+      userProvider.saveEvent(widget.eventId).then((_) async {
+        await eventProvider.saveEvent(widget.eventId);
+      });
+    }
   }
 }

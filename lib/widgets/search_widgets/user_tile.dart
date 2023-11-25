@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/users.dart';
+import '../../providers/users_provider.dart';
 import '../../screens/user_profile_screen.dart';
 import '../general_widgets/profile_image.dart';
 
@@ -22,6 +24,8 @@ class _UserTileState extends State<UserTile> {
 
   @override
   Widget build(BuildContext context) {
+    var usersProvider = Provider.of<UsersProvider>(context, listen: false);
+
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -55,38 +59,58 @@ class _UserTileState extends State<UserTile> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.user.name,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.bold,
+                SizedBox(
+                  width: 30.w,
+                  child: Text(
+                    widget.user.name,
+                    maxLines: 2,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                Text(
-                  "@${widget.user.username}",
-                  style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 10.sp,
+                SizedBox(
+                  width: 30.w,
+                  child: Text(
+                    "@${widget.user.username}",
+                    maxLines: 1,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 10.sp,
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 3.h,
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(
-                        isFollowing ? Colors.grey[200] : Colors.black),
-                  ),
-                  onPressed: toggleFollow,
-                  child: Text(
-                    isFollowing ? "Following" : "Follow",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: isFollowing ? Colors.black : Colors.white,
-                    ),
-                  ),
-                ),
+                usersProvider.userData.id == widget.user.id
+                    ? const SizedBox()
+                    : Consumer<UsersProvider>(
+                        builder: (context, usersProvider, child) {
+                        isFollowing =
+                            usersProvider.following.contains(widget.user.id);
+
+                        return ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                                isFollowing ? Colors.grey[200] : Colors.black),
+                          ),
+                          onPressed: followUnfollowUser,
+                          child: Text(
+                            isFollowing ? "Following" : "Follow",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              color: isFollowing ? Colors.black : Colors.white,
+                            ),
+                          ),
+                        );
+                      }),
               ],
             ),
           ],
@@ -99,5 +123,16 @@ class _UserTileState extends State<UserTile> {
     setState(() {
       isFollowing = !isFollowing;
     });
+  }
+
+  void followUnfollowUser() async {
+    var usersProvider = Provider.of<UsersProvider>(context, listen: false);
+    String userId = widget.user.id;
+
+    if (!usersProvider.following.contains(userId)) {
+      await usersProvider.followUser(userId).then((_) => toggleFollow());
+    } else {
+      await usersProvider.unfollowUser(userId).then((_) => toggleFollow());
+    }
   }
 }

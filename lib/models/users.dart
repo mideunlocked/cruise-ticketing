@@ -17,12 +17,14 @@ class Users {
   final List<dynamic>? followers;
   final List<dynamic>? following;
   final List<dynamic>? highlights;
+  final List<dynamic> saved;
 
   const Users({
     required this.id,
     required this.bio,
     required this.name,
     required this.email,
+    required this.saved,
     required this.number,
     required this.gender,
     required this.hosted,
@@ -55,6 +57,7 @@ class Users {
       following: json["following"] as List<dynamic>,
       highlights: json["highlights"] as List<dynamic>,
       dateOfBirth: json["dateOfBirth"] as String,
+      saved: json["saved"] as List<dynamic>,
     );
   }
 

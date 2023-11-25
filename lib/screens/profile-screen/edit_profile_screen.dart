@@ -299,6 +299,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         following: user?.following ?? [],
         highlights: user?.highlights ?? [],
         dateOfBirth: dbString,
+        saved: user?.saved ?? [],
       ),
     )
         .then((value) async {

@@ -30,12 +30,14 @@ class Event {
   final EventAnalysis analysis;
   final List<Attendee>? attendees;
   final List<dynamic> reviews;
+  final List<dynamic> saved;
 
   const Event({
     required this.id,
     required this.name,
     required this.date,
     required this.venue,
+    required this.saved,
     required this.rules,
     required this.hostId,
     required this.rating,
@@ -96,6 +98,7 @@ class Event {
           DateTimeFormatting.stringToTimeOfDay(json["startTime"] as String),
       description: json["description"] as String,
       ticketQuantity: json["ticketQuantity"] as int,
+      saved: json["saved"] as List<dynamic>,
     );
   }
 
@@ -128,6 +131,7 @@ class Event {
       "startTime": startTime.toString(),
       "description": description,
       "ticketQuantity": ticketQuantity,
+      "saved": [],
     };
   }
 }

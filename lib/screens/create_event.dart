@@ -440,6 +440,7 @@ class _ListEventState extends State<CreateEventScreen> {
                 })
             .toList(),
       ),
+      saved: [],
     );
 
     final response = await eventProvider.addEvent(

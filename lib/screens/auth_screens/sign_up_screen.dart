@@ -179,6 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         following: [],
         highlights: [],
         dateOfBirth: DateTime.now().toString(),
+        saved: [],
       ),
     );
 
